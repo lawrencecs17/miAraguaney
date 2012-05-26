@@ -34,7 +34,7 @@
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
+    <td colspan="2">&nbsp; ${usuarios.get(0).nombre}</td>
     </tr>
   <tr>
     <td>&nbsp;</td>
