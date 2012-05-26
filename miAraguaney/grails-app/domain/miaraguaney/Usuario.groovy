@@ -1,10 +1,10 @@
 package miaraguaney
 
-/**
+/** 
  * Clase destinada a gestionar la data de cada usuario de manera
  * temporal, apoyandose en los servicios ofrecidos por miOrquidea app
  * 
- * @author Lawrence
+ * @author Lawrence.
  *
  */
 
