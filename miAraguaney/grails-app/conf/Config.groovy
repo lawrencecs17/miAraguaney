@@ -78,6 +78,15 @@ log4j = {
     //appenders {
     //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
     //}
+	
+	appenders {
+		console name: 'stdout', layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{2}] %m%n')
+
+		rollingFile name:'AraguaneyAppender', file: "C:/AraguaneyLog/LogAraguaney.log", append: true,
+			layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{2}] %m%n')
+	}
+
+	info AraguaneyAppender:'Logs', additivity:false
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP
