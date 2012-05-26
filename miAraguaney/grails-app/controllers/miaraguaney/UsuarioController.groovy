@@ -5,11 +5,15 @@ import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 import grails.converters.*
 import java.util.Date
+import org.apache.commons.logging.*
 
 class UsuarioController {
+	
+	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
 
     def index = { 		
 		
+		log.error ("Ejemplo de este log")
 		render (view:'consultarTodos')
 		
 		}
