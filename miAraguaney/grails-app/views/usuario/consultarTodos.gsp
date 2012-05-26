@@ -22,38 +22,27 @@
 <body>
 <label>
 <p>&nbsp;</p>
-<form id="form1" name="form1" method="post" action="">
   
   <p>&nbsp;</p>
-  <table width="632" border="0" align="center">
+  <table width="481" border="0" align="center">
   <tr>
-    <td width="50">&nbsp;</td>
-    <td width="93">&nbsp;</td>
     <td colspan="2" align="center" >Consultar Todos Los Uusarios</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
     <td colspan="2">&nbsp;</td>
     </tr>
   <tr>
-    <td height="54">&nbsp;</td>
-    <td>&nbsp;</td>
-    <td width="215" align="center"><label>
-||||<input type="submit" onclick="cosultarusuario.gsp" name="btconsultar" id="btnconsultar" value="Consultar" />
+    <td width="215" height="54" align="center"><label>
+  <input type="submit" onclick="location.href='consultarTodosLosUsuarios'" name="btconsultar" id="btnconsultar" value="Consultar" />
       </label>
       <div></div></td>
     <td width="256" align="center"><input type="button" name="btncancelar" id="btncancelar" value="Regresar" /></td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
     <td colspan="2">&nbsp;</td>
     </tr>
   </table>
   <p>&nbsp;</p>
-</form></label>
+
 </body>
 </html>
-
-

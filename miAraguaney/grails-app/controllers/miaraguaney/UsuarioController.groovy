@@ -8,9 +8,9 @@ import java.util.Date
 
 class UsuarioController {
 
-    def index = { 
+    def index = { 		
 		
-		redirect(action:"consultarTodosLosUsuarios")
+		render (view:'consultarTodos')
 		
 		}
 	
