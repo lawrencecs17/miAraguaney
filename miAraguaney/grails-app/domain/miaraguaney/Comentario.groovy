@@ -20,7 +20,7 @@ class Comentario {
 	
 	String mensaje
 	Date fecha
-	Usuario autor
+	String autor
 	boolean principal
 	List<String> adjuntos = new ArrayList<String>()
 	
