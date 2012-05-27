@@ -25,42 +25,30 @@
 <form id="form1" name="form1" method="post" action="modificarUsuario">
   
   <p>&nbsp;</p>
-  <table width="504" border="0" align="center">
+  <table width="491" border="0" align="center">
   <tr>
-    <td width="50">&nbsp;</td>
-    <td width="93">&nbsp;</td>
-    <td colspan="2" align="center" ><p>Introduce los siguientes datos:</p></td>
-  </tr>
+    <td colspan="3" align="center"><p>Introduce los siguientes datos:</p></td>
+    </tr>
   
     
   <tr>
-    <td>&nbsp;</td>
-    <td><p>&nbsp;</p></td>
-    <td colspan="2">&nbsp;</td>
+    <td colspan="3"><p>&nbsp;</p></td>
     </tr>
   <tr>
-    <td>&nbsp;</td>
-    <td>Email: </td>
-    <td colspan="2"><input type="text" name="email" id="email" /></td>
+    <td width="93">Email: </td>
+    <td colspan="2"><input type="text" name="email" id="email"  /></td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td>Password: </td>
     <td colspan="2"><input type="password" name="password" id="password" /></td>
     </tr>
   <tr>
     <td height="54">&nbsp;</td>
-    <td>&nbsp;</td>
     <td width="215" align="center"><label>
-      <input type="submit" name="btnentrar" id="btnentrar" value="Entrar" />
+      <input type="submit" name="btnentrar" id="btnentrar" value="Buscar" />
     </label>
       <div></div></td>
     <td width="169" align="center"><input type="button" name="btncancelar" id="btncancelar" value="Cancelar" /></td>
-    </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
     </tr>
   </table>
   <p>&nbsp;</p>

@@ -15,6 +15,7 @@ class Usuario {
 	String nickname
 	String password
 	String email
+	String email2
 	String fechaRegistro
 	String biografia
 	String pais

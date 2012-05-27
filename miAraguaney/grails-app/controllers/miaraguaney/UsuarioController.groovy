@@ -32,7 +32,7 @@ class UsuarioController {
 	 */
 	def vistaRegistroUsuario={
 		
-		render (view:'registrarusuario')
+		render (view:'registrarUsuario')
 		
 		}
 	
@@ -58,8 +58,7 @@ class UsuarioController {
 	   def connection = url.openConnection()
 	   connection.setRequestMethod("POST")
 	   connection.setRequestProperty("Content-Type" ,"text/xml" )	   
-	   connection.doOutput=true 
-	   
+	   connection.doOutput=true 	   
 	   
 		   Writer writer = new OutputStreamWriter(connection.outputStream)
 		   writer.write(parametro.toString())
@@ -71,9 +70,7 @@ class UsuarioController {
 		   {
 			   //El usuario fue registrado
 			   def miXml = new XmlSlurper().parseText(connection.content.text)
-			   serviceResponse  = "Usuario Registrado Exitosamente!"
-			   
-			
+			   serviceResponse  = "Usuario Registrado Exitosamente!"			
 		   }
 		   else 
 		   {
@@ -82,14 +79,9 @@ class UsuarioController {
 			   if(connection.responseCode == 200)
 			   {
 				   def miXml = new XmlSlurper().parseText(connection.content.text)
-				   serviceResponse = miXml.mensaje
-				   
+				   serviceResponse = miXml.mensaje				   
 			   }
-			}
-	
-		   
-	   
-	   
+			}   
 	   render (view :'registroExitoso', model:[aviso:serviceResponse])
 
 	   }
@@ -188,13 +180,108 @@ class UsuarioController {
 		}
 	}
 	
-	def construirHTML(def listUsuario)
-	{
-		for (Usuario usuario:listUsuario)
-		{
-			render usuario.nombre
-		}
-		
-		return listUsuario
+	def vistaModificarUsuario =	{
+		render (view:'modificarUsuario')
 	}
+	
+	def modificarUsuario = {
+		
+		def email = params.email
+		def password = params.password
+		def serviceResponse = "No hay respuesta"
+		
+		/**
+		* Se ubica la URL del servicio que lista a todos los usuarios
+		*/
+	   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
+	   def listUsuario
+	   /**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+	   def connection = url.openConnection()
+	   connection.setRequestMethod("GET" )
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   
+	   if(connection.responseCode == 200)
+	   {
+		   def miXml = new XmlSlurper().parseText(connection.content.text)
+		   listUsuario = procesarXML(miXml)
+		   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
+		   if(miUsuario!=null)
+		   {
+			   miUsuario.email2 = email			  
+			   render (view:'actualizarUsuario',model:[usuario:miUsuario])
+		   }
+	   }
+	   else
+	   {
+		   render "Se ha generado un error:"
+		   render connection.responseCode
+		   render connection.responseMessage
+	   }
+		
+	}
+	
+	def buscarUsuario(def listUsuario, def email, def password)
+	{
+		for (Usuario usuario: listUsuario)
+		{
+			if(usuario.email == email)
+			{
+				return usuario
+			}
+		}
+		return null		
+	}
+	
+	def modificarDatosUsuario ={
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/usuario/modificarUsuario" )
+		/**
+		 * Se extraen los parametros y convierte a formato
+		 * XML para luego ser enviada a la aplicacion miOrquidea
+		 *
+		 */
+		def parametro = new Usuario (params) as XML
+		
+		
+		def connection = url.openConnection()
+		connection.setRequestMethod("PUT")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+		
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(parametro.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+		   
+			if(connection.responseCode == 201)
+			{
+				//El usuario fue registrado
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse  = "Usuario Registrado Exitosamente!"
+			}
+			else
+			{
+				//Ha ocurrido un error,  posiblemente datos duplicados
+				// XML vacío ó error en formato de datos entrada
+				if(connection.responseCode == 200)
+				{
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					serviceResponse = miXml.mensaje
+				}
+			 }
+			render (view :'registroExitoso', model:[aviso:serviceResponse])
+ 
+		}
+	
+	
 }
