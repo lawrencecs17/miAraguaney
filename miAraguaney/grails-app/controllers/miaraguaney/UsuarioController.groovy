@@ -7,6 +7,14 @@ import grails.converters.*
 import java.util.Date
 import org.apache.commons.logging.*
 
+/**
+ * 
+ * @author Lawrence Cermeño
+ * @author Sara Villarreal
+ * @author Ricardo Portela
+ *
+ */
+
 class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
@@ -19,7 +27,8 @@ class UsuarioController {
 		}
 	
 	/* 
-	 * 
+	 * Action encarga de mostrar el formulario de
+	 * registro de usuarios
 	 */
 	def vistaRegistroUsuario={
 		
@@ -29,29 +38,49 @@ class UsuarioController {
 	
 	
 	/**
-	* Invocacion al servicio resgistrar un usuario al sistema
+	* Invocacion al servicio de resgistrar usuario de 
+	* miOrquide app
 	*/
    def registrarUsuario ={
 	   
-	   
-	   // URI del servicio web
+	   def serviceResponse = "No hay respuesta"
+	   /**
+	    * Se establece la URL de la ubicacion
+	    * del servicio
+	    */
 	   def url = new URL("http://localhost:8080/miOrquidea/usuario/registrarUsuario" )
-	   
+	   /**
+	    * Se extraen los parametros y convierte a formato
+	    * XML para luego ser enviada a la aplicacion miOrquidea
+	    * 
+	    */
 	   def parametro = new Usuario (params) as XML
-
 	   def connection = url.openConnection()
 	   connection.setRequestMethod("POST")
-	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )	   
 	   connection.doOutput=true 
-	   Writer writer = new OutputStreamWriter(connection.outputStream)
-	   writer.write(parametro.toString())
-	   writer.flush()
-	   writer.close()
-	   connection.connect()
 	   
-	   def restResponse = connection.content.text
-	   render restResponse
-	   //render (view :'registroExitoso')
+	   
+		   Writer writer = new OutputStreamWriter(connection.outputStream)
+		   writer.write(parametro.toString())
+		   writer.flush()
+		   writer.close()
+		   connection.connect()
+		   
+	   if(connection.responseCode == 201)
+	   {
+		   def restResponse = connection.content.text
+		   serviceResponse = "Registro Exitoso, usuario creado!"
+	   }
+	   else
+	   {
+		   serviceResponse = "No hay respuesta por parte del servidor!"
+	   }
+	   
+	  
+	   
+	   
+	   render (view :'registroExitoso', model:[aviso:serviceResponse])
 
 	   }
    

@@ -8,23 +8,20 @@
 .verde {
 	color: #390;
 }
+
 -->
 </style>
 </head>
 
 <body>
-<table align="center" width="500" border="1">
+<table align="center" width="100%" height="100$" border="0" valign="middle" >
   <tr>
-    <td>&nbsp;</td>
-    <td align="center" class="verde">Registro Exitoso!</td>
-    <td>&nbsp;</td>
+    <td align="center" valign="middle" class="verde">${aviso}</td>
   </tr>
   <tr>
-    <td>&nbsp;</td>
     <td align="center"><label>
       <input  type="submit" onclick="location.href='index'" name="button" id="button" value="OK" />
     </label></td>
-    <td>&nbsp;</td>
   </tr>
 </table>
 </body>
