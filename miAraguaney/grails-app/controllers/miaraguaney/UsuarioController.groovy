@@ -66,18 +66,28 @@ class UsuarioController {
 		   writer.flush()
 		   writer.close()
 		   connection.connect()
+		  
+		   if(connection.responseCode == 201)
+		   {
+			   //El usuario fue registrado
+			   def miXml = new XmlSlurper().parseText(connection.content.text)
+			   serviceResponse  = "Usuario Registrado Exitosamente!"
+			   
+			
+		   }
+		   else 
+		   {
+			   //Ha ocurrido un error,  posiblemente datos duplicados 
+			   // XML vacío ó error en formato de datos entrada
+			   if(connection.responseCode == 200)
+			   {
+				   def miXml = new XmlSlurper().parseText(connection.content.text)
+				   serviceResponse = miXml.mensaje
+				   
+			   }
+			}
+	
 		   
-	   if(connection.responseCode == 201)
-	   {
-		   def restResponse = connection.content.text
-		   serviceResponse = "Registro Exitoso, usuario creado!"
-	   }
-	   else
-	   {
-		   serviceResponse = "No hay respuesta por parte del servidor!"
-	   }
-	   
-	  
 	   
 	   
 	   render (view :'registroExitoso', model:[aviso:serviceResponse])
