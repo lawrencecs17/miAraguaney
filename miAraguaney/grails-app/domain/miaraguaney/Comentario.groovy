@@ -19,7 +19,7 @@ class Comentario {
 	static hasMany = [tag:Etiqueta,comentado:Comentario]
 	
 	String mensaje
-	Date fecha
+	String fecha
 	String autor
 	boolean principal
 	List<String> adjuntos = new ArrayList<String>()
