@@ -9,7 +9,6 @@
 
 <h1 align="center"> Etiquetas del Cliente miAraguaney app </h1>
 
-
 <table border="22" align="center">
 		<tr>
 			<td align="center" width="100px" ><strong>Nombre</strong></td>
