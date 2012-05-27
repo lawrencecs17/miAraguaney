@@ -22,62 +22,69 @@
 <body>
 <label>
 <p>&nbsp;</p>
-<form id="form1" name="form1" method="post" action="">
+<form id="form1" name="form1" method="post" action="registrarUsuario">
   
   <p>&nbsp;</p>
   <table width="632" border="0" align="center">
   <tr>
     <td width="50">&nbsp;</td>
     <td width="93">&nbsp;</td>
-    <td colspan="2" align="center" bgcolor="#996600">Registrar Usuario</td>
+    <td colspan="2" align="center">Registrar Usuario</td>
   </tr>
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td colspan="2">&nbsp; ${usuarios.get(0).nombre}</td>
+    <td colspan="2">&nbsp; </td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td>Nombre: </td>
-    <td colspan="2"><input type="text" name="textfield2" id="textfield2" /></td>
+    <td colspan="2"><input type="text" name="nombre" id="nombre" /></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td>Apellido: </td>
-    <td colspan="2"><input type="text" name="textfield3" id="textfield3" /></td>
+    <td colspan="2"><input type="text" name="apellido" id="apellido" /></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td><p>Biografia:</p></td>
     <td colspan="2"><label>
-      <textarea name="textbio" id="textbio"></textarea>
+      <textarea name="biografia" id="biografia"></textarea>
     </label></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td>Email: </td>
     <td colspan="2"><label>
-      <input name="textemail" type="text" id="textemail" value="" />
+      <input name="email" type="text" id="email" value="" />
+    </label></td>
+    </tr><tr>
+    <td>&nbsp;</td>
+    <td>Fecha Nac:</td>
+    <td colspan="2"><label>
+      <input name="fecha" type="text" id="fecha" value="" />
     </label></td>
     </tr>
+    
   <tr>
     <td>&nbsp;</td>
     <td>Nickname: </td>
     <td colspan="2"><label>
-      <input type="text" name="textnick" id="textnick" />
+      <input type="text" name="nickname" id="nickname" />
     </label></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td>Pais: </td>
     <td colspan="2"><label>
-      <input type="text" name="textpais" id="textpais" />
+      <input type="text" name="pais" id="pais" />
     </label></td>
     </tr>
   <tr>
     <td>&nbsp;</td>
     <td>Password: </td>
-    <td colspan="2"><input type="password" name="textfield" id="textfield" /></td>
+    <td colspan="2"><input type="password" name="password" id="password" /></td>
     </tr>
   <tr>
     <td>&nbsp;</td>

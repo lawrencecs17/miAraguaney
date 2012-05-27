@@ -13,11 +13,52 @@ class UsuarioController {
 
     def index = { 		
 		
-		log.error ("Ejemplo de este log")
-		render (view:'consultarTodos')
+		log.info ("Ejemplo de este log")
+		//render (view:'consultarTodos')
+		redirect  (action:'vistaRegistroUsuario')
+		}
+	
+	/* 
+	 * 
+	 */
+	def vistaRegistroUsuario={
+		
+		render (view:'registrarusuario')
 		
 		}
 	
+	
+	/**
+	* Invocacion al servicio resgistrar un usuario al sistema
+	*/
+   def registrarUsuario ={
+	   
+	   
+	   // URI del servicio web
+	   def url = new URL("http://localhost:8080/miOrquidea/usuario/registrarUsuario" )
+	   
+	   def parametro = new Usuario (params) as XML
+
+	   def connection = url.openConnection()
+	   connection.setRequestMethod("POST")
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   connection.doOutput=true 
+	   Writer writer = new OutputStreamWriter(connection.outputStream)
+	   writer.write(parametro.toString())
+	   writer.flush()
+	   writer.close()
+	   connection.connect()
+	   
+	   def restResponse = connection.content.text
+	   render restResponse
+	   //render (view :'registroExitoso')
+
+	   }
+   
+   
+	def guardarXML  = {
+		
+		}
 	/**
 	 * Invocacion al servicio de consultar todos los usuarios
 	 * registrados en el sistema
