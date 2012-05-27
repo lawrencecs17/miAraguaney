@@ -10,13 +10,13 @@
 <h1 align="center"> Etiquetas del Cliente miAraguaney app </h1>
 
 
-<table border="0" align="center">
+<table border="22" align="center">
 		<tr>
-			<td width="100px" ><strong>Nombre</strong></td>
+			<td align="center" width="100px" ><strong>Nombre</strong></td>
 		</tr>
 	<g:each in="${etiquetas}" var="etiqueta">
 		<tr>
-			<td>${etiqueta}</td>		
+			<td align="center">${etiqueta}</td>		
 		</tr>
 	</g:each>
 </table>
