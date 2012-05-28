@@ -12,7 +12,7 @@
 <table align="center" width="50%" border="11">
 <g:each in="${comentarios}" var="comentario">
   <tr>
-    <td>Autor : ${comentario.autor}</td>
+    <td>${comentario.autor} ${comentario.fecha}</td>
   </tr>
   <tr>
     <td><div align="left">
@@ -22,14 +22,18 @@
     </td>
   </tr>
   <tr>
-    <td height="96"><textarea name="textarea" cols="79%" rows="10" disabled="disabled">${comentario.mensaje}</textarea></td>
+    <td height="96"><textarea name="textarea" cols="79%" rows="8" disabled="disabled">${comentario.mensaje}</textarea></td>
   </tr>
   <tr>
-    <td><div align="left">
+    <td height="23"><div align="center">
             <a href="" title="Responder">Responder</a>
         </div>
      </td>
   </tr>
+    <tr>
+    <td height="4">&nbsp;</td>
+  </tr>
+  
 </g:each>
 </table>
 
