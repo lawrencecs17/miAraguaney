@@ -26,6 +26,40 @@ class UsuarioController {
 		redirect  (action:'vistaRegistroUsuario')
 		}
 	
+	/*
+	 * Accion para consumir servicio de eliminar usuario
+	 */
+	def eliminarUsuario = {
+		def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario" )	
+		def parametro =  params 
+		def connection = url.openConnection()
+		connection.setRequestMethod("DELETE")
+		
+		connection.doOutput=true
+		
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(parametro)
+			writer.flush()
+			writer.close()
+			connection.connect()
+			def serviceResponse = "No hay respuesta!"
+			if(connection.responseCode == 200)
+			{
+				//El usuario fue eliminado
+			
+				
+				serviceResponse  = "Usuario Eliminado Exitosamente!"
+			}
+			
+			render (view :'registroExitoso', model:[aviso:serviceResponse])
+		
+		}
+	
+	def vistaEliminarUsuario ={
+		render (view:'eliminarUsuario')
+		
+		}
+	
 	/* 
 	 * Action encarga de mostrar el formulario de
 	 * registro de usuarios
