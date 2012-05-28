@@ -65,10 +65,10 @@ class ComentarioController {
 	  
 	  for (int i=0;i< xml.comentario.size();i++)
 	  {
-		  def fecha = "2012-04-11"//xml.comentario[i].fecha
+		 // Date fecha = new Date().parse("yyyy/MM/dd", xml.comentario[i].fecha)
 		  Comentario comentario = new Comentario()
 		  comentario.mensaje = xml.comentario[i].mensaje
-		  comentario.fecha = Date.parse("yyyy-MM-dd", fecha)
+		  comentario.fecha = xml.comentario[i].fecha//Date.parse("yyyy-MM-dd", fecha)
 		  
 		  def nombreUsuario = buscarUsuario(xml.comentario[i].autor.@id.text())
 		  if (nombreUsuario)
