@@ -6,7 +6,7 @@
 </head>
 
 <body>
-<form id="form1" name="form1" method="post" action="elminarUsuario">
+<form id="form1" name="form1" method="post" action="eliminarUsuario">
 
 <table width="400" border="0" align="center">
   <tr>
@@ -20,8 +20,8 @@
     <td><input type="text" name="password" id="password" /></td>
   </tr>
   <tr>
+    <td width="50%" align="center"><input type="submit" name="ekiminar" id="eliminar" value="Eliminar<" /></td>
     <td width="50%" align="center"><input type="button" name="regresar" id="regresar" value="regresar" /></td>
-    <td width="50%" align="center"><input type="submit" name="regresar" id="regresar" value="desactivar" /></td>
   </tr>
 </table>
 </form>
