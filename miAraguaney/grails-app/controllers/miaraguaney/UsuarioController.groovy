@@ -30,25 +30,24 @@ class UsuarioController {
 	 * Accion para consumir servicio de eliminar usuario
 	 */
 	def eliminarUsuario = {
-		def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario" )	
-		def parametro =  params 
+		def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario?email=$params.email&password=$params.password" )			
 		def connection = url.openConnection()
 		connection.setRequestMethod("DELETE")
+		connection.setDoOutput(true)
+		connection.connect()
+		def serviceResponse = "No hay respuesta!"		
 		
-		connection.doOutput=true
-		
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(parametro)
-			writer.flush()
-			writer.close()
-			connection.connect()
-			def serviceResponse = "No hay respuesta!"
 			if(connection.responseCode == 200)
 			{
-				//El usuario fue eliminado
-			
+								
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
 				
-				serviceResponse  = "Usuario Eliminado Exitosamente!"
+				if(serviceResponse == "")
+				{
+					serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro
+				}
+				
 			}
 			
 			render (view :'registroExitoso', model:[aviso:serviceResponse])
