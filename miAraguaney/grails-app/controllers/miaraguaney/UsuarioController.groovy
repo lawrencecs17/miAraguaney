@@ -281,7 +281,6 @@ class UsuarioController {
 			 }
 			render (view :'registroExitoso', model:[aviso:serviceResponse])
  
-		}
-	
+		}	
 	
 }
