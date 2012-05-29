@@ -27,6 +27,105 @@ class UsuarioController {
 		}
 	
 	/*
+	 * Accion para consumir servicios de iniciar sesion 
+	 */
+	
+	def iniciarSesion = {
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/token/iniciarSesion" )
+		/**
+		 * Se extraen los parametros y convierte a formato
+		 * XML para luego ser enviada a la aplicacion miOrquidea
+		 *
+		 */
+		
+	  
+		
+		
+		def connection = url.openConnection()
+		
+		connection.setRequestMethod("POST")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+		   
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			
+			
+			
+			writer.write()
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+		
+			render serviceResponse
+		//render (view :'registroExitoso', model:[aviso:serviceResponse])
+		
+		}
+	def vistaIniciarSesion =	{
+		render (view:'iniciarSesion')
+	}
+	
+	/*
+	 * Accion para consumir servivios de activar usuario  
+	 */
+	
+	def activarUsuario = {
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/usuario/activarUsuario" )
+		/**
+		 * Se extraen los parametros y convierte a formato
+		 * XML para luego ser enviada a la aplicacion miOrquidea
+		 *
+		 */
+		def parametro = new Usuario (params) as XML
+		
+		
+		def connection = url.openConnection()
+		connection.setRequestMethod("PUT")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+		
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(parametro.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			def serviceResponse2 = "No hay respuesta!"
+			
+				if(connection.responseCode == 200)
+				{
+									
+					
+					serviceResponse = "El usuario ha activado su cuenta correctamente"
+					
+				}
+				
+			
+				render (view :'registroExitoso', model:[aviso:serviceResponse])
+		   
+	
+		}
+	
+	def vistaActivarUsuario =	{
+		render (view:'activarUsuario')
+	}
+		
+		
+	
+	/*
 	 * Accion para consumir servicio de eliminar usuario
 	 */
 	def eliminarUsuario = {
