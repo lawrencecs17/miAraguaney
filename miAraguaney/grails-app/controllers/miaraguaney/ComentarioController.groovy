@@ -1,12 +1,12 @@
 package miaraguaney
 
 import org.apache.commons.logging.*
-
 import groovyx.net.http.HTTPBuilder
 import static groovyx.net.http.Method.*
 import static groovyx.net.http.ContentType.*
 import grails.converters.*
 import java.util.Date
+import miaraguaney.ComentarioCliente
 
 class ComentarioController {
 
@@ -49,7 +49,7 @@ class ComentarioController {
 		   render connection.responseCode
 		   render connection.responseMessage
 	   }
-	   
+
 	   render (view:"consultarComentarios", model:[comentarios:listaComentario])
    }
    
@@ -61,20 +61,44 @@ class ComentarioController {
    */
   def procesarXmlComentario(def xml)
   {
-	  ArrayList<Comentario> listaComentario = new ArrayList<Comentario>()
+	  ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
 	  
 	  for (int i=0;i< xml.comentario.size();i++)
 	  {
-		 // Date fecha = new Date().parse("yyyy/MM/dd", xml.comentario[i].fecha)
-		  Comentario comentario = new Comentario()
+		  ComentarioCliente comentario = new ComentarioCliente()
 		  comentario.mensaje = xml.comentario[i].mensaje
-		  comentario.fecha = xml.comentario[i].fecha//Date.parse("yyyy-MM-dd", fecha)
+		  comentario.fecha = xml.comentario[i].fecha
+		  comentario.principal = xml.comentario[i].principal
 		  
 		  def nombreUsuario = buscarUsuario(xml.comentario[i].autor.@id.text())
 		  if (nombreUsuario)
 		  {
 			  comentario.autor = nombreUsuario
 		  }
+		  
+		  def cantidadLike = buscarLike(xml.comentario[i].@id.text())
+		  if (cantidadLike)
+		  {
+			  comentario.cantidadLike = cantidadLike
+		  }
+		  if (comentario.cantidadLike == '')
+		      comentario.cantidadLike = '0'
+
+		  def cantidadDislike = buscarDislike(xml.comentario[i].@id.text())
+		  if (cantidadDislike)
+		  {
+			  comentario.cantidadDislike = cantidadDislike
+		  }
+		  if (comentario.cantidadDislike == '')
+		  	  comentario.cantidadDislike = '0'
+				
+		  def cantidadComentados = buscarComentados(xml.comentario[i].@id.text())
+		  if (cantidadComentados)
+		  {
+			 comentario.cantidadComentados = cantidadComentados
+		  }
+		  if (comentario.cantidadComentados == '')
+			 comentario.cantidadComentados = '0'
 		  
 		  listaComentario.add(comentario)
 	  }
@@ -123,8 +147,8 @@ class ComentarioController {
   * @param xml
   * @return
   */
- def procesarXmlUsuario(def xml, String idUsuario)
- {
+  def procesarXmlUsuario(def xml, String idUsuario)
+  {
 	 def nombreUsuario = null
 
 	 for (int i=0;i< xml.usuario.size();i++)
@@ -134,8 +158,113 @@ class ComentarioController {
 			nombreUsuario = xml.usuario[i].nickname
 			return nombreUsuario 
 		}
-	 }
-	 return nombreUsuario
+	}
+	return nombreUsuario
  }
+ 
+ /**
+ * Metodo encargado de buscar las calificaciones de like registrados en el sistema
+ *  por id del Comentario
+ */
+  def buscarLike (String comentario)
+  {
+	 /**
+	 * Se ubica la URL del servicio que lista a todas las Calificaciones
+	 */
+	def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
+	def cantidadLike
+	
+	/**
+	 * Se establece la conexion con el servicio
+	 * Se determina el tipo de peticion (GET) y
+	 * el contenido de la misma (Archivo plano XML)
+	 */
+	def connection = url.openConnection()
+	connection.setRequestMethod("GET" )
+	connection.setRequestProperty("Content-Type" ,"text/xml" )
+	
+	if(connection.responseCode == 200)
+	{
+		def miXml = new XmlSlurper().parseText(connection.content.text)
+		cantidadLike = miXml.like
+	}
+	else{
+		render "Se ha generado un error:"
+		render connection.responseCode
+		render connection.responseMessage
+	}
+	
+	return cantidadLike
+  }
+  
+  /**
+  * Metodo encargado de buscar las calificaciones de Dislike registrados en el sistema
+  *  por id del Comentario
+  */
+   def buscarDislike (String comentario)
+   {
+	  /**
+	  * Se ubica la URL del servicio que lista a todas las Calificaciones
+	  */
+	 def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
+	 def cantidadDislike
+	 
+	 /**
+	  * Se establece la conexion con el servicio
+	  * Se determina el tipo de peticion (GET) y
+	  * el contenido de la misma (Archivo plano XML)
+	  */
+	 def connection = url.openConnection()
+	 connection.setRequestMethod("GET" )
+	 connection.setRequestProperty("Content-Type" ,"text/xml" )
+	 
+	 if(connection.responseCode == 200)
+	 {
+		 def miXml = new XmlSlurper().parseText(connection.content.text)
+		 cantidadDislike = miXml.dislike
+	 }
+	 else{
+		 render "Se ha generado un error:"
+		 render connection.responseCode
+		 render connection.responseMessage
+	 }
+	 
+	 return cantidadDislike
+   }
+   
+   /**
+   * Metodo encargado de buscar las Respuestas de los Comentarios registrados en el sistema
+   *  por id del Comentario
+   */
+	def buscarComentados (String comentario)
+	{
+	   /**
+	   * Se ubica la URL del servicio que lista a todas los Comentarios comentados
+	   */
+	  def url = new URL("http://localhost:8080/miOrquidea/comentario/contarComentados?idComentario=" + comentario)
+	  def cantidadComentados
+	  
+	  /**
+	   * Se establece la conexion con el servicio
+	   * Se determina el tipo de peticion (GET) y
+	   * el contenido de la misma (Archivo plano XML)
+	   */
+	  def connection = url.openConnection()
+	  connection.setRequestMethod("GET" )
+	  connection.setRequestProperty("Content-Type" ,"text/xml" )
+	  
+	  if(connection.responseCode == 200)
+	  {
+		  def miXml = new XmlSlurper().parseText(connection.content.text)
+		  cantidadComentados = miXml.comentados
+	  }
+	  else{
+		  render "Se ha generado un error:"
+		  render connection.responseCode
+		  render connection.responseMessage
+	  }
+	  
+	  return cantidadComentados
+	}
   
 }
