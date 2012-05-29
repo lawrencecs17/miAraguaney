@@ -16,8 +16,9 @@
   </tr>
   <tr>
     <td><div align="left">
-            <a href="" title="Like">Me Gusta</a>
-            <a href="" title="Dislike">No Me Gusta</a>
+            ${comentario.cantidadLike} <a href="" title="Like">Me Gusta</a>
+            ${comentario.cantidadDislike} <a href="" title="Dislike">No Me Gusta</a>
+            <a>${comentario.cantidadComentados} Comentados</a>
         </div>
     </td>
   </tr>
