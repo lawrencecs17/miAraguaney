@@ -6,6 +6,7 @@ import static groovyx.net.http.ContentType.*
 import grails.converters.*
 import java.util.Date
 import org.apache.commons.logging.*
+import groovy.xml.MarkupBuilder
 
 /**
  * 
@@ -42,31 +43,39 @@ class UsuarioController {
 		 * Se extraen los parametros y convierte a formato
 		 * XML para luego ser enviada a la aplicacion miOrquidea
 		 *
-		 */
+		 */	
 		
-	  
+		def gXml = new StringWriter()
+		def xml = new MarkupBuilder(gXml)
 		
+		xml.usuario() {
+			email(params.email)
+			password(params.password)
+		}
 		
-		def connection = url.openConnection()
-		
+		def connection = url.openConnection()		
 		connection.setRequestMethod("POST")
 		connection.setRequestProperty("Content-Type" ,"text/xml" )
 		connection.doOutput=true
 		   
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			
-			
-			
-			writer.write()
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
+		Writer writer = new OutputStreamWriter(connection.outputStream)			
+		writer.write(gXml.toString())
+		writer.flush()
+		writer.close()
+		connection.connect()		
+					
+		def miXml = new XmlSlurper().parseText(connection.content.text)
 		
-			render serviceResponse
-		//render (view :'registroExitoso', model:[aviso:serviceResponse])
+		serviceResponse = miXml.mensaje
+		
+		if(serviceResponse == "")
+		{
+			serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
+		}
+		
+		
+		
+		render (view :'registroExitoso', model:[aviso:serviceResponse])
 		
 		}
 	def vistaIniciarSesion =	{
