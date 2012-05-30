@@ -1,122 +1,94 @@
-<!doctype html>
-<html>
-	<head>
-		<meta name="layout" content="main"/>
-		<title>Welcome to Grails</title>
-		<style type="text/css" media="screen">
-			#status {
-				background-color: #eee;
-				border: .2em solid #fff;
-				margin: 2em 2em 1em;
-				padding: 1em;
-				width: 12em;
-				float: left;
-				-moz-box-shadow: 0px 0px 1.25em #ccc;
-				-webkit-box-shadow: 0px 0px 1.25em #ccc;
-				box-shadow: 0px 0px 1.25em #ccc;
-				-moz-border-radius: 0.6em;
-				-webkit-border-radius: 0.6em;
-				border-radius: 0.6em;
-			}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Greeny</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+<script language="javascript" type="text/javascript">
+function clearText(field) {
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
+<body>
+<div id="header_wrapper">
+  <div id="header">
+    <div id="site_title">
+      <h1>miAraguaney</h1>
+    </div>
+    <div id="menu">
+      <ul>
+          <li><a href="#">Hashtag</a></li>  
+        <li><a href="#">Comentar</a></li>
+          <li><a href="#" class="current">MiAraguaney</a></li>        
+      </ul>
+    </div>
+    <!-- end of menu -->
+    <div id="search_box">
+      <form action="#" method="get">
+        <input type="text" value="Enter a keyword" name="q" size="10" id="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />
+      </form>
+    </div>
+    <div class="cleaner"></div>
+  </div>
+  <!-- end of header -->
+</div>
+<!-- end of header_wrapper -->
+<div id="content_wrapper">
+    <form id="form1" name="formLogin" method="post" action="iniciarSesion">
+        <table width="400" border="0" align="center">
+          <tr>
+            <td colspan="2" align="center"><p><span>Iniciar Sesion</span></p>
+            <p>&nbsp;</p></td>
+          </tr>
+          <tr>
+            <td><label>email</label>&nbsp;</td>
+            <td><label>
+              <input type="text" name="email" id="email" width="200px" />
+            </label></td>
+          </tr>
+          <tr>
+            <td><label>password</label>&nbsp;</td>
+            <td><label>
+              <input type="text" name="password" id="password" width="200px" />
+            </label></td>
+          </tr>
+          <tr>
+            <td colspan="2" align="center">
+              <p>&nbsp;              </p>
+              <p>
+                <input type="submit" name="aceptar" id="aceptar" value="aceptar" />
+            </p></td>
+            </tr>
+        </table>
+    </form>
 
-			.ie6 #status {
-				display: inline; /* float double margin fix http://www.positioniseverything.net/explorer/doubled-margin.html */
-			}
-
-			#status ul {
-				font-size: 0.9em;
-				list-style-type: none;
-				margin-bottom: 0.6em;
-				padding: 0;
-			}
-            
-			#status li {
-				line-height: 1.3;
-			}
-
-			#status h1 {
-				text-transform: uppercase;
-				font-size: 1.1em;
-				margin: 0 0 0.3em;
-			}
-
-			#page-body {
-				margin: 2em 1em 1.25em 18em;
-			}
-
-			h2 {
-				margin-top: 1em;
-				margin-bottom: 0.3em;
-				font-size: 1em;
-			}
-
-			p {
-				line-height: 1.5;
-				margin: 0.25em 0;
-			}
-
-			#controller-list ul {
-				list-style-position: inside;
-			}
-
-			#controller-list li {
-				line-height: 1.3;
-				list-style-position: inside;
-				margin: 0.25em 0;
-			}
-
-			@media screen and (max-width: 480px) {
-				#status {
-					display: none;
-				}
-
-				#page-body {
-					margin: 0 1em 1em;
-				}
-
-				#page-body h1 {
-					margin-top: 0;
-				}
-			}
-		</style>
-	</head>
-	<body>
-		<a href="#page-body" class="skip"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div id="status" role="complementary">
-			<h1>Application Status</h1>
-			<ul>
-				<li>App version: <g:meta name="app.version"/></li>
-				<li>Grails version: <g:meta name="app.grails.version"/></li>
-				<li>Groovy version: ${org.codehaus.groovy.runtime.InvokerHelper.getVersion()}</li>
-				<li>JVM version: ${System.getProperty('java.version')}</li>
-				<li>Reloading active: ${grails.util.Environment.reloadingAgentEnabled}</li>
-				<li>Controllers: ${grailsApplication.controllerClasses.size()}</li>
-				<li>Domains: ${grailsApplication.domainClasses.size()}</li>
-				<li>Services: ${grailsApplication.serviceClasses.size()}</li>
-				<li>Tag Libraries: ${grailsApplication.tagLibClasses.size()}</li>
-			</ul>
-			<h1>Installed Plugins</h1>
-			<ul>
-				<g:each var="plugin" in="${applicationContext.getBean('pluginManager').allPlugins}">
-					<li>${plugin.name} - ${plugin.version}</li>
-				</g:each>
-			</ul>
-		</div>
-		<div id="page-body" role="main">
-			<h1>Welcome to Grails</h1>
-			<p>Congratulations, you have successfully started your first Grails application! At the moment
-			   this is the default page, feel free to modify it to either redirect to a controller or display whatever
-			   content you may choose. Below is a list of controllers that are currently deployed in this application,
-			   click on each to execute its default action:</p>
-
-			<div id="controller-list" role="navigation">
-				<h2>Available Controllers:</h2>
-				<ul>
-					<g:each var="c" in="${grailsApplication.controllerClasses.sort { it.fullName } }">
-						<li class="controller"><g:link controller="${c.logicalPropertyName}">${c.fullName}</g:link></li>
-					</g:each>
-				</ul>
-			</div>
-		</div>
-	</body>
+  <!-- end of content -->
+  <!-- end of sidebar -->
+  <div class="cleaner"></div>
+</div>
+<div id="content_wrapper_bottom"></div>
+<!-- end of content_wrapper -->
+<div id="footer">
+  <nav id="nav">
+      <ul class="footer_menu">
+        <li><a href="#miaraguaney">MiAraguaney</a></li>
+        <li><a href="#">Comentar</a></li>
+        <li><a href="#">Hashtag</a></li>
+      </ul>
+    
+  
+        <ul class="footer_credit">
+          
+          <li>Diseñado y Desarrollado por:</li>
+          <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
+          <li>Copyright &copy; 2012</li>
+          
+        </ul>
+        
+  </nav>
+  </div>
+<!-- end of footer -->
+</body>
 </html>
