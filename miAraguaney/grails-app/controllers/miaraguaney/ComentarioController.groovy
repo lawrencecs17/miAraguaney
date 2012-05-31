@@ -749,11 +749,22 @@ class ComentarioController {
 
 
 /**
-* Invocacion al servicio de registrar comentario
-*/
+ * Llamo a la vista crear comentario y le paso el nickname de usuario
+ * para que lo muestre en la vista
+ */
 def crearComentario = {
    
-   
+    render (view: 'crearComentario',  model:[usuario:session.nickname])
+ 
+}
+
+
+/**
+* Invocacion al servicio de registrar comentario
+*/
+
+def agregarComentario = {
+	
 	def serviceResponse = "No hay respuesta"
 	/**
 	 * Se establece la URL de la ubicacion
@@ -761,36 +772,40 @@ def crearComentario = {
 	 */
 	def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentario" )
 	/**
-	 * Se extraen los parametros y convierte a formato
-	 * XML para luego ser enviada a la aplicacion miOrquidea
-	 *
-	 */
-
-	def prueba = session.nickname
-	/**
 	* Se extraen los parametros y convierte a formato
 	* XML para luego ser enviada a la aplicacion miOrquidea
 	*
 	*/
+	def nick = session.nickname
    
+   /**
+    * Con estas funciones creamos el XML  	
+    */
    def gXml = new StringWriter()
    def xml = new MarkupBuilder(gXml)
-   
+    
+   /**
+    * Creando el XML para pasarlo al servicio
+    */
    xml.comentario() {
-	   autor (prueba)
-	   mensaje(params.mensaje)
-	   tag{
-		   etiqueta(params.etiquetas)
-		   }
-
+		   autor (nick)
+		   mensaje(params.mensaje)
+		   def arrayetiquetas = params.etiquetas.split(",")
+		   def sizearray= arrayetiquetas.size()
+		   	if (sizearray >0)
+			   {
+				   for (int i=0;i< sizearray ;i++)
+				   {
+					   tag{	  
+						    etiqueta(arrayetiquetas[i])
+					   	  }
+				   }
+			   }
    }
-
-   //render gXml as XML
 	def connection = url.openConnection()
 	connection.setRequestMethod("POST")
 	connection.setRequestProperty("Content-Type" ,"text/xml" )
 	connection.doOutput=true
-	
 		Writer writer = new OutputStreamWriter(connection.outputStream)
 		writer.write(gXml.toString())
 		writer.flush()
@@ -798,25 +813,25 @@ def crearComentario = {
 		connection.connect()
 		
 		def miXml = new XmlSlurper().parseText(connection.content.text)
-		
 		serviceResponse = miXml.mensaje
 		
+		/**
+		 * Lo que me responde el servidor 
+		 */
 		if(serviceResponse == "")
 		{
-			println("entreeee 92")
+		
 			serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
 		}
    
-    render (view: 'crearComentario', model:[usuario:session.nickname])
+		render (view: 'crearComentario', model:[usuario:session.nickname])
    
-   }
-
- 
-
-}
+   } //fin metodo agregar comentario
 
 
 
+
+} // fin Comentario Controller
 
 
 

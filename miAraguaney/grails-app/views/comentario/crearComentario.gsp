@@ -43,7 +43,7 @@ function clearText(field) {
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
 
-<form id="form1" name="form1" method="post" action="crearComentario">
+<form id="form1" name="form1" method="post" action="agregarComentario">
 
 <table align="center" width="50%" border="11">
 
