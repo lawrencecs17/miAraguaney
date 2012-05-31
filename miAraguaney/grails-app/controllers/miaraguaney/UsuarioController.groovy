@@ -78,7 +78,7 @@ class UsuarioController {
 		
 		def nickname = buscarUsuarioPorCorreo (params.email)
 		session.nickname = nickname
-		render (view :'registroExitoso', model:[aviso:serviceResponse])
+		render (view :'registroExitoso', model:[aviso:serviceResponse, usuario:session.nickname])
 		
 		}
 	

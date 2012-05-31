@@ -765,10 +765,8 @@ def crearComentario = {
 	 * XML para luego ser enviada a la aplicacion miOrquidea
 	 *
 	 */
-	def parametro = new Comentario (params) as XML
-	render parametro
-	def prueba= session.nickname
-	render prueba
+
+	def prueba = session.nickname
 	/**
 	* Se extraen los parametros y convierte a formato
 	* XML para luego ser enviada a la aplicacion miOrquidea
@@ -780,13 +778,14 @@ def crearComentario = {
    
    xml.comentario() {
 	   autor (prueba)
-	   mensaje(params.textarea)
+	   mensaje(params.mensaje)
 	   tag{
 		   etiqueta(params.etiquetas)
-		   	   }
-	   
+		   }
+
    }
-   	
+
+   //render gXml as XML
 	def connection = url.openConnection()
 	connection.setRequestMethod("POST")
 	connection.setRequestProperty("Content-Type" ,"text/xml" )
@@ -797,9 +796,18 @@ def crearComentario = {
 		writer.flush()
 		writer.close()
 		connection.connect()
+		
+		def miXml = new XmlSlurper().parseText(connection.content.text)
+		
+		serviceResponse = miXml.mensaje
+		
+		if(serviceResponse == "")
+		{
+			println("entreeee 92")
+			serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+		}
    
-    //def prueba= session.nickname 
-    render (view: 'crearComentario')
+    render (view: 'crearComentario', model:[usuario:session.nickname])
    
    }
 
