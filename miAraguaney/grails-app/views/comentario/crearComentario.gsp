@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>AGREGAR COMENTARIO</title>
+<title>Agregar Comentario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
@@ -35,6 +35,7 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
+    <h2 align="left">Bienvenido ${usuario}</h2>
   </div>
   <!-- end of header -->
 </div>
@@ -49,7 +50,7 @@ function clearText(field) {
 
   
   <tr>
-    <td height="96"><textarea name="textarea" cols="79%" rows="8" ></textarea></td>
+    <td height="96"><textarea name="mensaje" cols="79%" rows="8" ></textarea></td>
   </tr>
   
    <tr>
