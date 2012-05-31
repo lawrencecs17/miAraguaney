@@ -36,7 +36,7 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <form id="form1" name="formLogin" method="post" action="iniciarSesion">
+    <form id="form1" name="formLogin" method="post" action="usuario/iniciarSesion">
         <table width="400" border="0" align="center">
           <tr>
             <td colspan="2" align="center"><p><span>Iniciar Sesion</span></p>
