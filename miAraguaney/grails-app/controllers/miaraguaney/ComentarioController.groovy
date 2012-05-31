@@ -10,7 +10,7 @@ import miaraguaney.ComentarioCliente
 
 class ComentarioController {
 
-   	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
+   	private static Log log = LogFactory.getLog("Logs."+ComentarioController.class.getName())
 	
     def index() { 
 		
