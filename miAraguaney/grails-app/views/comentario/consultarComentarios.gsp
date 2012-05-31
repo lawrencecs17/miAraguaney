@@ -61,10 +61,20 @@ function clearText(field) {
     <td height="96"><textarea name="textarea" cols="79%" rows="8" disabled="disabled">${comentario.mensaje}</textarea></td>
   </tr>
   <tr style="color: black">
+  <g:if test = "${ session.nickname.equals(comentario.autor) }">
     <td height="23"><div align="center">
+            <a href="" title="Modificar">Modificar</a>
             <a href="" title="Responder">Responder</a>
+            <a href="" title="Eliminar">Eliminar</a>
         </div>
      </td>
+  </g:if>
+  <g:else>
+        <td height="23"><div align="center">
+            <a href="" title="Responder">Responder</a>
+            </div>
+        </td>
+  </g:else>
   </tr>
     <tr>
     <td height="4">&nbsp;</td>
