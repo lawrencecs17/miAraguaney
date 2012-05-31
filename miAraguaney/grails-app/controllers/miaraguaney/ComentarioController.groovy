@@ -7,6 +7,7 @@ import static groovyx.net.http.ContentType.*
 import grails.converters.*
 import java.util.Date
 import miaraguaney.ComentarioCliente
+import groovy.xml.MarkupBuilder
 
 class ComentarioController {
 
@@ -753,13 +754,56 @@ class ComentarioController {
 def crearComentario = {
    
    
+	def serviceResponse = "No hay respuesta"
+	/**
+	 * Se establece la URL de la ubicacion
+	 * del servicio
+	 */
+	def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentario" )
+	/**
+	 * Se extraen los parametros y convierte a formato
+	 * XML para luego ser enviada a la aplicacion miOrquidea
+	 *
+	 */
+	def parametro = new Comentario (params) as XML
+	render parametro
+	def prueba= session.nickname
+	render prueba
+	/**
+	* Se extraen los parametros y convierte a formato
+	* XML para luego ser enviada a la aplicacion miOrquidea
+	*
+	*/
    
-  
+   def gXml = new StringWriter()
+   def xml = new MarkupBuilder(gXml)
    
-    def prueba= session.nickname 
-    render prueba
+   xml.comentario() {
+	   autor (prueba)
+	   mensaje(params.textarea)
+	   tag{
+		   etiqueta(params.etiquetas)
+		   	   }
+	   
+   }
+   	
+	def connection = url.openConnection()
+	connection.setRequestMethod("POST")
+	connection.setRequestProperty("Content-Type" ,"text/xml" )
+	connection.doOutput=true
+	
+		Writer writer = new OutputStreamWriter(connection.outputStream)
+		writer.write(gXml.toString())
+		writer.flush()
+		writer.close()
+		connection.connect()
+   
+    //def prueba= session.nickname 
+    render (view: 'crearComentario')
    
    }
+
+ 
 
 }
 

@@ -1,69 +1,110 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+<title>AGREGAR COMENTARIO</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Documento sin título</title>
-<style type="text/css">
-<!--
-#form2 h1 {
-	text-align: center;
-}
-#form1 table {
-	text-align: left;
-}
-#form1 table tr td {
-	font-family: "Times New Roman", Times, serif;
-	font-size: 18px;
-}
--->
-</style>
-</head>
+<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
+<script language="javascript" type="text/javascript">
+function clearText(field) {
+    if (field.defaultValue == field.value) field.value = '';
+    else if (field.value == '') field.value = field.defaultValue;
+}
+</script>
+</head>
 <body>
-<label>
-<p>&nbsp;</p>
+<div id="header_wrapper">
+  <div id="header">
+    <div id="site_title">
+      <h1>miAraguaney</h1>
+    </div>
+    <div id="menu">
+      <ul>
+          <li><a href="#">Token</a></li> 
+          <li><a href="#">Usuario</a></li>  
+          <li><a href="#">Hashtag</a></li>  
+          <li><a href="#">Comentar</a>
+          <li><a href="#" class="current">MiAraguaney</a></li>        
+      </ul>
+
+    </div>
+    <!-- end of menu -->
+    <div id="search_box">
+      <form action="#" method="get">
+        <input type="text" value="Enter a keyword" name="q" size="10" id="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />
+      </form>
+    </div>
+    <div class="cleaner"></div>
+  </div>
+  <!-- end of header -->
+</div>
+
+<!-- end of header_wrapper -->
+<div id="content_wrapper">
+
 <form id="form1" name="form1" method="post" action="crearComentario">
+
+<table align="center" width="50%" border="11">
+
+
   
+  <tr>
+    <td height="96"><textarea name="textarea" cols="79%" rows="8" ></textarea></td>
+  </tr>
+  
+   <tr>
+    <td height="23">Etiquetas:
+      <label>
+        <input type="text" size="90"name="etiquetas" id="etiquetas">
+      </label>
+
+     </td>
+     </tr>
+    
+   <tr>
+    <td height="23"><div align="center">
+      <form name="form1" method="post" action="">
+        <label>
+          <input type="submit" name="button" id="button" value="Publicar">
+        </label>
+      </form>
+    </div>
+     </td>
+     </tr>
+  </tr>
+  
+
+</table>
   <p>&nbsp;</p>
-  <table width="632" border="0" align="center">
-  <tr>
-    <td width="50">&nbsp;</td>
-    <td width="93">&nbsp;</td>
-    <td colspan="2" align="center">Crear Comentario</td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td colspan="2">&nbsp; </td>
-    </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td><p>Comentario</p></td>
-    <td colspan="2"><label>
-      <textarea name="textarea" id="textarea" cols="100" rows="5"></textarea>
-    </label></td>
-  </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
-  </tr>
-  <tr>
-    <td height="54">&nbsp;</td>
-    <td>&nbsp;</td>
-    <td width="215" align="center"><label>
-      <input type="submit" name="btnregistrar" id="btnregistrar" value="Registrar" />
-    </label>
-      <div></div></td>
-    <td width="256" align="center"><input type="button" name="btncancelar" id="btncancelar" value="Cancelar" /></td>
-    </tr>
-  <tr>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td colspan="2">&nbsp;</td>
-    </tr>
-  </table>
-  <p>&nbsp;</p>
-</form></label>
+</form>
+
+  <!-- end of content -->
+  <!-- end of sidebar -->
+  <div class="cleaner"></div>
+</div>
+<div id="content_wrapper_bottom"></div>
+<!-- end of content_wrapper -->
+<div id="footer">
+  <nav id="nav">
+      <ul class="footer_menu">
+        <li><a href="#miaraguaney">MiAraguaney</a></li>
+        
+        <li><a href="#">Comentar</a></li>
+        <li><a href="#">Hashtag</a></li>
+      </ul>
+    
+  
+        <ul class="footer_credit">
+          
+          <li>Diseñado y Desarrollado por:</li>
+          <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
+          <li>Copyright &copy; 2012</li>
+          
+        </ul>
+        
+  </nav>
+  </div>
+<!-- end of footer -->
 </body>
 </html>
+
