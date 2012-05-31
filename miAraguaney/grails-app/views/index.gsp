@@ -4,6 +4,7 @@
 <title>Greeny</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+
 <script language="javascript" type="text/javascript">
 function clearText(field) {
     if (field.defaultValue == field.value) field.value = '';
@@ -19,10 +20,13 @@ function clearText(field) {
     </div>
     <div id="menu">
       <ul>
+          <li><a href="#">Token</a></li> 
+          <li><a href="#">Usuario</a></li>  
           <li><a href="#">Hashtag</a></li>  
-        <li><a href="#">Comentar</a></li>
+          <li><a href="#">Comentar</a>
           <li><a href="#" class="current">MiAraguaney</a></li>        
       </ul>
+
     </div>
     <!-- end of menu -->
     <div id="search_box">
