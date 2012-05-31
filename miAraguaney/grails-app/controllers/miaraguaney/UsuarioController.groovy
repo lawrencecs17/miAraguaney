@@ -32,7 +32,7 @@ class UsuarioController {
 	 */
 	
 	def iniciarSesion = {
-		
+	
 		def serviceResponse = "No hay respuesta"
 		/**
 		 * Se establece la URL de la ubicacion
@@ -75,6 +75,9 @@ class UsuarioController {
 		
 		
 		
+		
+		def nickname = buscarUsuarioPorCorreo (params.email)
+		session.nickname = nickname
 		render (view :'registroExitoso', model:[aviso:serviceResponse])
 		
 		}
@@ -470,5 +473,63 @@ class UsuarioController {
 			render (view :'registroExitoso', model:[aviso:serviceResponse])
  
 		}	
+	
+	/**
+	* Metodo encargado de buscar los nombre de las Usuarios registrados en el sistema
+	*  por correo Usuario
+	*/
+	def buscarUsuarioPorCorreo (String correoUsuario)
+	{
+		/**
+		* Se ubica la URL del servicio que lista a todas los Usuarios
+		*/
+	   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
+	   def nombreUsuario
+	   
+	   /**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+	   def connection = url.openConnection()
+	   connection.setRequestMethod("GET" )
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   
+	   if(connection.responseCode == 200)
+	   {
+		   def miXml = new XmlSlurper().parseText(connection.content.text)
+		   nombreUsuario = procesarXmlUsuarioCorreo(miXml , correoUsuario)
+	   }
+	   else{
+		   render "Se ha generado un error:"
+		   render connection.responseCode
+		   render connection.responseMessage
+	   }
+	   
+	   return nombreUsuario
+	   
+	}
+	
+	
+	/**
+	* Metodo encargado de procesar el archivo XML recibido del
+	* servicio miOrquidea app y retorna el nickname del usuario
+	* @param xml
+	* @return
+	*/
+	def procesarXmlUsuarioCorreo(def xml, String correoUsuario)
+	{
+	   def nombreUsuario = null
+	
+	   for (int i=0;i< xml.usuario.size();i++)
+	   {
+		  if (xml.usuario[i].email.equals(correoUsuario))
+		  {
+			  nombreUsuario = xml.usuario[i].nickname
+			  return nombreUsuario
+		  }
+	  }
+	  return nombreUsuario
+	}
 	
 }
