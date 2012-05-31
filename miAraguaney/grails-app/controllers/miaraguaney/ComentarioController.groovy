@@ -50,7 +50,7 @@ class ComentarioController {
 		   render connection.responseMessage
 	   }
 
-	   render (view:"consultarComentarios", model:[comentarios:listaComentario])
+	   render (view:"consultarComentarios", model:[comentarios:listaComentario, usuario:session.nickname])
    }
    
    /**
