@@ -46,14 +46,31 @@ function clearText(field) {
 
 <table align="center" width="50%" border="5">
 <g:each in="${comentarios}" var="comentario">
-  <tr style="color: black">
+
+  <tr style="color: black" >
     <td>${comentario.autor} ${comentario.fecha}</td>
   </tr>
   <tr style="color: black">
     <td><div align="left">
-            ${comentario.cantidadLike} <a href="" title="Like">Me Gusta</a>
-            ${comentario.cantidadDislike} <a href="" title="Dislike">No Me Gusta</a>
+    
+    <g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
+            ${comentario.cantidadLike} <a href="" title="Like" >MeGustaNuevo</a>
+            ${comentario.cantidadDislike} <a href="" title="Dislike">NoMeGustaNuevo</a>
             <a>${comentario.cantidadComentados} Comentados</a>
+    </g:if>
+  
+    <g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
+            ${comentario.cantidadLike} <a href="" title="Like" >Selecionado</a>
+            ${comentario.cantidadDislike} <a href="" title="Dislike">NoMeGusta</a>
+            <a>${comentario.cantidadComentados} Comentados</a>
+    </g:elseif>
+    
+        <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
+            ${comentario.cantidadLike} <a href="" title="Like" >MeGusta</a>
+            ${comentario.cantidadDislike} <a href="" title="Dislike">Selecionado</a>
+            <a>${comentario.cantidadComentados} Comentados</a>
+    </g:elseif>
+        
         </div>
     </td>
   </tr>
@@ -61,6 +78,7 @@ function clearText(field) {
     <td height="96"><textarea name="textarea" cols="79%" rows="8" disabled="disabled">${comentario.mensaje}</textarea></td>
   </tr>
   <tr style="color: black">
+  
   <g:if test = "${ session.nickname.equals(comentario.autor) }">
     <td height="23"><div align="center">
             <a href="" title="Modificar">Modificar</a>
@@ -75,6 +93,7 @@ function clearText(field) {
             </div>
         </td>
   </g:else>
+  
   </tr>
     <tr>
     <td height="4">&nbsp;</td>

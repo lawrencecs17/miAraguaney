@@ -42,8 +42,9 @@ class ComentarioController {
 	   
 	   if(connection.responseCode == 200)
 	   {
+		   //String algo = session.nickname
 		   def miXml = new XmlSlurper().parseText(connection.content.text)
-		   listaComentario = procesarXmlComentario(miXml)
+		   listaComentario = procesarXmlComentario(miXml)//, algo)
 	   }
 	   else{
 		   render "Se ha generado un error:"
@@ -60,13 +61,14 @@ class ComentarioController {
    * @param xml
    * @return
    */
-  def procesarXmlComentario(def xml)
+  def procesarXmlComentario(def xml)//, String nick)
   {
 	  ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
-	  
+	  String nickname = session.nickname
 	  for (int i=0;i< xml.comentario.size();i++)
 	  {
 		  ComentarioCliente comentario = new ComentarioCliente()
+		  comentario.idComentario = xml.comentario[i].@id.text()
 		  comentario.mensaje = xml.comentario[i].mensaje
 		  comentario.fecha = xml.comentario[i].fecha
 		  comentario.principal = xml.comentario[i].principal
@@ -98,11 +100,16 @@ class ComentarioController {
 		  {
 			 comentario.cantidadComentados = cantidadComentados
 		  }
-		  if (comentario.cantidadComentados == '')
-			 comentario.cantidadComentados = '0'
+		  
+		  String like = buscarCalificacionLike(xml.comentario[i].@id.text(), nickname)
+		  comentario.calificacionLike = like
+		  
+		  String dislike = buscarCalificacionDislike(xml.comentario[i].@id.text(), nickname)
+		  comentario.calificacionDislike = dislike
 		  
 		  listaComentario.add(comentario)
 	  }
+	  
 	  return listaComentario
   }
   
@@ -267,7 +274,117 @@ class ComentarioController {
 	  
 	  return cantidadComentados
 	}
+	
+	/**
+	* Metodo encargado de buscar las calificacion que tengan like de los Comentarios registrados en el sistema
+	*  por id del Comentario y nickname del usuario
+	*/
+	 def buscarCalificacionLike(String idComentario, String nickname)
+	 {
+		/**
+		* Se ubica la URL del servicio que lista a todas los Comentarios comentados
+		*/
+	   def url = new URL("http://localhost:8080/miOrquidea/calificacion/listarPorUsuarioComentario?usuario=" + nickname + "&comentario=" + idComentario)
+	   
+	   String like = "false"
+	   
+	   /**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+	   def connection = url.openConnection()
+	   connection.setRequestMethod("GET" )
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   
+	   if(connection.responseCode == 200)
+	   {
+		   def miXml = new XmlSlurper().parseText(connection.content.text)
+		   like = procesarXmlLike(miXml)
+	   }
+	   else{
+		   render "Se ha generado un error:"
+		   render connection.responseCode
+		   render connection.responseMessage
+	   }
+	   
+	   return like
+	 }
+	 
+	 /**
+	 * Metodo encargado de procesar el archivo XML recibido del
+	 * servicio miOrquidea app y retorna el el valos de like de la calificacion 
+	 * del comentario
+	 * @param xml
+	 * @return
+	 */
+	 def procesarXmlLike(def xml)
+	 {
+		String like = "false"
+   
+		if (!xml.calificacion.like.equals(""))
+		{
+			like = xml.calificacion.like.text()
+			return like
+		}
+	    return like
+	}
+	 
+	 /**
+	 * Metodo encargado de buscar las calificacion que tengan Dislike de los Comentarios registrados en el sistema
+	 *  por id del Comentario y nickname del usuario
+	 */
+	  def buscarCalificacionDislike(String idComentario, String nickname)
+	  {
+		 /**
+		 * Se ubica la URL del servicio que lista a todas los Comentarios comentados
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/calificacion/listarPorUsuarioComentario?usuario=" + nickname + "&comentario=" + idComentario)
+		String dislike = "false"
+		
+		/**
+		 * Se establece la conexion con el servicio
+		 * Se determina el tipo de peticion (GET) y
+		 * el contenido de la misma (Archivo plano XML)
+		 */
+		def connection = url.openConnection()
+		connection.setRequestMethod("GET" )
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		
+		if(connection.responseCode == 200)
+		{
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			dislike = procesarXmlDislike(miXml)
+		}
+		else{
+			render "Se ha generado un error:"
+			render connection.responseCode
+			render connection.responseMessage
+		}
+		
+		return dislike
+	  }
+	  
+	  /**
+	  * Metodo encargado de procesar el archivo XML recibido del
+	  * servicio miOrquidea app y retorna el el valos de dislike de la calificacion
+	  * del comentario
+	  * @param xml
+	  * @return
+	  */
+	  def procesarXmlDislike(def xml)
+	  {
+		 String dislike = "false"
+	
+		 if (!xml.calificacion.dislike.equals(""))
+		 {
+			 dislike = xml.calificacion.dislike
+			 return dislike
+		 }
+		 return dislike
+	 }
   
+	 
 
 
 
