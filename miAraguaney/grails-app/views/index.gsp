@@ -36,7 +36,7 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <form id="form1" name="formLogin" method="post" action="usuario/iniciarSesion">
+    <g:form id="form1" name="formLogin" method="post" url="[controller:'usuario',action:'iniciarSesion']">
         <table width="400" border="0" align="center">
           <tr>
             <td colspan="2" align="center"><p><span>Iniciar Sesion</span></p>
@@ -65,7 +65,7 @@ function clearText(field) {
             </td>
             </tr>
         </table>
-    </form>
+    </g:form>
 
   <!-- end of content -->
   <!-- end of sidebar -->
