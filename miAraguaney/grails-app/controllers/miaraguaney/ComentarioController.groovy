@@ -383,571 +383,328 @@ class ComentarioController {
 		 }
 		 return dislike
 	 }
-  
-	 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/**
- * Llamo a la vista crear comentario y le paso el nickname de usuario
- * para que lo muestre en la vista
- */
-def crearComentario = {
-   
-    render (view: 'crearComentario',  model:[usuario:session.nickname])
- 
-}
-
-
-/**
-* Invocacion al servicio de registrar comentario
-*/
-
-def agregarComentario = {
-	
-	def serviceResponse = "No hay respuesta"
 	/**
-	 * Se establece la URL de la ubicacion
-	 * del servicio
+	 * Llamo a la vista crear comentario y le paso el nickname de usuario
+	 * para que lo muestre en la vista
 	 */
-	def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentario" )
+	def crearComentario = {
+	   
+	    render (view: 'crearComentario',  model:[usuario:session.nickname])
+	 
+	}
+
+
 	/**
-	* Se extraen los parametros y convierte a formato
-	* XML para luego ser enviada a la aplicacion miOrquidea
-	*
+	* Invocacion al servicio de registrar comentario
 	*/
-	def nick = session.nickname
-   
-   /**
-    * Con estas funciones creamos el XML  	
-    */
-   def gXml = new StringWriter()
-   def xml = new MarkupBuilder(gXml)
-    
-   /**
-    * Creando el XML para pasarlo al servicio
-    */
-   xml.comentario() {
-		   autor (nick)
-		   mensaje(params.mensaje)
-		   def arrayetiquetas = params.etiquetas.split(",")
-		   def sizearray= arrayetiquetas.size()
-		   	if (sizearray >0)
-			   {
-				   for (int i=0;i< sizearray ;i++)
-				   {
-					   tag{	  
-						    etiqueta(arrayetiquetas[i])
-					   	  }
-				   }
-			   }
-   }
-	def connection = url.openConnection()
-	connection.setRequestMethod("POST")
-	connection.setRequestProperty("Content-Type" ,"text/xml" )
-	connection.doOutput=true
-		Writer writer = new OutputStreamWriter(connection.outputStream)
-		writer.write(gXml.toString())
-		writer.flush()
-		writer.close()
-		connection.connect()
+	
+	def agregarComentario = {
 		
-		def miXml = new XmlSlurper().parseText(connection.content.text)
-		serviceResponse = miXml.mensaje
-		
+		def serviceResponse = "No hay respuesta"
 		/**
-		 * Lo que me responde el servidor 
+		 * Se establece la URL de la ubicacion
+		 * del servicio
 		 */
-		if(serviceResponse == "")
-		{
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentario" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+	    * Con estas funciones creamos el XML  	
+	    */
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+	    
+	   /**
+	    * Creando el XML para pasarlo al servicio
+	    */
+	   xml.comentario() {
+			   autor (nick)
+			   mensaje(params.mensaje)
+			   def arrayetiquetas = params.etiquetas.split(",")
+			   def sizearray= arrayetiquetas.size()
+			   	if (sizearray >0)
+				   {
+					   for (int i=0;i< sizearray ;i++)
+					   {
+						   tag{	  
+							    etiqueta(arrayetiquetas[i])
+						   	  }
+					   }
+				   }
+	   }
+		def connection = url.openConnection()
+		connection.setRequestMethod("POST")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor 
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			render (view: 'crearComentario', model:[usuario:session.nickname])
+	   
+	   } //fin metodo agregar comentario
+
+	/**
+	* Metodo que se encarga de crear una calificacion like en el comentario 
+	*/
+	def crearComentarioLike () {
 		
-			serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
-		}
-   
-		render (view: 'crearComentario', model:[usuario:session.nickname])
-   
-   } //fin metodo agregar comentario
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+	    * Con estas funciones creamos el XML  	
+	    */
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+	    
+	   /**
+	    * Creando el XML para pasarlo al servicio
+	    */
+	   xml.calificacion() {
+			   comentario (id:params.id)
+			   dislike(false)
+			   like(true)
+			   persona(nick)
+	   }
+	   
+		def connection = url.openConnection()
+		connection.setRequestMethod("POST")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor 
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			redirect (action: 'consultarTodosLosComentarios')
+	   
+	   } //fin metodo crear calificacion like
+	
+	/**
+	* Metodo que se encarga de crear una calificacion dislike en el comentario
+	*/
+	def crearComentarioDislike () {
 
-
-
-
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+		* Con estas funciones creamos el XML
+		*/
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+		
+	   /**
+		* Creando el XML para pasarlo al servicio
+		*/
+	   xml.calificacion() {
+			   comentario (id:params.id)
+			   dislike(true)
+			   like(false)
+			   persona(nick)
+	   }
+	   
+		def connection = url.openConnection()
+		connection.setRequestMethod("POST")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			redirect (action: 'consultarTodosLosComentarios')
+	   
+	   } //fin metodo crear calificacion dislike
+	
+	/**
+	* Metodo que se encarga de modificar una calificacion like en el comentario
+	*/
+	def modificarComentarioLike () {
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+		* Con estas funciones creamos el XML
+		*/
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+		
+	   /**
+		* Creando el XML para pasarlo al servicio
+		*/
+	   xml.calificacion() {
+			   comentario (id:params.id)
+			   dislike(false)
+			   like(true)
+			   persona(nick)
+	   }
+	   
+		def connection = url.openConnection()
+		connection.setRequestMethod("PUT")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			redirect (action: 'consultarTodosLosComentarios')
+	   
+	   } //fin metodo modificar calificacion like
+	
+	/**
+	* Metodo que se encarga de modificar una calificacion dislike en el comentario
+	*/
+	def modificarComentarioDislike () {
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+		* Con estas funciones creamos el XML
+		*/
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+		
+	   /**
+		* Creando el XML para pasarlo al servicio
+		*/
+	   xml.calificacion() {
+			   comentario (id:params.id)
+			   dislike(true)
+			   like(false)
+			   persona(nick)
+	   }
+	   
+		def connection = url.openConnection()
+		connection.setRequestMethod("PUT")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			redirect (action: 'consultarTodosLosComentarios')
+	   
+	   } //fin metodo modificar calificacion dislike
+	
+	
 } // fin Comentario Controller
 
 

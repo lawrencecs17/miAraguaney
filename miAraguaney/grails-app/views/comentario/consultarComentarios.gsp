@@ -54,20 +54,21 @@ function clearText(field) {
     <td><div align="left">
     
     <g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
-            ${comentario.cantidadLike} <a href="" title="Like" >MeGustaNuevo</a>
-            ${comentario.cantidadDislike} <a href="" title="Dislike">NoMeGustaNuevo</a>
+    
+            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
             <a>${comentario.cantidadComentados} Comentados</a>
     </g:if>
   
     <g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
-            ${comentario.cantidadLike} <a href="" title="Like" >Selecionado</a>
-            ${comentario.cantidadDislike} <a href="" title="Dislike">NoMeGusta</a>
+            ${comentario.cantidadLike} MeGusta<a href="" title="Like" ></a>
+            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
             <a>${comentario.cantidadComentados} Comentados</a>
     </g:elseif>
     
-        <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
-            ${comentario.cantidadLike} <a href="" title="Like" >MeGusta</a>
-            ${comentario.cantidadDislike} <a href="" title="Dislike">Selecionado</a>
+    <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
+            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
+            ${comentario.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
             <a>${comentario.cantidadComentados} Comentados</a>
     </g:elseif>
         
