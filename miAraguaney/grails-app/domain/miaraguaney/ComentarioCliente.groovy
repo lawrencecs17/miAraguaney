@@ -15,12 +15,15 @@ import miaraguaney.Usuario;
 */
 class ComentarioCliente {
 
+	String idComentario
 	String mensaje
 	String fecha
 	String autor
 	String cantidadLike
 	String cantidadDislike
 	String cantidadComentados
+	String calificacionLike
+	String calificacionDislike
 	boolean principal
 	
 	List<String> adjuntos = new ArrayList<String>()
