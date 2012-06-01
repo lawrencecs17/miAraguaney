@@ -48,22 +48,25 @@ function clearText(field) {
           </tr>
           <tr>
             <td><label>email</label>&nbsp;</td>
-            <td><label>
+            <td align="right"><label>
               <input type="text" name="email" id="email" width="200px" />
             </label></td>
           </tr>
           <tr>
             <td><label>password</label>&nbsp;</td>
-            <td><label>
-              <input type="text" name="password" id="password" width="200px" />
+            <td align="right"><label>
+              <input type="password" name="password" id="password" width="200px" />
             </label></td>
           </tr>
           <tr>
-            <td colspan="2" align="center">
-              <p>&nbsp;              </p>
-              <p>
+            <td align="center" width="200px">
+            <p>             
                 <input type="submit" name="aceptar" id="aceptar" value="aceptar" />
-            </p></td>
+            </p>
+            </td>
+            <td align="center">
+            <g:link controller="usuario" action="vistaRegistroUsuario">registrate!</g:link>            
+            </td>
             </tr>
         </table>
     </form>
