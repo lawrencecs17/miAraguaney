@@ -23,8 +23,9 @@ class UsuarioController {
     def index = { 		
 		
 		log.info ("Ejemplo de este log")
-		//render (view:'consultarTodos')
-		redirect  (action:'vistaRegistroUsuario')
+		//render (view:'consultarTodos')		
+			redirect  (url:"/")
+		
 		}
 	
 	/*
@@ -74,6 +75,8 @@ class UsuarioController {
 			serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
 			def nickname = buscarUsuarioPorCorreo (params.email)
 			session.nickname = nickname
+			session.email = params.email
+			session.password = params.password
 			render (view :'perfil', model:[aviso:serviceResponse, usuario:session.nickname])
 		}
 		else
@@ -82,10 +85,13 @@ class UsuarioController {
 			{
 				serviceResponse ="Debe ingresar email y password para acceder a su perfil."
 			}
-			render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+			render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])			
 		}		
 		
-		
+		println params.email
+		println params.password
+		println session.email
+		println session.password
 		
 		
 		}
@@ -106,10 +112,12 @@ class UsuarioController {
 			
 			def gXml = new StringWriter()
 			def xml = new MarkupBuilder(gXml)
+			println session.email
+		println session.password
 			
 			xml.usuario() {
-				email(params.email)
-				password(params.password)
+				email(session.email)
+				password(session.password)
 			}
 			
 			def connection = url.openConnection()
@@ -130,6 +138,9 @@ class UsuarioController {
 			if(serviceResponse == "")
 			{
 				serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
+				session.nickname =""
+				session.email =""
+				session.password = ""
 			}		
 			render (view :'registroExitoso', model:[aviso:serviceResponse])		
 		}
@@ -173,17 +184,10 @@ class UsuarioController {
 			def serviceResponse2 = "No hay respuesta!"
 			
 				if(connection.responseCode == 200)
-				{
-									
-					
-					serviceResponse = "El usuario ha activado su cuenta correctamente"
-					
-				}
-				
-			
-				render (view :'registroExitoso', model:[aviso:serviceResponse])
-		   
-	
+				{					
+					serviceResponse = "El usuario ha activado su cuenta correctamente"					
+				}						
+				render (view :'registroExitoso', model:[aviso:serviceResponse])	
 		}
 	
 	def vistaActivarUsuario =	{
@@ -224,6 +228,10 @@ class UsuarioController {
 		render (view:'eliminarUsuario')
 		
 		}
+	
+	def miPerfil = {
+		render (view :'perfil', model:[usuario:session.nickname])
+	}
 	
 	/* 
 	 * Action encarga de mostrar el formulario de
