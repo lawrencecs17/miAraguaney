@@ -64,10 +64,13 @@ class ComentarioController {
   def procesarXmlComentario(def xml)//, String nick)
   {
 	  ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
+	  ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
 	  String nickname = session.nickname
+	  
 	  for (int i=0;i< xml.comentario.size();i++)
 	  {
 		  ComentarioCliente comentario = new ComentarioCliente()
+		  ComentarioCliente comentarioComentado = new ComentarioCliente()
 		  comentario.idComentario = xml.comentario[i].@id.text()
 		  comentario.mensaje = xml.comentario[i].mensaje
 		  comentario.fecha = xml.comentario[i].fecha
@@ -107,10 +110,65 @@ class ComentarioController {
 		  String dislike = buscarCalificacionDislike(xml.comentario[i].@id.text(), nickname)
 		  comentario.calificacionDislike = dislike
 		  
-		  listaComentario.add(comentario)
+		  /**
+		   * lista de las respuestas que tiene un comentario
+		   */
+		  xml.comentario[i].comentado.comentario.each { p ->
+
+			  def xmlComentado = xmlComentado(p.@id.text())
+			  def nombreUsuarioComentado = buscarUsuario(xmlComentado.autor.@id.text())
+			  
+			  if (nombreUsuarioComentado)
+			  {
+				  comentarioComentado.autor = nombreUsuarioComentado
+			  }
+			  
+			  comentarioComentado.fecha = xmlComentado.fecha.text()
+			  comentarioComentado.mensaje = xmlComentado.mensaje.text()
+			  comentarioComentado.principal = xmlComentado.principal.text()  
+			  comentario.comentado.add(comentarioComentado)
+		  }
+		   
+		   listaComentario.add(comentario)
 	  }
 	  
 	  return listaComentario
+  }
+  
+  /**
+  * Metodo encargado de buscar los nombre de las Usuarios registrados en el sistema
+  *  por id Usuario
+  */
+  def xmlComentado (String idComentario)
+  {
+	  /**
+	  * Se ubica la URL del servicio que lista a todas los Usuarios
+	  */
+	 def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" +  idComentario)
+	 def nombreUsuario
+	 
+	 /**
+	  * Se establece la conexion con el servicio
+	  * Se determina el tipo de peticion (GET) y
+	  * el contenido de la misma (Archivo plano XML)
+	  */
+	 def connection = url.openConnection()
+	 connection.setRequestMethod("GET" )
+	 connection.setRequestProperty("Content-Type" ,"text/xml" )
+	 
+	 if(connection.responseCode == 200)
+	 {
+		 def miXml = new XmlSlurper().parseText(connection.content.text)
+		 nombreUsuario = miXml
+	 }
+	 else{
+		 render "Se ha generado un error:"
+		 render connection.responseCode
+		 render connection.responseMessage
+	 }
+	 
+	 return nombreUsuario
+	 
   }
   
   /**
