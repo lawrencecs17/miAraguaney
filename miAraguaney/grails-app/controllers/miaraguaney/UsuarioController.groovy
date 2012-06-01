@@ -7,6 +7,8 @@ import grails.converters.*
 import java.util.Date
 import org.apache.commons.logging.*
 import groovy.xml.MarkupBuilder
+import java.text.*;
+
 
 /**
  * 
@@ -550,5 +552,83 @@ class UsuarioController {
 	  }
 	  return nombreUsuario
 	}
+	
+	def consultarTodosLosTokens = {
+		
+			def serviceResponse = "No hay respuesta"
+			/**
+			 * Se establece la URL de la ubicacion
+			 * del servicio
+			 */
+			def url = new URL("http://localhost:8080/miOrquidea/token/consultarMiToken" )
+			/**
+			 * Se extraen los parametros y convierte a formato
+			 * XML para luego ser enviada a la aplicacion miOrquidea
+			 *
+			 */
+			
+			def gXml = new StringWriter()
+			def xml = new MarkupBuilder(gXml)
+			println session.email
+		    println session.password
+			
+			xml.usuario() {
+				email(session.email)
+				password(session.password)
+			}
+			
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+			   
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+						
+			
+			
+			//serviceResponse = miXml.mensaje
+			
+			
+				def miXmlToken = new XmlSlurper().parseText(connection.content.text)
+			
+				def listToken = procesarXMLToken(miXmlToken)
+				
+				
+				render (view :'../token/consultarTokens', model:[tokens:listToken])
+			
+			
+		}
+	
+
+	/**
+	* Metodo encargado de procesar el archivo XML de Tokens recibido del
+	* servicio miOrquidea app
+	* @param xml
+	* @return
+	*/
+   def procesarXMLToken(def xml)
+   {
+	   ArrayList<Token> listToken = new ArrayList<Token>()
+	   
+	 
+	   
+	   for (int i=0;i< xml.token.size();i++)
+	   {
+		   Token token = new Token()
+		   token.fechaCreacion =  xml.token[i].fechaCreacion
+		   token.host = xml.token[i].host
+		   token.ip = xml.token[i].ip
+		   token.validez = 	(boolean)xml.token[i].validez
+		   listToken.add(token)
+		 
+	   }
+	   
+	   return listToken
+   }
+	
 	
 }
