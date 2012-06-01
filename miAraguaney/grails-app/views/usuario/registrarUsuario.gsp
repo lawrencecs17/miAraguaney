@@ -95,7 +95,8 @@ function clearText(field) {
       <input type="submit" name="btnregistrar" id="btnregistrar" value="Registrar" />
       </label>
       </td>
-    <td   align="center"><input type="button" name="btncancelar" id="btncancelar" value="regresar" /></td>
+    <td   align="center">
+    <input type="button" name="btnregresar" id="btnregresar" value="regresar"  onclick=" location.href='../' " /></td>    
   </tr>
   </table>
   <p>&nbsp;</p>
