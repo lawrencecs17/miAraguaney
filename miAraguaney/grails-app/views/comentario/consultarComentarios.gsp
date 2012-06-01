@@ -44,7 +44,7 @@ function clearText(field) {
        
 <div id="content_wrapper">
 
-<table align="center" width="50%" border="5">
+<table align="center" width="50%" border="4">
 <g:each in="${comentarios}" var="comentario">
 
   <tr style="color: black" >
@@ -54,7 +54,6 @@ function clearText(field) {
     <td><div align="left">
     
     <g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
-    
             ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
             ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
             <a>${comentario.cantidadComentados} Comentados</a>
@@ -76,15 +75,15 @@ function clearText(field) {
     </td>
   </tr>
   <tr>
-    <td height="96"><textarea name="textarea" cols="79%" rows="8" disabled="disabled">${comentario.mensaje}</textarea></td>
+    <td height="96"><textarea name="textarea" cols="79%" rows="5" disabled="disabled">${comentario.mensaje}</textarea></td>
   </tr>
   <tr style="color: black">
   
   <g:if test = "${ session.nickname.equals(comentario.autor) }">
     <td height="23"><div align="center">
-            <a href="" title="Modificar">Modificar</a>
+            <g:link id="${comentario.idComentario},${comentario.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
             <a href="" title="Responder">Responder</a>
-            <a href="" title="Eliminar">Eliminar</a>
+            <g:link id="${comentario.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
         </div>
      </td>
   </g:if>

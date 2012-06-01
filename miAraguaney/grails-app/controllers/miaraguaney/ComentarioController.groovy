@@ -52,7 +52,7 @@ class ComentarioController {
 		   render connection.responseMessage
 	   }
 
-	   render (view:"consultarComentarios", model:[comentarios:listaComentario, usuario:session.nickname])
+	   render (view:'consultarComentarios', model:[comentarios:listaComentario, usuario:session.nickname])
    }
    
    /**
@@ -703,6 +703,104 @@ class ComentarioController {
 			redirect (action: 'consultarTodosLosComentarios')
 	   
 	   } //fin metodo modificar calificacion dislike
+	
+	/**
+	* Metodo que se encarga de redireccionar a la vista modificar comentario
+	*/
+	def modificarComentarioUsuario = { 
+		
+		def arrayetiquetas = params.id.split(",")
+		println("comentarito = " )
+		render (view:'modificarComentarioVista', model:[comentario:arrayetiquetas[0], mensaje:arrayetiquetas[1], usuario:session.nickname])
+	}
+	
+	/**
+	* Metodo que se encarga de modificar un comentario
+	*/
+	def modificarComentario = {
+		
+		def serviceResponse = "No hay respuesta"
+		/**
+		 * Se establece la URL de la ubicacion
+		 * del servicio
+		 */
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/modificarComentario" )
+		/**
+		* Se extraen los parametros y convierte a formato
+		* XML para luego ser enviada a la aplicacion miOrquidea
+		*
+		*/
+		def nick = session.nickname
+	   
+	   /**
+		* Con estas funciones creamos el XML
+		*/
+	   def gXml = new StringWriter()
+	   def xml = new MarkupBuilder(gXml)
+		
+	   /**
+		* Creando el XML para pasarlo al servicio
+		*/
+	   xml.comentario() {
+			   idComentario (id:params.id)
+			   mensaje(params.mensaje)
+			   usuario(nick)
+	   }
+	   
+		def connection = url.openConnection()
+		connection.setRequestMethod("PUT")
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		connection.doOutput=true
+			Writer writer = new OutputStreamWriter(connection.outputStream)
+			writer.write(gXml.toString())
+			writer.flush()
+			writer.close()
+			connection.connect()
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			serviceResponse = miXml.mensaje
+			
+			/**
+			 * Lo que me responde el servidor
+			 */
+			if(serviceResponse == "")
+			{
+			
+				serviceResponse = "El usuario $params.mensaje ha inciado sesion correctamente"
+			}
+	   
+			redirect (action: 'consultarTodosLosComentarios')
+	   
+	   } //fin metodo modificar comentario
+	
+	/**
+	* Metodo que se encarga de eliminar un comentario
+	*/
+	def eliminarComentario = {
+		
+		def nick = session.nickname
+	 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)			
+		def connection = url.openConnection()
+		connection.setRequestMethod("DELETE")
+		connection.setDoOutput(true)
+		connection.connect()
+		def serviceResponse = "No hay respuesta!"		
+		
+			if(connection.responseCode == 200)
+			{
+								
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				if(serviceResponse == "")
+				{
+					serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro
+				}
+				
+			}
+			
+			redirect (action :'consultarTodosLosComentarios')
+	}// fin metodo eliminar comentario
 	
 	
 } // fin Comentario Controller
