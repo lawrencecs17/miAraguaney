@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar Session</title>
+<title>Modificar Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
@@ -35,6 +35,7 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
+    <h3 align="left">Bienvenido ${usuario.nickname}</h3>
   </div>
   <!-- end of header -->
 </div>
@@ -113,7 +114,7 @@ function clearText(field) {
     <td height="54">&nbsp;</td>
     <td>&nbsp;</td>
     <td width="215" align="center"><label>
-      <input type="submit" name="btnregistrar" id="btnregistrar" value="Registrar" />
+      <input type="submit" name="btnmodificar" id="btnmodificar" value="Modificar" />
     </label>
       <div></div></td>
     <td width="256" align="center"><input type="button" name="btncancelar" id="btncancelar" value="Cancelar" /></td>

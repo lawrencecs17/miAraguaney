@@ -458,7 +458,7 @@ class UsuarioController {
 	}
 	
 	def vistaModificarUsuario =	{
-		render (view:'modificarUsuario')
+		render (view:'modificarUsuario',model:[usuario:session.nickname])
 	}
 	
 	def modificarUsuario = {
@@ -487,7 +487,7 @@ class UsuarioController {
 		   listUsuario = procesarXML(miXml)
 		   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
 		   if(miUsuario!=null)
-		   {
+		   {			  
 			   miUsuario.email2 = email
 			   render (view:'actualizarUsuario',model:[usuario:miUsuario])
 		   }
