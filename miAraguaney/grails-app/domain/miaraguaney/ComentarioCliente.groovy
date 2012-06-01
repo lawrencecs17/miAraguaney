@@ -28,7 +28,7 @@ class ComentarioCliente {
 	
 	List<String> adjuntos = new ArrayList<String>()
 	List<String> tag = new ArrayList<String>()
-	List<ComentarioCliente> comentado = new ArrayList<ComentarioCliente>()
+	ArrayList<ComentarioCliente> comentado = new ArrayList<ComentarioCliente>()
 		
 	/**
 	* Restricciones básicas de la clase

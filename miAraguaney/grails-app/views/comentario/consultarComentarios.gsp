@@ -48,7 +48,7 @@ function clearText(field) {
 <g:each in="${comentarios}" var="comentario">
 
   <tr style="color: black" >
-    <td>${comentario.autor} ${comentario.fecha}</td>
+    <td>${comentario.autor} ${comentario.fecha} ${comentario.idComentario}</td>
   </tr>
   <tr style="color: black">
     <td><div align="left">
@@ -99,8 +99,76 @@ function clearText(field) {
     <td height="4">&nbsp;</td>
   </tr>
   
+
+<g:each in="${comentario.comentado}" var="comentario2">
+
+  <tr style="color: black" >
+    <td>${comentario2.autor} ${comentario2.fecha} ${comentario2.principal}</td>
+  </tr>
+  <tr style="color: black">
+    <td><div align="left">
+    
+    <g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
+            <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+            <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
+    </g:if>
+  
+    <g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
+            MeGusta<a href="" title="Like" ></a>
+            <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
+    </g:elseif>
+    
+    <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
+            <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
+            NoMeGusta<a href="" title="Dislike"></a>
+    </g:elseif>
+        
+        </div>
+    </td>
+  </tr>
+  <tr>
+    <td align="center" height="96%"><textarea name="textarea" cols="65%" rows="5" disabled="disabled">${comentario2.mensaje}</textarea></td>
+  </tr>
+  <tr style="color: black">
+  
+  <g:if test = "${ session.nickname.equals(comentario2.autor) }">
+    <td height="23"><div align="center">
+            <g:link id="${comentario2.idComentario},${comentario2.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
+            <g:link id="${comentario2.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
+        </div>
+     </td>
+  </g:if>
+  
+  </tr>
+    <tr>
+    <td height="4">&nbsp;</td>
+  </tr>
+  
+</g:each>
+
+  
+  
+  
+  
+  
+  
 </g:each>
 </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- end of content -->
   <!-- end of sidebar -->
