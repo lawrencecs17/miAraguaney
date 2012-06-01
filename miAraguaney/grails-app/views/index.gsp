@@ -20,10 +20,6 @@ function clearText(field) {
     </div>
     <div id="menu">
       <ul>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
           <li><a href="#" class="current">MiAraguaney</a></li>        
       </ul>
 

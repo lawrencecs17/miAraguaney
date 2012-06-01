@@ -47,6 +47,7 @@ class UsuarioController {
 		
 		def gXml = new StringWriter()
 		def xml = new MarkupBuilder(gXml)
+		def redireccion = "../"
 		
 		xml.usuario() {
 			email(params.email)
@@ -71,14 +72,21 @@ class UsuarioController {
 		if(serviceResponse == "")
 		{
 			serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
+			def nickname = buscarUsuarioPorCorreo (params.email)
+			session.nickname = nickname
+			render (view :'perfil', model:[aviso:serviceResponse, usuario:session.nickname])
 		}
+		else
+		{
+			if(params.email=="" || params.password=="")
+			{
+				serviceResponse ="Debe ingresar email y password para acceder a su perfil."
+			}
+			render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+		}		
 		
 		
 		
-		
-		def nickname = buscarUsuarioPorCorreo (params.email)
-		session.nickname = nickname
-		render (view :'registroExitoso', model:[aviso:serviceResponse, usuario:session.nickname])
 		
 		}
 	
@@ -235,6 +243,7 @@ class UsuarioController {
    def registrarUsuario ={
 	   
 	   def serviceResponse = "No hay respuesta"
+	   def redireccion ="../"
 	   /**
 	    * Se establece la URL de la ubicacion
 	    * del servicio
@@ -261,7 +270,8 @@ class UsuarioController {
 		   {
 			   //El usuario fue registrado
 			   def miXml = new XmlSlurper().parseText(connection.content.text)
-			   serviceResponse  = "Usuario Registrado Exitosamente!"			
+			   serviceResponse  = "Usuario Registrado Exitosamente!"
+			   redireccion = "vistaIniciarSesion"			
 		   }
 		   else 
 		   {
@@ -270,11 +280,12 @@ class UsuarioController {
 			   if(connection.responseCode == 200)
 			   {
 				   def miXml = new XmlSlurper().parseText(connection.content.text)
-				   serviceResponse = miXml.mensaje				   
+				   serviceResponse = miXml.mensaje
+				   redireccion = "vistaRegistroUsuario"
+				   				   
 			   }
 			}   
-	   render (view :'registroExitoso', model:[aviso:serviceResponse])
-
+	   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 	   }
    
    

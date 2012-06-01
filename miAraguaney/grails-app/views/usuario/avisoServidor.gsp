@@ -11,6 +11,14 @@ function clearText(field) {
     else if (field.value == '') field.value = field.defaultValue;
 }
 </script>
+<style type="text/css">
+<!--
+.color {
+	color: #F00;
+	font-size: 12px;
+}
+-->
+</style>
 </head>
 <body>
 <div id="header_wrapper">
@@ -36,26 +44,14 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <form id="form1" name="form1" method="post" action="iniciarSesion">
-
-<p>Iniciar Sesion</p>
-<table width="400" border="0" align="center">
-  <tr>
-    <td>Email</td>
-    <td>
-      <input type="text" name="email" id="email" />
-    </td>
-  </tr>
-  <tr>
-    <td>Password</td>
-    <td><input type="password" name="password" id="password" /></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><input type="submit" name="iniciar" id="iniciar" value="Iniciar Sesion" /></td>
-    <td width="50%" align="center"><input type="button" name="regresar" id="regresar" value="Cancelar" /></td>
-  </tr>
-</table>
-</form>
+    <table width="400" border="0" align="center">
+		  <tr align="center">
+		    <td  class="color">${aviso}</td>
+		  </tr>
+		  <tr align="center">
+		    <td height="47" colspan="2"><input type="button" name="btnregresar" id="btnregresar" value="aceptar"  onclick=" location.href='${miLink}' " />      </td></td>
+		  </tr>
+	</table>
 
   <!-- end of content -->
   <!-- end of sidebar -->

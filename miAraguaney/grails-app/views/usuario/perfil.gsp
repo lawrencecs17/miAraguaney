@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar Session</title>
+<title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
@@ -20,6 +20,10 @@ function clearText(field) {
     </div>
     <div id="menu">
       <ul>
+          <li><a href="#">Token</a></li> 
+          <li><a href="#">Usuario</a></li>  
+          <li><a href="#">Hashtag</a></li>  
+          <li><a href="#">Comentar</a>
           <li><a href="#" class="current">MiAraguaney</a></li>        
       </ul>
 
@@ -31,31 +35,13 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
+    <h2 align="left">Bienvenido ${usuario}</h2>
   </div>
   <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <form id="form1" name="form1" method="post" action="iniciarSesion">
 
-<p>Iniciar Sesion</p>
-<table width="400" border="0" align="center">
-  <tr>
-    <td>Email</td>
-    <td>
-      <input type="text" name="email" id="email" />
-    </td>
-  </tr>
-  <tr>
-    <td>Password</td>
-    <td><input type="password" name="password" id="password" /></td>
-  </tr>
-  <tr>
-    <td width="50%" align="center"><input type="submit" name="iniciar" id="iniciar" value="Iniciar Sesion" /></td>
-    <td width="50%" align="center"><input type="button" name="regresar" id="regresar" value="Cancelar" /></td>
-  </tr>
-</table>
-</form>
 
   <!-- end of content -->
   <!-- end of sidebar -->
