@@ -494,6 +494,8 @@ class ComentarioController {
 	*/	
 	def agregarComentario = {
 		
+	if(Token.tokenVigente(session.usuario.email))
+	{
 		def serviceResponse = "No hay respuesta"
 		/**
 		* Se establece la URL de la ubicacion
@@ -552,63 +554,76 @@ class ComentarioController {
 			{
 				serviceResponse = "Comentario creado"
 			}
-	   
+			
 			render (view: 'crearComentario', model:[usuario:session.nickname])
-	   } //fin metodo agregar comentario
+	}
+	else
+	{
+		destruirSesion()
+	}
+			
+	} //fin metodo agregar comentario
 
 	/**
 	* Metodo que se encarga de crear una calificacion like en el comentario 
 	*/
 	def crearComentarioLike () {
 		
-		def serviceResponse = "No hay respuesta"
-		
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
-		
-		def nick = session.nickname
-	   
-	    /**
-	    * Con estas funciones creamos el XML  	
-	    */
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-	    
-	    /**
-	    * Creando el XML Calificacion like para pasarlo al servicio
-	    */
-	    xml.calificacion() {
-			   comentario (id:params.id)
-			   dislike(false)
-			   like(true)
-			   persona(nick)
-	    }
-	   
-		def connection = url.openConnection()
-		connection.setRequestMethod("POST")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			
 			/**
-			 * Lo que me responde el servidor 
-			 */
-			if(serviceResponse == "")
-			{
-				serviceResponse = "Calificacion like creado"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
+			
+			def nick = session.nickname
+		   
+		    /**
+		    * Con estas funciones creamos el XML  	
+		    */
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
+		    
+		    /**
+		    * Creando el XML Calificacion like para pasarlo al servicio
+		    */
+		    xml.calificacion() {
+				   comentario (id:params.id)
+				   dislike(false)
+				   like(true)
+				   persona(nick)
+		    }
+		   
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				 * Lo que me responde el servidor 
+				 */
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Calificacion like creado"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo crear calificacion like
 	
 	/**
@@ -616,55 +631,61 @@ class ComentarioController {
 	*/
 	def crearComentarioDislike () {
 
-		def serviceResponse = "No hay respuesta"
-		
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
-
-		def nick = session.nickname
-	   
-	    /**
-		* Con estas funciones creamos el XML
-		*/
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-		
-	    /**
-		* Creando el XML Calificacion dislike para pasarlo al servicio
-		*/
-	    xml.calificacion() {
-			   comentario (id:params.id)
-			   dislike(true)
-			   like(false)
-			   persona(nick)
-	    }
-	   
-		def connection = url.openConnection()
-		connection.setRequestMethod("POST")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			
 			/**
-			 * Lo que me responde el servidor
-			 */
-			if(serviceResponse == "")
-			{
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
+	
+			def nick = session.nickname
+		   
+		    /**
+			* Con estas funciones creamos el XML
+			*/
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
 			
-				serviceResponse = "Calificacion dislike creado"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')
+		    /**
+			* Creando el XML Calificacion dislike para pasarlo al servicio
+			*/
+		    xml.calificacion() {
+				   comentario (id:params.id)
+				   dislike(true)
+				   like(false)
+				   persona(nick)
+		    }
+		   
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				 * Lo que me responde el servidor
+				 */
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Calificacion dislike creado"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo crear calificacion dislike
 	
 	/**
@@ -672,54 +693,61 @@ class ComentarioController {
 	*/
 	def modificarComentarioLike () {
 		
-		def serviceResponse = "No hay respuesta"
-		
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
-
-		def nick = session.nickname
-	   
-	    /**
-		* Con estas funciones creamos el XML
-		*/
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-		
-	    /**
-		* Creando el XML calificacion like modificado para pasarlo al servicio
-		*/
-	    xml.calificacion() {
-			   comentario (id:params.id)
-			   dislike(false)
-			   like(true)
-			   persona(nick)
-	    }
-	   
-		def connection = url.openConnection()
-		connection.setRequestMethod("PUT")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			
 			/**
-			* Lo que me responde el servidor
+			* Se establece la URL de la ubicacion
+			* del servicio
 			*/
-			if(serviceResponse == "")
-			{
-				serviceResponse = "Calificacion like modificado"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')
+			def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
+	
+			def nick = session.nickname
+		   
+		    /**
+			* Con estas funciones creamos el XML
+			*/
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
+			
+		    /**
+			* Creando el XML calificacion like modificado para pasarlo al servicio
+			*/
+		    xml.calificacion() {
+				   comentario (id:params.id)
+				   dislike(false)
+				   like(true)
+				   persona(nick)
+		    }
+		   
+			def connection = url.openConnection()
+			connection.setRequestMethod("PUT")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				* Lo que me responde el servidor
+				*/
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Calificacion like modificado"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo modificar calificacion like
 	
 	/**
@@ -727,53 +755,60 @@ class ComentarioController {
 	*/
 	def modificarComentarioDislike () {
 		
-		def serviceResponse = "No hay respuesta"
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
-
-		def nick = session.nickname
-	   
-	    /**
-		* Con estas funciones creamos el XML
-		*/
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-		
-	    /**
-		* Creando el XML calificacion dislike modificado para pasarlo al servicio
-		*/
-	    xml.calificacion() {
-			   comentario (id:params.id)
-			   dislike(true)
-			   like(false)
-			   persona(nick)
-	    }
-	   
-		def connection = url.openConnection()
-		connection.setRequestMethod("PUT")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
-			
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			/**
-			 * Lo que me responde el servidor
-			 */
-			if(serviceResponse == "")
-			{
-				serviceResponse = "Calificacion dislike modificado"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')   
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
+	
+			def nick = session.nickname
+		   
+		    /**
+			* Con estas funciones creamos el XML
+			*/
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
+			
+		    /**
+			* Creando el XML calificacion dislike modificado para pasarlo al servicio
+			*/
+		    xml.calificacion() {
+				   comentario (id:params.id)
+				   dislike(true)
+				   like(false)
+				   persona(nick)
+		    }
+		   
+			def connection = url.openConnection()
+			connection.setRequestMethod("PUT")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				 * Lo que me responde el servidor
+				 */
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Calificacion dislike modificado"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')   
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo modificar calificacion dislike
 	
 	/**
@@ -781,8 +816,15 @@ class ComentarioController {
 	*/
 	def modificarComentarioUsuario = { 
 		
-		def comentarioMensaje = params.id.split(",")
-		render (view:'modificarComentarioVista', model:[comentario:comentarioMensaje[0], mensaje:comentarioMensaje[1], usuario:session.nickname])
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def comentarioMensaje = params.id.split(",")
+			render (view:'modificarComentarioVista', model:[comentario:comentarioMensaje[0], mensaje:comentarioMensaje[1], usuario:session.nickname])
+		}
+		else
+		{
+			destruirSesion()
+		}
 	}
 	
 	/**
@@ -790,51 +832,58 @@ class ComentarioController {
 	*/
 	def modificarComentario = {
 		
-		def serviceResponse = "No hay respuesta"
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/comentario/modificarComentario" )
-		def nick = session.nickname
-	   
-	    /**
-		* Con estas funciones creamos el XML
-		*/
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-		
-	    /**
-		* Creando el XML Comentario modificado para pasarlo al servicio
-		*/
-	    xml.comentario() {
-			   idComentario (id:params.id)
-			   mensaje(params.mensaje)
-			   usuario(nick)
-	    }
-	   
-		def connection = url.openConnection()
-		connection.setRequestMethod("PUT")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
-			
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			/**
-			 * Lo que me responde el servidor
-			 */
-			if(serviceResponse == "")
-			{
-				serviceResponse = "Comentario modificado"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')   
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8080/miOrquidea/comentario/modificarComentario" )
+			def nick = session.nickname
+		   
+		    /**
+			* Con estas funciones creamos el XML
+			*/
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
+			
+		    /**
+			* Creando el XML Comentario modificado para pasarlo al servicio
+			*/
+		    xml.comentario() {
+				   idComentario (id:params.id)
+				   mensaje(params.mensaje)
+				   usuario(nick)
+		    }
+		   
+			def connection = url.openConnection()
+			connection.setRequestMethod("PUT")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				 * Lo que me responde el servidor
+				 */
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Comentario modificado"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')   
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo modificar comentario
 	
 	/**
@@ -842,26 +891,33 @@ class ComentarioController {
 	*/
 	def eliminarComentario = {
 		
-		def nick = session.nickname
-	 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)			
-		def connection = url.openConnection()
-		connection.setRequestMethod("DELETE")
-		connection.setDoOutput(true)
-		connection.connect()
-		def serviceResponse = "No hay respuesta!"		
-		
-		if(connection.responseCode == 200)
-		{			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
-				
-			if(serviceResponse == "")
-			{
-				serviceResponse = "Comentario eliminado"
-			}
-		}
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def nick = session.nickname
+		 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)			
+			def connection = url.openConnection()
+			connection.setRequestMethod("DELETE")
+			connection.setDoOutput(true)
+			connection.connect()
+			def serviceResponse = "No hay respuesta!"		
 			
-		redirect (action :'consultarTodosLosComentarios')
+			if(connection.responseCode == 200)
+			{			
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+					
+				if(serviceResponse == "")
+				{
+					serviceResponse = "Comentario eliminado"
+				}
+			}
+				
+			redirect (action :'consultarTodosLosComentarios')
+		}
+		else
+		{
+			destruirSesion()
+		}
 	}// fin metodo eliminar comentario
 	
 	/**
@@ -869,8 +925,15 @@ class ComentarioController {
 	*/
 	def responderComentarioUsuario = {
 		
-		def idComentario = params.id
-		render (view:'responderComentarioVista', model:[comentario:idComentario, usuario:session.nickname])
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def idComentario = params.id
+			render (view:'responderComentarioVista', model:[comentario:idComentario, usuario:session.nickname])
+		}
+		else
+		{
+			destruirSesion()
+		}
 	}
 	
 	/**
@@ -878,53 +941,72 @@ class ComentarioController {
 	*/
 	def responderComentario = {
 		
-		def serviceResponse = "No hay respuesta"
-		/**
-		* Se establece la URL de la ubicacion
-		* del servicio
-		*/
-		def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentado" )
-
-		def nick = session.nickname
-	   
-	    /**
-		* Con estas funciones creamos el XML
-		*/
-	    def gXml = new StringWriter()
-	    def xml = new MarkupBuilder(gXml)
-		
-	    /**
-		* Creando el XML para pasarlo al servicio
-		*/
-	    xml.comentario() {
-			   comentario (id:params.id)
-			   autorComentado(nick)
-			   mensaje(params.mensaje)
-	    }
-		def connection = url.openConnection()
-		connection.setRequestMethod("POST")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(gXml.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			serviceResponse = miXml.mensaje
-			
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
 			/**
-			 * Lo que me responde el servidor
-			 */
-			if(serviceResponse == "")
-			{
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentado" )
+	
+			def nick = session.nickname
+		   
+		    /**
+			* Con estas funciones creamos el XML
+			*/
+		    def gXml = new StringWriter()
+		    def xml = new MarkupBuilder(gXml)
 			
-				serviceResponse = "Respuesta exitosa"
-			}
-	   
-			redirect (action: 'consultarTodosLosComentarios')
+		    /**
+			* Creando el XML para pasarlo al servicio
+			*/
+		    xml.comentario() {
+				   comentario (id:params.id)
+				   autorComentado(nick)
+				   mensaje(params.mensaje)
+		    }
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje
+				
+				/**
+				 * Lo que me responde el servidor
+				 */
+				if(serviceResponse == "")
+				{
+				
+					serviceResponse = "Respuesta exitosa"
+				}
+		   
+				redirect (action: 'consultarTodosLosComentarios')
+		}
+		else
+		{
+			destruirSesion()
+		}
 	   } //fin metodo agregar comentario
+	
+	/*
+	* metodo que destruye todas las variables de session del sistema
+	*/
+	def destruirSesion()
+	{
+		session.removeAttribute("usuario")
+		session.removeAttribute("nickname")
+		session.removeAttribute("email")
+		session.removeAttribute("password")
+		render(view:"../index")
+	}
 	
 } // fin Comentario Controller
 
