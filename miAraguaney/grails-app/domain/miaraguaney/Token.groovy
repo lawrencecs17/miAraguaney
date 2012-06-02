@@ -70,9 +70,5 @@ class Token {
 	   {
 		   return false
 	   }
-   }
-
-	
-	
-    
+   }   
 }

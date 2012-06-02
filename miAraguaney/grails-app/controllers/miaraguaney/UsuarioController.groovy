@@ -207,6 +207,15 @@ class UsuarioController {
 			}
 		}
 	
+	def destruirSesion()
+	{
+		session.removeAttribute("usuario")
+		session.removeAttribute("nickname")
+		session.removeAttribute("email")
+		session.removeAttribute("password")
+		render(view:"../index")
+	}
+	
 	def vistaIniciarSesion =	{
 		render (view:'iniciarSesion')
 	}
@@ -215,7 +224,15 @@ class UsuarioController {
 	}
 	
 	def vistaPerfil = {
-		render (view: 'perfil',model:[usuario:session.nickname])
+		
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			render (view: 'perfil',model:[usuario:session.nickname])
+		}
+		else
+		{
+			destruirSesion()
+		}
 	}
 	/*
 	 * Accion para consumir servivios de activar usuario
