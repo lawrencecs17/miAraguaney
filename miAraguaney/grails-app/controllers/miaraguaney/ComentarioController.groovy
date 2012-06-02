@@ -13,6 +13,7 @@ class ComentarioController {
 
    	private static Log log = LogFactory.getLog("Logs."+ComentarioController.class.getName())
 	ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
+	static String urlVista  
 	   
     def index() { 
 		render (view:'consultarTodos')
@@ -24,6 +25,7 @@ class ComentarioController {
 	*/
 	def consultarTodosLosComentarios = {
 	   
+	   urlVista = "consultarComentarios"
 	   /**
 	   * Se ubica la URL del servicio que lista a todos los Comentarios
 	   */
@@ -50,7 +52,7 @@ class ComentarioController {
 		   render connection.responseMessage 
 	   }
 
-	   render (view:'consultarComentarios', model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
+	   render (view: urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
    }
    
    /**
@@ -618,7 +620,17 @@ class ComentarioController {
 					serviceResponse = "Calificacion like creado"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}
 		}
 		else
 		{
@@ -680,7 +692,17 @@ class ComentarioController {
 					serviceResponse = "Calificacion dislike creado"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}
 		}
 		else
 		{
@@ -742,7 +764,17 @@ class ComentarioController {
 					serviceResponse = "Calificacion like modificado"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}
 		}
 		else
 		{
@@ -803,7 +835,17 @@ class ComentarioController {
 					serviceResponse = "Calificacion dislike modificado"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')   
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}
 		}
 		else
 		{
@@ -878,7 +920,17 @@ class ComentarioController {
 					serviceResponse = "Comentario modificado"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')   
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}  
 		}
 		else
 		{
@@ -912,7 +964,17 @@ class ComentarioController {
 				}
 			}
 				
-			redirect (action :'consultarTodosLosComentarios')
+			if (urlVista == "consultarComentarios")
+			{
+				redirect (action: 'consultarTodosLosComentarios')
+			}
+			else
+			{
+				if (urlVista == "perfilUsuario")
+				{
+					redirect (action: 'consultarComentarioPorUsuario')
+				}
+			}
 		}
 		else
 		{
@@ -984,11 +1046,20 @@ class ComentarioController {
 				 */
 				if(serviceResponse == "")
 				{
-				
 					serviceResponse = "Respuesta exitosa"
 				}
 		   
-				redirect (action: 'consultarTodosLosComentarios')
+				if (urlVista == "consultarComentarios")
+				{
+					redirect (action: 'consultarTodosLosComentarios')
+				}
+				else
+				{
+					if (urlVista == "perfilUsuario")
+					{
+						redirect (action: 'consultarComentarioPorUsuario')
+					}
+				}
 		}
 		else
 		{
@@ -1002,6 +1073,7 @@ class ComentarioController {
 	*/
 	def consultarComentarioPorUsuario = {
 	   
+	   urlVista = "perfilUsuario"
 	   /**
 	   * Se ubica la URL del servicio que lista a todos los Comentarios
 	   */
@@ -1028,7 +1100,7 @@ class ComentarioController {
 		   render connection.responseMessage
 	   }
 
-	   render (view:'perfilUsuario', model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
+	   render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
    }
 	
 	/*
