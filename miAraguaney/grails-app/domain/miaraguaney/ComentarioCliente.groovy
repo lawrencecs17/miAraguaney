@@ -16,6 +16,7 @@ import miaraguaney.Usuario;
 class ComentarioCliente {
 
 	String idComentario
+	String idComentarioComentado
 	String mensaje
 	String fecha
 	String autor
@@ -24,7 +25,7 @@ class ComentarioCliente {
 	String cantidadComentados
 	String calificacionLike
 	String calificacionDislike
-	boolean principal
+	String principal
 	
 	List<String> adjuntos = new ArrayList<String>()
 	List<String> tag = new ArrayList<String>()

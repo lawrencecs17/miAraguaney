@@ -47,128 +47,115 @@ function clearText(field) {
 <table align="center" width="50%" border="4">
 <g:each in="${comentarios}" var="comentario">
 
-  <tr style="color: black" >
-    <td>${comentario.autor} ${comentario.fecha} ${comentario.idComentario}</td>
-  </tr>
-  <tr style="color: black">
-    <td><div align="left">
+  	<tr style="color: black" bgcolor="#557C12">
+    	<td>${comentario.autor} ${comentario.fecha}</td>
+  	</tr>
+  	<tr style="color: black">
+    	<td>
+    	<div align="left">
     
-    <g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
+    	<g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
             ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
             ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
             <a>${comentario.cantidadComentados} Comentados</a>
-    </g:if>
+    	</g:if>
   
-    <g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
+    	<g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
             ${comentario.cantidadLike} MeGusta<a href="" title="Like" ></a>
             ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
             <a>${comentario.cantidadComentados} Comentados</a>
-    </g:elseif>
+    	</g:elseif>
     
-    <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
+    	<g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
             ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
             ${comentario.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
             <a>${comentario.cantidadComentados} Comentados</a>
-    </g:elseif>
+    	</g:elseif>
         
         </div>
-    </td>
-  </tr>
-  <tr>
-    <td height="96"><textarea name="textarea" cols="79%" rows="5" disabled="disabled">${comentario.mensaje}</textarea></td>
-  </tr>
-  <tr style="color: black">
+    	</td>
+  	</tr>
+  	<tr>
+    	<td height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario.mensaje}</textarea></td>
+  	</tr>
+  	<tr style="color: black">
   
-  <g:if test = "${ session.nickname.equals(comentario.autor) }">
-    <td height="23"><div align="center">
+  	<g:if test = "${ session.nickname.equals(comentario.autor) }">
+    	<td height="23">
+    	<div align="center">
             <g:link id="${comentario.idComentario},${comentario.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
-            <a href="" title="Responder">Responder</a>
+            <g:link id="${comentario.idComentario}" controller="comentario" action="responderComentarioUsuario">Responder</g:link> 
             <g:link id="${comentario.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
         </div>
-     </td>
-  </g:if>
-  <g:else>
+     	</td>
+  	</g:if>
+  	<g:else>
         <td height="23"><div align="center">
-            <a href="" title="Responder">Responder</a>
+            <g:link id="${comentario.idComentario}" controller="comentario" action="responderComentarioUsuario">Responder</g:link> 
             </div>
         </td>
-  </g:else>
+  	</g:else>
   
-  </tr>
+  	</tr>
+  	
     <tr>
-    <td height="4">&nbsp;</td>
-  </tr>
-  
+    	<td height="4">&nbsp;</td>
+  	</tr>
+  	
+	<g:each in="${comentados}" var="comentario2">
 
-<g:each in="${comentario.comentado}" var="comentario2">
-
-  <tr style="color: black" >
-    <td>${comentario2.autor} ${comentario2.fecha} ${comentario2.principal}</td>
-  </tr>
-  <tr style="color: black">
-    <td><div align="left">
+		<g:if test = "${ comentario2.idComentarioComentado == comentario.idComentario }">
     
-    <g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
-            <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
-            <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
-    </g:if>
-  
-    <g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
-            MeGusta<a href="" title="Like" ></a>
-            <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
-    </g:elseif>
-    
-    <g:elseif test = "${ comentario.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
-            <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
-            NoMeGusta<a href="" title="Dislike"></a>
-    </g:elseif>
-        
-        </div>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" height="96%"><textarea name="textarea" cols="65%" rows="5" disabled="disabled">${comentario2.mensaje}</textarea></td>
-  </tr>
-  <tr style="color: black">
-  
-  <g:if test = "${ session.nickname.equals(comentario2.autor) }">
-    <td height="23"><div align="center">
-            <g:link id="${comentario2.idComentario},${comentario2.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
-            <g:link id="${comentario2.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
-        </div>
-     </td>
-  </g:if>
-  
-  </tr>
-    <tr>
-    <td height="4">&nbsp;</td>
-  </tr>
-  
-</g:each>
+		  	<tr style="color: black" bgcolor="#9FC740">
+		    	<td>${comentario2.autor} ${comentario2.fecha}</td>
+		  	</tr>
+		  	<tr style="color: black">
+		    	<td>
+		    	<div align="left">
+		    
+		    	<g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
+		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
+		    	</g:if>
+		  
+		    	<g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
+		            ${comentario2.cantidadLike} MeGusta<a href="" title="Like" ></a>
+		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
+		    	</g:elseif>
+		    
+		    	<g:elseif test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
+		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
+		            ${comentario2.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
+		    	</g:elseif>
+		        
+		        </div>
+		    	</td>
+		  	</tr>
+		  	<tr>
+		    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
+		  	</tr>
+		  	<tr style="color: black">
+		  
+		  		<g:if test = "${ session.nickname.equals(comentario2.autor) }">
+		    		<td height="23">
+		    		<div align="center">
+		            	<g:link id="${comentario2.idComentario},${comentario2.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
+		            	<g:link id="${comentario2.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
+		        	</div>
+		     		</td>
+		  		</g:if>
 
-  
-  
-  
-  
-  
-  
+		  	</tr>
+		    <tr>
+		    	<td height="4">&nbsp;</td>
+		  	</tr>
+		 		
+		</g:if>
+		
+	</g:each>
+	
 </g:each>
 </table>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
   <!-- end of content -->
   <!-- end of sidebar -->
@@ -183,18 +170,13 @@ function clearText(field) {
         <li><a href="#">Comentar</a></li>
         <li><a href="#">Hashtag</a></li>
       </ul>
-    
-  
-        <ul class="footer_credit">
-          
+      <ul class="footer_credit"> 
           <li>Diseñado y Desarrollado por:</li>
           <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
-          <li>Copyright &copy; 2012</li>
-          
-        </ul>
-        
+          <li>Copyright &copy; 2012</li>  
+      </ul>      
   </nav>
-  </div>
+</div>
 <!-- end of footer -->
 </body>
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Modificar Comentario</title>
+<title>Responder Comentario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
@@ -42,7 +42,7 @@ function clearText(field) {
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
 
-<g:form id="${comentario}" name="form1" method="post"  action="modificarComentario" >
+<g:form id="${comentario}" name="form1" method="post"  action="responderComentario" >
 
 <table align="center" width="50%" border="5">
   <tr>
@@ -52,15 +52,15 @@ function clearText(field) {
   </tr>
     
    <tr>
-      <td height="23">
-      <div align="center">
-         <form name="form1" method="post" action="">
-         <label>
-               <input type="submit" name="button" id="button" value="Modificar">
-         </label>
-         </form>
-      </div>
-      </td>
+    <td height="23">
+    <div align="center">
+       <form name="form1" method="post" action="">
+       <label>
+          	<input type="submit" name="button" id="button" value="Comentar">
+        </label>
+        </form>
+    </div>
+    </td>
    </tr>
      
 </table>
@@ -80,14 +80,13 @@ function clearText(field) {
         <li><a href="#">Comentar</a></li>
         <li><a href="#">Hashtag</a></li>
       </ul>
-    
       <ul class="footer_credit">
         <li>Diseñado y Desarrollado por:</li>
         <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
-        <li>Copyright &copy; 2012</li> 
-      </ul>
+        <li>Copyright &copy; 2012</li>
+      </ul>   
   </nav>
-  </div>
+</div>
 <!-- end of footer -->
 </body>
 </html>
