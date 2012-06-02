@@ -21,7 +21,7 @@ class UsuarioController {
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
 
 	def index = {								 
-			
+		
 		if(session.usuario)
 		{
 			redirect (action :'vistaPerfil', model:[usuario:session.nickname])
@@ -93,7 +93,7 @@ class UsuarioController {
 				session.email = params.email
 				session.password = params.password
 				obtenerUsuario()
-				redirect (action :'vistaPerfil', model:[usuario:session.nickname])
+				redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
 			}
 			/**
 			 * Ha fallado el incio el de sesion
@@ -227,7 +227,7 @@ class UsuarioController {
 		
 		if(Token.tokenVigente(session.usuario.email))
 		{
-			render (view: 'perfil',model:[usuario:session.nickname])
+			render (view: 'perfil',model:[usuario:session.nickname,miUsuario:session.usuario])
 		}
 		else
 		{
