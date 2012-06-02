@@ -1,0 +1,118 @@
+@charset "utf-8";
+/* CSS Document */
+.menuh{
+	margin:0;/*reseteo de los margenes y padding izquiero que viene por defecto*/
+	margin-top: 0px;
+	margin-left: 180px;
+	padding:0;
+	height:20px;/*por ser menu orizontal se le define un alto*/
+	list-style:none;/*eliminadno bullet de la lista*/
+}
+.menuh li{/*elemento de la lista*/
+	float:right;
+	position:relative;
+}
+
+.menuh a{/*enlaces dentro del elemento de la lista*/
+	display:block;
+	height:20px;
+	line-height:20px;
+	color:#000;
+	text-decoration:none;
+	font-family:Helvetica, arial, verdana;
+	font-size: 14px;
+	/*font-weight:bold;*/
+	width:115px;
+	text-align:center;
+/*transicion*/
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+}
+.menuh a:hover{
+	background-color:#537c11;
+	color:#fff;
+	text-transform: uppercase;
+}
+.menuh a:active{
+	color:#000;
+}
+.menuh a.first{
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 5px 0px 5px 0px;
+	border-radius: 5px 0px 5px 0px;
+}
+.menuh a.meddle{
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 5px 0px 5px 0px;
+	border-radius: 5px 0px 5px 0px;
+	
+
+}
+
+.menuh a.last{
+	box-shadow:none;
+/*adaptando el menu a la distancia correcta.quitando espacio a la derecha*/
+	-moz-border-radius-topleft: 0px;
+	-moz-border-radius-topright: 0px;
+	-moz-border-radius-bottomright: 5px;
+	-moz-border-radius-bottomleft: 0px;
+	-webkit-border-radius: 5px 0px 5px 0px;
+	border-radius: 5px 0px 5px 0px;
+}
+.submenu{
+	margin:0;
+	padding:0;
+	list-style:none;
+	position:absolute;/*posicion absoluta para ser movido o enmarcado dentro de relative*/
+	left:0;/*alineando el submenu a la izq*/
+	top:20px;/*SIEMPRE DEBE SER EL MISMO ALTO DEL BOTON sino hay un salto de 1 o mas pixeles y estaria cerrando el submenu*/
+	background-color:#fafafa;
+	/*border:#537c11 1px solid;*/
+/*transicion para todo el submenu*/
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+/*ocultar y hidden el menu*/
+	opacity:0;/*colocar algo invisible en todos los browser pero en ie6*/
+	visibility:hidden;/*este el para ie6*/
+}
+.submenu li{
+	width:100%;
+}
+.submenu a{
+	color:#333;
+	text-shadow:0px 0px 0px #EEEEEE;
+	filter: dropshadow(color=#EEEEEE, offx=0, offy=-1);
+	width:100%;
+	border-bottom:1px #537c11 solid;
+}
+.submenu a.first{
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+.submenu a.last{
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+	border:none;
+}
+	
+.submenu a:hover{
+	background-color:rbga(0, 0, 0, 1);
+	text-transform: capitalize;
+	font-size:12px;
+}
+.menuh li:hover >.submenu{/*el selector > indica que se verá solo el primer nivel de submenu*/
+	opacity:1;
+	visibility:visible;
+}
