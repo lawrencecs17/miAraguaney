@@ -20,9 +20,8 @@ class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
 
-	def index = {
-								 
-			//redirect  (url:"/")
+	def index = {								 
+			
 		if(session.usuario)
 		{
 			redirect (action :'vistaPerfil', model:[usuario:session.nickname])
