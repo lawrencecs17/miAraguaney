@@ -227,7 +227,7 @@ class UsuarioController {
 		
 		if(Token.tokenVigente(session.usuario.email))
 		{
-			render (view: 'perfil',model:[usuario:session.nickname,miUsuario:session.usuario])
+			redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
 		}
 		else
 		{

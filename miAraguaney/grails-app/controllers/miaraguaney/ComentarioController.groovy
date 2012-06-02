@@ -555,7 +555,7 @@ class ComentarioController {
 				serviceResponse = "Comentario creado"
 			}
 			
-			render (view: 'crearComentario', model:[usuario:session.nickname])
+			redirect (action: 'consultarComentarioPorUsuario', model:[usuario:session.nickname])
 	}
 	else
 	{
@@ -995,6 +995,41 @@ class ComentarioController {
 			destruirSesion()
 		}
 	   } //fin metodo agregar comentario
+	
+	/**
+	* Invocacion al servicio de consultar todos los Comentarios
+	* registrados en el sistema
+	*/
+	def consultarComentarioPorUsuario = {
+	   
+	   /**
+	   * Se ubica la URL del servicio que lista a todos los Comentarios
+	   */
+	   def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorUsuario?usuario=" + session.nickname )
+	   def listaComentario
+	   
+	   /**
+	   * Se establece la conexion con el servicio
+	   * Se determina el tipo de peticion (GET) y
+	   * el contenido de la misma (Archivo plano XML)
+	   */
+	   def connection = url.openConnection()
+	   connection.setRequestMethod("GET" )
+	   connection.setRequestProperty("Content-Type" ,"text/xml" )
+	   
+	   if(connection.responseCode == 200)
+	   {
+		   def miXml = new XmlSlurper().parseText(connection.content.text)
+		   listaComentario = procesarXmlComentario(miXml)
+	   }
+	   else{
+		   render "Se ha generado un error:"
+		   render connection.responseCode
+		   render connection.responseMessage
+	   }
+
+	   render (view:'perfilUsuario', model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
+   }
 	
 	/*
 	* metodo que destruye todas las variables de session del sistema
