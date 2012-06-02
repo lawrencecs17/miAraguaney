@@ -258,7 +258,7 @@ class UsuarioController {
 		}
 	
 	def vistaActivarUsuario =	{
-		render (view:'activarUsuario',model:[aviso:serviceResponse, miLink:redireccion])
+		render (view:'activarUsuario',model:[usuario:session.nickname])
 	}
 		
 		
@@ -273,12 +273,13 @@ class UsuarioController {
 		connection.setDoOutput(true)
 		connection.connect()
 		def serviceResponse = "No hay respuesta!"
+		def miXml
 		
 			if(connection.responseCode == 200)
 			{
 								
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse = miXml.mensaje
+				miXml = new XmlSlurper().parseText(connection.content.text)
+				serviceResponse = miXml.mensaje 
 				
 				if(serviceResponse == "")
 				{
@@ -286,13 +287,12 @@ class UsuarioController {
 				}
 				
 			}
-			
-			render (view :'registroExitoso', model:[aviso:serviceResponse])
+			render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
 		
 		}
 	
 	def vistaEliminarUsuario ={
-		render (view:'eliminarUsuario')
+		render (view:'eliminarUsuario',model:[usuario:session.nickname])
 		
 		}
 	

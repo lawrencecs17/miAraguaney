@@ -35,7 +35,7 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h2 align="left">Bienvenido ${usuario}</h2>
+    <h3 align="left">Bienvenido ${usuario}</h3>
   </div>
   <!-- end of header -->
 </div>

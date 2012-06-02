@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Agregar Comentario</title>
+<title>Desactivar Cuenta</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
 
@@ -35,7 +35,7 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h2 align="left">Bienvenido ${usuario}</h2>
+    <h3 align="left">Bienvenido ${usuario}</h3>
   </div>
   <!-- end of header -->
 </div>
@@ -43,17 +43,6 @@ function clearText(field) {
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
 
-
-
-  <!-- end of content -->
-  <!-- end of sidebar -->
-  <div class="cleaner"></div>
-</div>
-<div id="content_wrapper_bottom"></div>
-
-
-
-<body>
 <form id="form1" name="form1" method="post" action="eliminarUsuario">
 
 <table width="400" border="0" align="center">
@@ -73,6 +62,19 @@ function clearText(field) {
   </tr>
 </table>
 </form>
+
+  <!-- end of content -->
+  <!-- end of sidebar -->
+  <div class="cleaner"></div>
+</div>
+<div id="content_wrapper_bottom">
+
+</div>
+
+
+
+<body>
+
 </body>
 
 
