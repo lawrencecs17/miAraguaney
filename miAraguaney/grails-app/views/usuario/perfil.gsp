@@ -35,7 +35,7 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h3 align="left">Bienvenido ${usuario}</h3>
+    <h3 align="left"><img src="${resource( dir:'images/fotoPerfil',file:"${usuario}.png")}" width="80" height="60"  /> Bienvenido ${usuario}</h3>
   </div>
   <!-- end of header -->
 </div>
