@@ -14,6 +14,7 @@ class ComentarioController {
    	private static Log log = LogFactory.getLog("Logs."+ComentarioController.class.getName())
 	ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
 	static String urlVista  
+	static String mensaje
 	   
     def index() { 
 		render (view:'consultarTodos')
@@ -1113,6 +1114,58 @@ class ComentarioController {
 		session.removeAttribute("email")
 		session.removeAttribute("password")
 		render(view:"../index")
+	}
+	
+	/**
+	* Metodo que se encarga de redireccionar a la vista seleccionar etiqueta
+	*/
+	def busquedaEtiqueta = {
+		
+	    render (view:'consultarTag', model:[usuario:session.nickname])
+	}
+	
+	/**
+	* Metodo que se encarga de listar los comentarios por etiqueta
+	*/
+	def buscarEtiqueta = {
+		
+		urlVista = "consultarComentarioTag"
+		/**
+		* Se ubica la URL del servicio que lista a todos los Comentarios
+		*/
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + params.etiqueta )
+		def listaComentario
+		
+		/**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+		def connection = url.openConnection()
+		connection.setRequestMethod("GET" )
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		
+		if(connection.responseCode == 200)
+		{
+			mensaje = ""
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			if (miXml.mensaje == "La etiqueta no existe")
+			{
+				mensaje = miXml.mensaje 
+		    }
+			else
+			{
+				listaComentario = procesarXmlComentario(miXml)
+				println("mensaje = " + miXml.mensaje)
+			}
+		}
+		else{
+			render "Se ha generado un error:"
+			render connection.responseCode
+			render connection.responseMessage
+		}
+ 
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:params.etiqueta, error: mensaje])
 	}
 	
 } // fin Comentario Controller

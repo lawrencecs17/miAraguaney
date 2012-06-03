@@ -635,7 +635,7 @@ class UsuarioController {
 	}
 	
 	def vistaSubirFoto = {
-		def miArchivo = "archivo"
+		def miArchivo = "archivo" 
 		def miPath= "../../miAraguaney/miAraguaney/web-app/images/fotoPerfil"
 		render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname])		
 	}
