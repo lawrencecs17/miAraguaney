@@ -33,9 +33,9 @@ class ComentarioControllerTests extends grails.test.ControllerUnitTestCase{
 		assertNotNull (mensaje)
 		}
 		
-		else
-		assertArrayEquals("Se ha generado un error:",mensaje)
-		}
+	}
+	
+	
 	@Test
 	void agregarComentarioTest(){
 		
@@ -112,6 +112,60 @@ class ComentarioControllerTests extends grails.test.ControllerUnitTestCase{
 	
 	
 		}
+	@Test 
+	void  eliminarComentarioTest (){
+			
+		if(Token.tokenVigente("law@gmail.com"))
+		{
+			mockParams.id = 9
+			mockParams.nickname = "law" 
+			def nick = mockParams.nickname
+			 def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + mockParams.id + "&usuario=" +  mockParams.nickname)
+			def connection = url.openConnection()
+			
+			connection.setRequestMethod("DELETE")
+		
+			connection.setDoOutput(true)
+			connection.connect()
+			def serviceResponse = "No hay respuesta!"
+			
+			
+			if(connection.responseCode == 200)
+			{
+				assertNotNull (true)
+				if(serviceResponse == "")
+				{
+					assertEquals ("", serviceResponse)
+					serviceResponse = "Comentario eliminado"
+				}
 	
+			}
+			
+		
 	
+		}
+		}
+	
+	@Test 
+	void consultarComentarioPorUsuarioTest (){
+		
+		/**
+		* Se ubica la URL del servicio que lista a todos los Comentarios
+		*/
+		
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorUsuario?usuario=" +"law")
+		def listaComentario
+		
+		/**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+		def connection = url.openConnection()
+		connection.setRequestMethod("GET" )
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		
+		assertEquals("200", connection.responseCode.toString())
+
+		}
 }
