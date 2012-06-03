@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar Session</title>
+<title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -15,15 +17,24 @@ function clearText(field) {
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
 
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->             
+        	<li>
+                <a href="#" class="meddle">Usuario</a>
+                <ul class="submenu">
+                    <li class="first"><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                </ul>
+            </li>
+            <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -36,7 +47,7 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <g:form id="form1" name="formLogin" method="post" url="[controller:'usuario',action:'iniciarSesion']">
+ <g:form id="form1" name="formLogin" method="post" url="[controller:'usuario',action:'iniciarSesion']">
         <table width="200" border="0" align="center">
           <tr>
             <td colspan="2" align="center"><p><span>Iniciar Sesion</span></p>
@@ -45,13 +56,13 @@ function clearText(field) {
           <tr>
             <td><label>email</label>&nbsp;</td>
             <td align="right"><label>
-              <input type="text" name="email" id="email" width="200px" />
+              <input type="text" name="email" id="email" width="200px" required="required"/>
             </label></td>
           </tr>
           <tr>
             <td><label>password</label>&nbsp;</td>
             <td align="right"><label>
-              <input type="password" name="password" id="password" width="200px" />
+              <input type="password" name="password" id="password" width="200px" required="required"/>
             </label></td>
           </tr>
           <tr>

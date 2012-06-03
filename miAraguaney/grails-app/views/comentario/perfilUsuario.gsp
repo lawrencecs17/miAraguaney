@@ -26,9 +26,8 @@ function clearText(field) {
       <ul class="menuh grid_10"><!-- ordenada o desordenada-->
           <li><a href="#" class="first">Token</a>
             <ul class="submenu">
-                  <li><a href="#" class="first">Iniciar Sesion</a></li>
-                  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
-                  <li><a href="#" class="last">Consultar Token</a></li>
+                  <li><g:link controller="usuario" action="index">Iniciar Sesion</g:link></li>
+                  <li class="last"><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
             </ul>
           </li>
               <li>
@@ -39,14 +38,13 @@ function clearText(field) {
                     </li>
                 </ul>
             </li>
-            <li>
+             <li>
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
-                    <li><a href="#" class="first">Registar</a></li>
-                    <li><a href="#">Consultar</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#">Activar</a></li>
-                    <li><a href="#" class="last">Desactivar</a></li>
+                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
             <li>
@@ -57,7 +55,7 @@ function clearText(field) {
                     <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>
-            <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+            <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
         </ul>
     </div>
 <!-- FIN NUEVO MENU-->

@@ -225,52 +225,67 @@ class UsuarioController {
 	
 	def vistaPerfil = {
 		
-		if(Token.tokenVigente(session.usuario.email))
+		if(session.usuario)
 		{
-			redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
+		
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
+			}
+			else
+			{
+				destruirSesion()
+			}
 		}
 		else
 		{
-			destruirSesion()
+			render(view:"../index")
 		}
 	}
 	/*
 	 * Accion para consumir servivios de activar usuario
 	 */
 	
-	def activarUsuario = {
-		
-		def serviceResponse = "No hay respuesta"
-		/**
-		 * Se establece la URL de la ubicacion
-		 * del servicio
-		 */
-		def url = new URL("http://localhost:8080/miOrquidea/usuario/activarUsuario" )
-		/**
-		 * Se extraen los parametros y convierte a formato
-		 * XML para luego ser enviada a la aplicacion miOrquidea
-		 *
-		 */
-		def parametro = new Usuario (params) as XML
-		
-		
-		def connection = url.openConnection()
-		connection.setRequestMethod("PUT")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-		
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(parametro.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-			def serviceResponse2 = "No hay respuesta!"
+	def activarUsuario = {		
 			
-				if(connection.responseCode == 200)
-				{
-					serviceResponse = "El usuario ha activado su cuenta correctamente"
-				}
-				render (view :'registroExitoso', model:[aviso:serviceResponse])
+				
+				def serviceResponse = "No hay respuesta"
+				/**
+				 * Se establece la URL de la ubicacion
+				 * del servicio
+				 */
+				def url = new URL("http://localhost:8080/miOrquidea/usuario/activarUsuario" )
+				/**
+				 * Se extraen los parametros y convierte a formato
+				 * XML para luego ser enviada a la aplicacion miOrquidea
+				 *
+				 */
+				def parametro = new Usuario (params) as XML
+				
+				
+				def connection = url.openConnection()
+				connection.setRequestMethod("PUT")
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.doOutput=true
+				
+					Writer writer = new OutputStreamWriter(connection.outputStream)
+					writer.write(parametro.toString())
+					writer.flush()
+					writer.close()
+					connection.connect()
+					
+						if(connection.responseCode == 200)
+						{
+							serviceResponse = "El usuario tiene su cuenta activa en este momento"							
+							redirect(action:'vistaIniciarSesion')													
+						}
+						else
+						{
+							serviceResponse = "No aplica proceso de activacion para este usuario"
+							render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.usuario.nickname])
+						}
+								
+			
 		}
 	
 	def vistaActivarUsuario =	{
@@ -283,27 +298,35 @@ class UsuarioController {
 	 * Accion para consumir servicio de eliminar usuario
 	 */
 	def eliminarUsuario = {
-		def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario?email=$params.email&password=$params.password" )
-		def connection = url.openConnection()
-		connection.setRequestMethod("DELETE")
-		connection.setDoOutput(true)
-		connection.connect()
-		def serviceResponse = "No hay respuesta!"
-		def miXml
 		
-			if(connection.responseCode == 200)
+			if(Token.tokenVigente(session.usuario.email))
 			{
-								
-				miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse = miXml.mensaje 
+				def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario?email=$params.email&password=$params.password" )
+				def connection = url.openConnection()
+				connection.setRequestMethod("DELETE")
+				connection.setDoOutput(true)
+				connection.connect()
+				def serviceResponse = "No hay respuesta!"
+				def miXml
 				
-				if(serviceResponse == "")
-				{
-					serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro
-				}
-				
+					if(connection.responseCode == 200)
+					{
+										
+						miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje 
+						
+						if(serviceResponse == "")
+						{
+							serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro							
+						}
+						
+					}
+					render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
 			}
-			render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
+			else
+			{
+				destruirSesion()
+			}
 		
 		}
 	
@@ -479,41 +502,50 @@ class UsuarioController {
 	
 	def modificarUsuario = {
 		
-		def email = params.email
-		def password = params.password
-		def serviceResponse = "No hay respuesta"
+		if(params.email == session.usuario.email && params.password == session.usuario.password)
+		{
 		
-		/**
-		* Se ubica la URL del servicio que lista a todos los usuarios
-		*/
-	   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
-	   def listUsuario
-	   /**
-		* Se establece la conexion con el servicio
-		* Se determina el tipo de peticion (GET) y
-		* el contenido de la misma (Archivo plano XML)
-		*/
-	   def connection = url.openConnection()
-	   connection.setRequestMethod("GET" )
-	   connection.setRequestProperty("Content-Type" ,"text/xml" )
-	   
-	   if(connection.responseCode == 200)
-	   {
-		   def miXml = new XmlSlurper().parseText(connection.content.text)
-		   listUsuario = procesarXML(miXml)
-		   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
-		   if(miUsuario!=null)
-		   {			  
-			   miUsuario.email2 = email
-			   render (view:'actualizarUsuario',model:[usuario:miUsuario])
-		   }
-	   }
-	   else
-	   {
-		   render "Se ha generado un error:"
-		   render connection.responseCode
-		   render connection.responseMessage
-	   }
+				def email = params.email
+				def password = params.password
+				def serviceResponse = "No hay respuesta"
+				
+				/**
+				* Se ubica la URL del servicio que lista a todos los usuarios
+				*/
+			   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
+			   def listUsuario
+			   /**
+				* Se establece la conexion con el servicio
+				* Se determina el tipo de peticion (GET) y
+				* el contenido de la misma (Archivo plano XML)
+				*/
+			   def connection = url.openConnection()
+			   connection.setRequestMethod("GET" )
+			   connection.setRequestProperty("Content-Type" ,"text/xml" )
+			   
+			   if(connection.responseCode == 200)
+			   {
+				   def miXml = new XmlSlurper().parseText(connection.content.text)
+				   listUsuario = procesarXML(miXml)
+				   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
+				   if(miUsuario!=null)
+				   {			  
+					   miUsuario.email2 = email
+					   render (view:'actualizarUsuario',model:[usuario:miUsuario])
+				   }
+			   }
+			   else
+			   {
+				   render "Se ha generado un error:"
+				   render connection.responseCode
+				   render connection.responseMessage
+			   }
+		}
+		else
+		{
+			def miAlerta = "Usuario y/o password invalidos"
+			render(view:"modificarUsuario",model:[alerta:miAlerta])
+		}
 		
 	}
 	
@@ -531,50 +563,57 @@ class UsuarioController {
 	
 	def modificarDatosUsuario ={
 		
-		def serviceResponse = "No hay respuesta"
-		/**
-		 * Se establece la URL de la ubicacion
-		 * del servicio
-		 */
-		def url = new URL("http://localhost:8080/miOrquidea/usuario/modificarUsuario" )
-		/**
-		 * Se extraen los parametros y convierte a formato
-		 * XML para luego ser enviada a la aplicacion miOrquidea
-		 *
-		 */
-		def parametro = new Usuario (params) as XML
 		
-		
-		def connection = url.openConnection()
-		connection.setRequestMethod("PUT")
-		connection.setRequestProperty("Content-Type" ,"text/xml" )
-		connection.doOutput=true
-		
-			Writer writer = new OutputStreamWriter(connection.outputStream)
-			writer.write(parametro.toString())
-			writer.flush()
-			writer.close()
-			connection.connect()
-		   
-			if(connection.responseCode == 201)
-			{
-				//El usuario fue registrado
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse  = "Usuario Registrado Exitosamente!"
-			}
-			else
-			{
-				//Ha ocurrido un error,  posiblemente datos duplicados
-				// XML vacío ó error en formato de datos entrada
-				if(connection.responseCode == 200)
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			def serviceResponse = "No hay respuesta"
+			/**
+			 * Se establece la URL de la ubicacion
+			 * del servicio
+			 */
+			def url = new URL("http://localhost:8080/miOrquidea/usuario/modificarUsuario" )
+			/**
+			 * Se extraen los parametros y convierte a formato
+			 * XML para luego ser enviada a la aplicacion miOrquidea
+			 *
+			 */
+			def parametro = new Usuario (params) as XML
+			
+			
+			def connection = url.openConnection()
+			connection.setRequestMethod("PUT")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+			
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(parametro.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+			   
+				if(connection.responseCode == 201)
 				{
+					//El usuario fue registrado
 					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
+					serviceResponse  = "Usuario Registrado Exitosamente!"
 				}
-			 }
-			render (view :'registroExitoso', model:[aviso:serviceResponse])
- 
+				else
+				{
+					//Ha ocurrido un error,  posiblemente datos duplicados
+					// XML vacío ó error en formato de datos entrada
+					if(connection.responseCode == 200)
+					{
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+					}
+				 }
+				render (view :'registroExitoso', model:[aviso:serviceResponse])
 		}
+		else
+		{
+			destruirSesion()
+		}
+	}
 	
 	/**
 	* Metodo encargado de buscar los nombre de las Usuarios registrados en el sistema
@@ -635,56 +674,79 @@ class UsuarioController {
 	}
 	
 	def vistaSubirFoto = {
-		def miArchivo = "archivo" 
-		def miPath= "../../miAraguaney/miAraguaney/web-app/images/fotoPerfil"
-		render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname])		
+		if(Token.tokenVigente(session.usuario.email))
+		{
+			if(session.usuario)
+			{
+				def miArchivo = "archivo"
+				def miPath= "../../miAraguaney/miAraguaney/web-app/images/fotoPerfil"
+				render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname])
+			}
+			else
+			{
+				render(view:"../index")
+			}
+		}
+		else
+		{
+			destruirSesion()
+		}		
 	}
 	
 	def save = {		
-
-			// Save Avatar if uploaded
-			def fotoPerfil = request.getFile('adjunto')
+			
 			try
 			{
-				if (!fotoPerfil.isEmpty()) {							
-						
-						/*def url = new URL("http://localhost:8080/miOrquidea/usuario/uploadFile" )
-						def connection = url.openConnection()
-						connection.setRequestMethod("POST")
-						connection.setRequestProperty("Content-Type" ,"multipart/form-data" )
-						connection.doOutput=true
-						Writer writer = new OutputStreamWriter(connection.outputStream)
-						writer.write(params)
-						writer.flush()
-						writer.close()
-						connection.connect()*/
-						/************Respuesta*************/
-						//def miXml = new XmlSlurper().parseText(connection.content.text)
-					File miPath = new File("../miAraguaney/web-app/images/fotoPerfil")
-					miPath.mkdirs()
-					def limpiarDir = new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png")
-					boolean limpio = true
-					if(limpiarDir.exists())
-					{
-						limpio = limpiarDir.delete()
-					}
+				if(Token.tokenVigente(session.usuario.email))
+				{
 					
-					if(limpio)
-					{
-						fotoPerfil.transferTo(new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png"))				
-						redirect(action:"index")
+				
+					def fotoPerfil = request.getFile('adjunto')
+					
+					if (!fotoPerfil.isEmpty()) {							
+							
+							/*def url = new URL("http://localhost:8080/miOrquidea/usuario/uploadFile" )
+							def connection = url.openConnection()
+							connection.setRequestMethod("POST")
+							connection.setRequestProperty("Content-Type" ,"multipart/form-data" )
+							connection.doOutput=true
+							Writer writer = new OutputStreamWriter(connection.outputStream)
+							writer.write(params)
+							writer.flush()
+							writer.close()
+							connection.connect()*/
+							/************Respuesta*************/
+							//def miXml = new XmlSlurper().parseText(connection.content.text)
+						File miPath = new File("../miAraguaney/web-app/images/fotoPerfil")
+						miPath.mkdirs()
+						def limpiarDir = new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png")
+						boolean limpio = true
+						if(limpiarDir.exists())
+						{
+							limpio = limpiarDir.delete()
+						}
+						
+						if(limpio)
+						{
+							fotoPerfil.transferTo(new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png"))				
+							redirect(action:"index")
+						}
+						else
+						{
+							def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+							render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname,alerta:miALerta])
+						}
+						
 					}
 					else
 					{
-						def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-						render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname,alerta:miALerta])
-					}
-					
+						redirect(action:"vistaSubirFoto")
+					} 
 				}
 				else
 				{
-					redirect(action:"vistaSubirFoto")
-				} 
+					destruirSesion()
+				}
 			}
 			catch(Exception)
 			{

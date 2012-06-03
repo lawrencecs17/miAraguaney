@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Desactivar Cuenta</title>
+<title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -15,19 +17,48 @@ function clearText(field) {
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
 
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->
+          <li><a href="#" class="first">Token</a>
+            <ul class="submenu">
+                  <li><a href="#" class="first">Iniciar Sesion</a></li>
+                  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
+                  <li><a href="#" class="last">Consultar Token</a></li>
+            </ul>
+          </li>
+              <li>
+                <a href="#" class="first">HashTag</a>
+                <ul class="submenu">
+                    <li>
+                    	<g:link controller="etiqueta" action="consultarTodasLasEtiquetas">Consultar Todos..</g:link>
+                    </li>
+                </ul>
+            </li>
+             <li>
+                <a href="#" class="meddle">Usuario</a>
+                <ul class="submenu">
+                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
+                    <li class="last"><g:link controller="usuario" action="vistaSubirFoto">Foto de Pefil</g:link></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="meddle">Comentarios</a>
+                <ul class="submenu">
+                    <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
+                    <li><a href="#">Consultar S.Tag</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -35,14 +66,12 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h3 align="left">Bienvenido ${usuario}</h3>
+   <h3 align="left"><img src="${resource( dir:'images/fotoPerfil',file:"${usuario}.png")}" width="80" height="60"  /> Bienvenido ${usuario}</h3>
   </div>
   <!-- end of header -->
 </div>
-
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-
 <form id="form1" name="form1" method="post" action="eliminarUsuario">
 
 <table width="400" border="0" align="center">
@@ -62,28 +91,16 @@ function clearText(field) {
   </tr>
 </table>
 </form>
-
   <!-- end of content -->
   <!-- end of sidebar -->
   <div class="cleaner"></div>
 </div>
-<div id="content_wrapper_bottom">
-
-</div>
-
-
-
-<body>
-
-</body>
-
-
+<div id="content_wrapper_bottom"></div>
 <!-- end of content_wrapper -->
 <div id="footer">
   <nav id="nav">
       <ul class="footer_menu">
         <li><a href="#miaraguaney">MiAraguaney</a></li>
-        
         <li><a href="#">Comentar</a></li>
         <li><a href="#">Hashtag</a></li>
       </ul>
@@ -102,5 +119,3 @@ function clearText(field) {
 <!-- end of footer -->
 </body>
 </html>
-
-

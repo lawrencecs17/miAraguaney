@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar Session</title>
+<title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -11,27 +13,22 @@ function clearText(field) {
     else if (field.value == '') field.value = field.defaultValue;
 }
 </script>
-<style type="text/css">
-<!--
-.color {
-	color: #F00;
-	font-size: 12px;
-}
--->
-</style>
 </head>
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
 
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->         
+            <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -44,9 +41,10 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
+
     <table width="400" border="0" align="center">
 		  <tr align="center">
-		    <td  class="color">${aviso}</td>
+		    <td  style="color: red">${aviso}</td>
 		  </tr>
 		  <tr align="center">
 		    <td height="47" colspan="2"><input type="button" name="btnregresar" id="btnregresar" value="aceptar"  onclick=" location.href='${miLink}' " />      </td></td>

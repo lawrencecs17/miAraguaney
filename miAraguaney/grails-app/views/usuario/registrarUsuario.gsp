@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Iniciar Session</title>
+<title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -15,19 +17,18 @@ function clearText(field) {
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
 
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->         
+            <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -40,7 +41,9 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-    <form id="form1" name="form1" method="post" action="registrarUsuario">
+<h3 align="center" style="color: #557C12">Registrar Usuario</h3>
+
+<form id="form1" name="form1" method="post" action="registrarUsuario">
   
   <p>&nbsp;</p>
   <table width="400px" border="0" align="center">
@@ -50,45 +53,45 @@ function clearText(field) {
     </tr>
   <tr>
     <td width="184">Nombre: </td>
-    <td colspan="2"><input type="text" name="nombre" id="nombre" /></td>
+    <td colspan="2"><input type="text" name="nombre" id="nombre" required="required"/></td>
   </tr>
   <tr>
     <td>Apellido: </td>
-    <td colspan="2"><input type="text" name="apellido" id="apellido" /></td>
+    <td colspan="2"><input type="text" name="apellido" id="apellido" required="required" /></td>
     </tr>
   <tr>
     <td><p>Biografia:</p></td>
     <td colspan="2"><label>
-      <textarea name="biografia" id="biografia" height="48px"></textarea>
+      <textarea name="biografia" id="biografia" height="48px" required="required"></textarea>
     </label></td>
     </tr>
   <tr>
     <td>Email: </td>
     <td colspan="2"><label>
-      <input name="email" type="text" id="email" value="" />
+      <input name="email" type="text" id="email" value="" required="required"/>
     </label></td>
     </tr><tr>
     <td>Fecha Nac:</td>
     <td colspan="2"><label>
-      <input name="fecha" type="text" id="fecha" value="" />
+      <input name="fecha" type="text" id="fecha" value="" required="required"/>
     </label></td>
     </tr>
     
   <tr>
     <td>Nickname: </td>
     <td colspan="2"><label>
-      <input type="text" name="nickname" id="nickname" />
+      <input type="text" name="nickname" id="nickname" required="required" />
     </label></td>
     </tr>
   <tr>
     <td>Pais: </td>
     <td colspan="2"><label>
-      <input type="text" name="pais" id="pais" />
+      <input type="text" name="pais" id="pais" required="required"/>
     </label></td>
     </tr>
   <tr>
     <td>Password: </td>
-    <td colspan="2"><input type="password" name="password" id="password" /></td>
+    <td colspan="2"><input type="password" name="password" id="password" required="required"/></td>
     </tr>
   <tr>
     <td  colspan="2" align="center"><label>
@@ -101,6 +104,7 @@ function clearText(field) {
   </table>
   <p>&nbsp;</p>
 </form>
+
 
   <!-- end of content -->
   <!-- end of sidebar -->
