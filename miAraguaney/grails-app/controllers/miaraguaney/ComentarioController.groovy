@@ -17,6 +17,8 @@ class ComentarioController {
 	static String mensaje
 	static String nombreEtiqueta = ""
 	static String nombreTag
+	static String nombreComentario1
+	static String nombreCom1
 	   
     def index() { 
 		render (view:'consultarTodos')
@@ -66,7 +68,6 @@ class ComentarioController {
    */
    def procesarXmlComentario(def xml) 
    {
-	   println ("entre = " + xml.comentario.size())
 	  ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
 	  listaComentario.clear()
 	  listaComentado.clear()
@@ -82,7 +83,6 @@ class ComentarioController {
 		  comentario.mensaje = xml.comentario[i].mensaje
 		  comentario.fecha = xml.comentario[i].fecha
 		  comentario.principal = xml.comentario[i].principal
-		  println ("mensaje = " + comentario.mensaje)
 		  
 		  /**
 		  * busca el nickname del usuario por el idUsuario del xml
@@ -646,6 +646,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -724,6 +738,20 @@ class ComentarioController {
 						if (urlVista == "consultarComentarioTag")
 						{
 							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -804,6 +832,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -882,6 +924,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -959,11 +1015,11 @@ class ComentarioController {
 				}
 		   
                 if (urlVista == "consultarComentarios")
-			    {
+				{
 					redirect (action: 'consultarTodosLosComentarios')
-			    }
-			    else
-			    {
+				}
+				else
+				{
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
@@ -972,7 +1028,21 @@ class ComentarioController {
 					{
 						if (urlVista == "consultarComentarioTag")
 						{
-						redirect (action: 'buscarEtiqueta')
+							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -987,45 +1057,59 @@ class ComentarioController {
 	* Metodo que se encarga de eliminar un comentario por nickname y idComentario
 	*/
 	def eliminarComentario = {
-		
+
 		if(Token.tokenVigente(session.usuario.email))
-		{
+        {
 			def nick = session.nickname
-		 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)			
+		 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
 			def connection = url.openConnection()
+			
 			connection.setRequestMethod("DELETE")
 			connection.setDoOutput(true)
 			connection.connect()
-			def serviceResponse = "No hay respuesta!"		
+			def serviceResponse = "No hay respuesta!"	
 			
 			if(connection.responseCode == 200)
 			{			
 				def miXml = new XmlSlurper().parseText(connection.content.text)
 				serviceResponse = miXml.mensaje
-					
+				mensaje = miXml.mensaje 
 				if(serviceResponse == "")
 				{
 					serviceResponse = "Comentario eliminado"
 				}
 			}
-				
 			if (urlVista == "consultarComentarios")
 			{
-				redirect (action: 'consultarTodosLosComentarios')
+					redirect (action: 'consultarTodosLosComentarios')
 			}
 			else
 			{
-				if (urlVista == "perfilUsuario")
-				{
-					redirect (action: 'consultarComentarioPorUsuario')
-				}
-				else
-				{
-					if (urlVista == "consultarComentarioTag")
+					if (urlVista == "perfilUsuario")
 					{
-						redirect (action: 'buscarEtiqueta')
+						redirect (action: 'consultarComentarioPorUsuario')
 					}
-				}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'busquedaPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
+					}
 			}
 		}
 		else
@@ -1116,6 +1200,20 @@ class ComentarioController {
 						if (urlVista == "consultarComentarioTag")
 						{
 							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -1296,11 +1394,22 @@ class ComentarioController {
 	def buscarPorId  = {
 		
 		urlVista = "consultarComentarioId"
-
+		nombreComentario1 = null
+		nombreComentario1 = params.idcomentario
+		
+		if (nombreComentario1 != null)
+		{
+			nombreCom1 = nombreComentario1
+		}
+		if (nombreComentario1 == null)
+		{
+			nombreComentario1 = nombreCom1
+		}
+		
 		/**
 		* Se ubica la URL del servicio que lista a todos los Comentarios
 		*/
-		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" + params.idcomentario)
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" + nombreComentario1)
 		def listaComentario
 		
 		/**
@@ -1316,14 +1425,14 @@ class ComentarioController {
 		{
 			mensaje = ""
 			def miXml = new XmlSlurper().parseText(connection.content.text)
-			println("fecha = " + miXml.mensaje)
-			if (miXml.mensaje == "La etiqueta no existe")
+			
+			if (miXml.mensaje == "El comentario no existe")
 			{
 				mensaje = miXml.mensaje
 			}
 			else
 			{
-				listaComentario = procesarXmlComentario(miXml)
+				listaComentario = procesarXmlIdComentario(miXml)
 			}
 		}
 		else{
@@ -1332,8 +1441,132 @@ class ComentarioController {
 			render connection.responseMessage
 		}
  
-		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, idComentario:params.idcomentario, error: mensaje])
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, idComentario:nombreComentario1, error: mensaje])
 	}
+	
+	
+	/**
+	* Metodo encargado de procesar el archivo XML recibido del
+	* servicio miOrquidea app
+	* @param xml
+	* @return
+	*/
+	def procesarXmlIdComentario(def xml)
+	{
+	   ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
+	   listaComentario.clear()
+	   listaComentado.clear()
+	   String nickname = session.nickname
+	   
+	   /**
+	   * recorro toda el xml de los comentarios registrados en el sistema
+	   */
+		   ComentarioCliente comentario = new ComentarioCliente()
+		   comentario.idComentario = xml.@id.text()
+		   comentario.mensaje = xml.mensaje
+		   comentario.fecha = xml.fecha
+		   comentario.principal = xml.principal
+		   
+		   /**
+		   * busca el nickname del usuario por el idUsuario del xml
+		   */
+		   def nombreUsuario = buscarUsuario(xml.autor.@id.text())
+		   if (nombreUsuario)
+		   {
+			   comentario.autor = nombreUsuario
+		   }
+		   
+		   /**
+		   * busca la cantidad de like que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadLike = buscarLike(xml.@id.text())
+		   if (cantidadLike)
+		   {
+			   comentario.cantidadLike = cantidadLike
+		   }
+		   if (comentario.cantidadLike == '')
+			   comentario.cantidadLike = '0'
+ 
+		   /**
+		   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadDislike = buscarDislike(xml.@id.text())
+		   if (cantidadDislike)
+		   {
+			   comentario.cantidadDislike = cantidadDislike
+		   }
+		   if (comentario.cantidadDislike == '')
+				 comentario.cantidadDislike = '0'
+				 
+		   /**
+		   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadComentados = buscarComentados(xml.@id.text())
+		   if (cantidadComentados)
+		   {
+			  comentario.cantidadComentados = cantidadComentados
+		   }
+		   
+		   /**
+		   * busca si el usuario califico like en el comentario por el idComentario del xml
+		   */
+		   String like = buscarCalificacionLike(xml.@id.text(), nickname)
+		   comentario.calificacionLike = like
+		   
+		   /**
+		   * busca si el usuario califico dislike en el comentario por el idComentario del xml
+		   */
+		   String dislike = buscarCalificacionDislike(xml.@id.text(), nickname)
+		   comentario.calificacionDislike = dislike
+		   
+		   /**
+		   * lista de las respuestas que tiene un comentario
+		   */
+		   xml.comentado.comentario.each { p ->
+		   
+				 ComentarioCliente comentarioComentado = new ComentarioCliente()
+				 def xmlComentado = xmlComentado(p.@id.text())
+				 def nombreUsuarioComentado = buscarUsuario(xmlComentado.autor.@id.text())
+						 
+				 if (nombreUsuarioComentado)
+				 {
+					 comentarioComentado.autor = nombreUsuarioComentado
+				 }
+						 
+				 comentarioComentado.idComentarioComentado = xml.@id.text()
+				 comentarioComentado.idComentario = xmlComentado.@id.text()
+				 comentarioComentado.fecha = xmlComentado.fecha.text()
+				 comentarioComentado.mensaje = xmlComentado.mensaje.text()
+				 comentarioComentado.principal = xmlComentado.principal.toString()
+						 
+				 String likeRespuesta = buscarCalificacionLike(xmlComentado.@id.text(), nickname)
+				 comentarioComentado.calificacionLike = likeRespuesta
+						 
+				 String dislikeRespuesta = buscarCalificacionDislike(xmlComentado.@id.text(), nickname)
+				 comentarioComentado.calificacionDislike = dislikeRespuesta
+						 
+				 def cantidadLikeRespuesta = buscarLike(xmlComentado.@id.text())
+				 if (cantidadLikeRespuesta)
+				 {
+					 comentarioComentado.cantidadLike = cantidadLikeRespuesta
+				 }
+				 if (comentarioComentado.cantidadLike == '')
+					 comentarioComentado.cantidadLike = '0'
+			   
+				 def cantidadDislikeRespuesta = buscarDislike(xmlComentado.@id.text())
+				 if (cantidadDislikeRespuesta)
+				 {
+					 comentarioComentado.cantidadDislike = cantidadDislikeRespuesta
+				 }
+				 if (comentarioComentado.cantidadDislike == '')
+					 comentarioComentado.cantidadDislike = '0'
+						 
+				 listaComentado.add(comentarioComentado)
+			 }
+			listaComentario.add(comentario)
+	 
+	   return listaComentario
+   }
 	
 } // fin Comentario Controller
 

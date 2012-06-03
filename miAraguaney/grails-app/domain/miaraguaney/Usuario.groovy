@@ -5,11 +5,11 @@ package miaraguaney
  * temporal, apoyandose en los servicios ofrecidos por miOrquidea app
  * 
  * @author Lawrence.
- *
+ * 
  */
 
 class Usuario {
-	
+	 
 	String nombre
 	String apellido
 	String nickname

@@ -72,6 +72,11 @@
 	-webkit-border-radius: 100px;
 -moz-border-radius: 100px;
 border-radius: 40px;
+border-color:#557C12
+}
+
+.law table{
+border-color:#557C12
 }
 .submenu{
 	margin:0;

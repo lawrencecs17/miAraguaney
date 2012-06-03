@@ -78,9 +78,9 @@ function clearText(field) {
        
 <div id="content_wrapper">
 
-<g:if test = "${ error == 'La etiqueta no existe'}">
-	<h4 align="center" style="color: #557C12"> La Etiqueta "${etiqueta}" no existe</h4>
-	<form id="form1" name="form1" method="post" action="busquedaEtiqueta">
+<g:if test = "${ error == 'El comentario no existe'}">
+	<h4 align="center" style="color: #557C12"> El Comentario "${idComentario}" no existe</h4>
+	<form id="form1" name="form1" method="post" action="busquedaPorId">
 		 <div align="center">
 		     <label>
 		        <input type="submit" name="button" id="button" value="Volver">
@@ -206,13 +206,13 @@ function clearText(field) {
 </g:each>
 
 <p>&nbsp;</p>
-	<form id="form1" name="form1" method="post" action="busquedaPorId">
+	<g:form id="form1" name="form1" method="post" action="busquedaPorId">
 		 <div align="center">
 		     <label>
 		        <input type="submit" name="button" id="button" value="Volver">
 		     </label>
 		 </div>
-	</form>
+	</g:form>
 	
 </g:else>
   <!-- end of content -->
