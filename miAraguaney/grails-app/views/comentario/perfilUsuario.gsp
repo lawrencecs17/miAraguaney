@@ -28,6 +28,7 @@ function clearText(field) {
             <ul class="submenu">
                   <li><g:link controller="usuario" action="index">Iniciar Sesion</g:link></li>
                   <li class="last"><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
+                  <li><a href="#" class="last">Consultar Token</a></li>
             </ul>
           </li>
               <li>
@@ -52,7 +53,8 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><a href="#">Consultar S.Tag</a></li>
+                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                 </ul>
             </li>
             <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->

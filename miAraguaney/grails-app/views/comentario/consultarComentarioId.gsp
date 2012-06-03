@@ -42,11 +42,10 @@ function clearText(field) {
             <li>
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
-                    <li><a href="#" class="first">Registar</a></li>
-                    <li><a href="#">Consultar</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#">Activar</a></li>
-                    <li><a href="#" class="last">Desactivar</a></li>
+                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
             <li>
@@ -54,7 +53,8 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><a href="#">Consultar S.Tag</a></li>
+                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                 </ul>
             </li>
             <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>

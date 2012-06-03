@@ -18,15 +18,43 @@ function clearText(field) {
     <div id="site_title">
       <h1>miAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-      	  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+    <div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->
+          <li><a href="#" class="first">Token</a>
+            <ul class="submenu">
+                  <li><g:link controller="usuario" action="index">Iniciar Sesion</g:link></li>
+                  <li class="last"><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
+                  <li><a href="#" class="last">Consultar Token</a></li>
+            </ul>
+          </li>
+              <li>
+                <a href="#" class="first">HashTag</a>
+                <ul class="submenu">
+                    <li>
+                    	<g:link controller="etiqueta" action="consultarTodasLasEtiquetas">Consultar Todos..</g:link>
+                    </li>
+                </ul>
+            </li>
+             <li>
+                <a href="#" class="meddle">Usuario</a>
+                <ul class="submenu">
+                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="meddle">Comentarios</a>
+                <ul class="submenu">
+                    <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                </ul>
+            </li>
+            <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
     <!-- end of menu -->
     <div id="search_box">

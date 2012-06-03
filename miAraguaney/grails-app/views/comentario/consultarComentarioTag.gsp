@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Consultar Comentarios</title>
+<title>Consultar Comentarios Etiquetas</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
@@ -42,11 +42,10 @@ function clearText(field) {
             <li>
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
-                    <li><a href="#" class="first">Registar</a></li>
-                    <li><a href="#">Consultar</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#">Activar</a></li>
-                    <li><a href="#" class="last">Desactivar</a></li>
+                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
             <li>
@@ -54,7 +53,8 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><a href="#">Consultar S.Tag</a></li>
+                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                 </ul>
             </li>
             <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>

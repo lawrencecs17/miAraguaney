@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Perfil Usuario</title>
+<title>Registro Exitoso</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
@@ -25,34 +25,15 @@ function clearText(field) {
 <div class="container_12">
       <ul class="menuh grid_10"><!-- ordenada o desordenada-->
           <li><a href="#" class="first">Token</a>
-            <ul class="submenu">
-                  <li><g:link controller="usuario" action="vistaIniciarSesion">Iniciar Sesion</g:link></li>
-                  <li class="last"><g:link controller="usuario" action="cerrarSesion"> Cerrar Sesion</g:link></li>
-            </ul>
           </li>
               <li>
                 <a href="#" class="first">HashTag</a>
-                <ul class="submenu">
-                    <li>
-                    	<g:link controller="etiqueta" action="consultarTodasLasEtiquetas">Consultar Todos..</g:link>
-                    </li>
-                </ul>
             </li>
              <li>
                 <a href="#" class="meddle">Usuario</a>
-                <ul class="submenu">
-                    <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
-                    <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
-                </ul>
             </li>
             <li>
                 <a href="#" class="meddle">Comentarios</a>
-                <ul class="submenu">
-                    <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
-                    <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><a href="#">Consultar S.Tag</a></li>
-                </ul>
             </li>
             <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
         </ul>

@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Perfil Usuario</title>
+<title>Foto Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
@@ -44,6 +44,7 @@ function clearText(field) {
                 <ul class="submenu">
                     <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
                     <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
@@ -52,7 +53,8 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><a href="#">Consultar S.Tag</a></li>
+                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                 </ul>
             </li>
             <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
