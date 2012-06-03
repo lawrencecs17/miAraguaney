@@ -27,34 +27,35 @@ function clearText(field) {
           <li><a href="#" class="first">Token</a>
             <ul class="submenu">
                   <li><a href="#" class="first">Iniciar Sesion</a></li>
-                    <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link>
-                    <li><a href="#" class="last">Consultar Token</a></li>
-                </ul>
+                  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
+                  <li><a href="#" class="last">Consultar Token</a></li>
+            </ul>
           </li>
             <li>
-              <a href="#" class="meddle">HashTag</a>
+                <a href="#" class="meddle">HashTag</a>
                 <ul class="submenu">
-                  <li><a href="#" class="first">Crear</a></li>
+                    <li><a href="#" class="first">Crear</a></li>
                     <li><a href="#">Consultar</a></li>
                     <li><a href="#">Modificar</a></li>
                     <li><a href="#" class="last">Eliminar</a></li>
                 </ul>
             </li>
-            <li><a href="#" class="meddle">Usuario</a>
+            <li>
+                <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
-                  <li><a href="#" class="first">Registar</a></li>
+                    <li><a href="#" class="first">Registar</a></li>
                     <li><a href="#">Consultar</a></li>
                     <li><a href="#">Modificar</a></li>
                     <li><a href="#">Activar</a></li>
                     <li><a href="#" class="last">Desactivar</a></li>
                 </ul>
             </li>
-            <li><a href="#" class="meddle">Comentar</a>
+            <li>
+                <a href="#" class="meddle">Comentarios</a>
                 <ul class="submenu">
-                  <li><a href="#" class="first">Publicar</a></li>
-                    <li><a href="#">Consultar</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#" class="last">Eliminar</a></li>
+                    <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
+                    <li><a href="#">Consultar Tag</a></li>
+                    <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>
             <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
@@ -74,8 +75,8 @@ function clearText(field) {
   <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
-<div id="content_wrapper" class="law">
-<form id="form1" name="form1" method="post" action="agregarComentario">
+<div id="content_wrapper">
+<form id="form1" name="form1" method="post" action="agregarComentario" >
 <table align="center" width="200px" border="12" class="law">
   <tr class="law">
     <td height="76%" align="center"><textarea name="mensaje" cols="79%" rows="4"  ></textarea></td>
