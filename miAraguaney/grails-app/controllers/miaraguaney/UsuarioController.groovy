@@ -306,7 +306,7 @@ class UsuarioController {
 				connection.setRequestMethod("DELETE")
 				connection.setDoOutput(true)
 				connection.connect()
-				def serviceResponse = "No hay respuesta!"
+				def serviceResponse = "Datos incorrectos!"
 				def miXml
 				
 					if(connection.responseCode == 200)
