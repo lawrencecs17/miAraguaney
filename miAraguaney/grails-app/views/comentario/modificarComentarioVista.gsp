@@ -3,7 +3,9 @@
 <head>
 <title>Modificar Comentario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -15,19 +17,52 @@ function clearText(field) {
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
 
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->
+          <li><a href="#" class="first">Token</a>
+            <ul class="submenu">
+                  <li><a href="#" class="first">Iniciar Sesion</a></li>
+                  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
+                  <li><a href="#" class="last">Consultar Token</a></li>
+            </ul>
+          </li>
+            <li>
+                <a href="#" class="first">HashTag</a>
+                <ul class="submenu">
+                    <li>
+                    	<g:link controller="etiqueta" action="consultarTodasLasEtiquetas">Consultar Todos..</g:link>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="meddle">Usuario</a>
+                <ul class="submenu">
+                    <li><a href="#" class="first">Registar</a></li>
+                    <li><a href="#">Consultar</a></li>
+                    <li><a href="#">Modificar</a></li>
+                    <li><a href="#">Activar</a></li>
+                    <li><a href="#" class="last">Desactivar</a></li>
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="meddle">Comentarios</a>
+                <ul class="submenu">
+                    <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
+                    <li><a href="#">Consultar C.Tag</a></li>
+                    <li><a href="#">Consultar S.Tag</a></li>
+                </ul>
+            </li>
+            <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>
+           <!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -35,13 +70,13 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h2 align="left">Bienvenido ${usuario}</h2>
+   <h3 align="left"><img src="${resource( dir:'images/fotoPerfil',file:"${usuario}.png")}" width="80" height="60"  /> Bienvenido ${usuario}</h3>
   </div>
-  <!-- end of header --> 
+  <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
-
+<h3 align="center" style="color: #557C12">Modificar Comentario</h3>
 <g:form id="${comentario}" name="form1" method="post"  action="modificarComentario" >
 
 <table align="center" width="50%" border="5">

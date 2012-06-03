@@ -31,13 +31,12 @@ function clearText(field) {
                   <li><a href="#" class="last">Consultar Token</a></li>
             </ul>
           </li>
-            <li>
-                <a href="#" class="meddle">HashTag</a>
+              <li>
+                <a href="#" class="first">HashTag</a>
                 <ul class="submenu">
-                    <li><a href="#" class="first">Crear</a></li>
-                    <li><a href="#">Consultar</a></li>
-                    <li><a href="#">Modificar</a></li>
-                    <li><a href="#" class="last">Eliminar</a></li>
+                    <li>
+                    	<g:link controller="etiqueta" action="consultarTodasLasEtiquetas">Consultar Todos..</g:link>
+                    </li>
                 </ul>
             </li>
             <li>
@@ -76,6 +75,8 @@ function clearText(field) {
 </div>
 <!-- end of header_wrapper -->
 <div id="content_wrapper">
+<h3 align="center" style="color: #557C12">Comentarios Usuario</h3>
+
 <form id="form1" name="form1" method="post" action="agregarComentario" >
 <table align="center" width="200px" border="12" class="law">
   <tr class="law">

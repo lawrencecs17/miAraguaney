@@ -49,7 +49,7 @@ class EtiquetaController {
 		   render connection.responseMessage
 	   }
 	   
-	   render (view:"consultarEtiquetas", model:[etiquetas:listaEtiqueta])   
+	   render (view:"consultarEtiquetas", model:[etiquetas:listaEtiqueta, usuario:session.nickname])   
    }
    
    /**
