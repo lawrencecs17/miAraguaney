@@ -54,8 +54,7 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>
             <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>
@@ -78,26 +77,30 @@ function clearText(field) {
 <!-- end of header_wrapper -->
        
 <div id="content_wrapper">
-<h3 align="center" style="color: #557C12">Etiquetas Generales</h3>
-<table align="center" width="25%" border="4">
-		<tr style="color: black" bgcolor="#557C12">
-			<td align="center" width="100px" ><strong>Nombre</strong></td>
-		</tr>
-	<g:each in="${etiquetas}" var="etiqueta">
-		<tr style="color: black" bgcolor="#9FC740">
-			<td align="center">${etiqueta}</td>		
-		</tr>
-	</g:each>
-</table>
+<h3 align="center" style="color: #557C12">Escriba el Id del comentario</h3>
 
-<p>&nbsp;</p>
-	<g:form id="form1" name="form1" method="post" controller="comentario" action="consultarComentarioPorUsuario">
-		 <div align="center">
-		     <label>
-		        <input type="submit" name="button" id="button" value="Volver">
-		     </label>
-		 </div>
-	</g:form>
+<form id="form1" name="form1" method="post" action="buscarPorId">
+<table align="center" width="25%" border="4">
+   <tr>
+    <td height="23">Id Comentario:      <label>
+        <input type="text" size="10"name="idcomentario" id="etiquetas" required="required">
+    </td>
+   </tr>
+   <tr>
+    <td height="23">
+    <div align="center">
+      <form name="form1" method="post" action="">
+        <label>
+          <input type="submit" name="button" id="button" value="Aceptar">
+        </label>
+      </form>
+    </div>
+    </td>
+    </tr> 
+</table>
+</form>
+
+
   <!-- end of content -->
   <!-- end of sidebar -->
   <div class="cleaner"></div>

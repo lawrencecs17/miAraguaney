@@ -15,6 +15,8 @@ class ComentarioController {
 	ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
 	static String urlVista  
 	static String mensaje
+	static String nombreEtiqueta = ""
+	static String nombreTag
 	   
     def index() { 
 		render (view:'consultarTodos')
@@ -64,6 +66,7 @@ class ComentarioController {
    */
    def procesarXmlComentario(def xml) 
    {
+	   println ("entre = " + xml.comentario.size())
 	  ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
 	  listaComentario.clear()
 	  listaComentado.clear()
@@ -79,6 +82,7 @@ class ComentarioController {
 		  comentario.mensaje = xml.comentario[i].mensaje
 		  comentario.fecha = xml.comentario[i].fecha
 		  comentario.principal = xml.comentario[i].principal
+		  println ("mensaje = " + comentario.mensaje)
 		  
 		  /**
 		  * busca el nickname del usuario por el idUsuario del xml
@@ -521,12 +525,16 @@ class ComentarioController {
 	    /**
 	    * Creando el XML Comentario para pasarlo al servicio
 	    */
+		def listaEtiquetas = null
+		listaEtiquetas = params.etiquetas
 	    xml.comentario() {
 			   autor (nick)
 			   mensaje(params.mensaje)
-			   def arrayetiquetas = params.etiquetas.split(",")
-			   def sizearray= arrayetiquetas.size()
-			   	if (sizearray >0)
+			   if (listaEtiquetas != '')
+			   {
+				   def arrayetiquetas = listaEtiquetas.split(",")
+				   def sizearray= arrayetiquetas.size()
+			   	   if (sizearray >0)
 				   {
 					   for (int i=0;i< sizearray ;i++)
 					   {
@@ -535,6 +543,7 @@ class ComentarioController {
 						   	  }
 					   }
 				   }
+			   }
 	    }
 		
 		def connection = url.openConnection()
@@ -631,6 +640,13 @@ class ComentarioController {
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
 					}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
+					}
 				}
 		}
 		else
@@ -702,6 +718,13 @@ class ComentarioController {
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
+					}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
 					}
 				}
 		}
@@ -775,6 +798,13 @@ class ComentarioController {
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
 					}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
+					}
 				}
 		}
 		else
@@ -845,6 +875,13 @@ class ComentarioController {
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
+					}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
 					}
 				}
 		}
@@ -921,17 +958,24 @@ class ComentarioController {
 					serviceResponse = "Comentario modificado"
 				}
 		   
-				if (urlVista == "consultarComentarios")
-				{
+                if (urlVista == "consultarComentarios")
+			    {
 					redirect (action: 'consultarTodosLosComentarios')
-				}
-				else
-				{
+			    }
+			    else
+			    {
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
 					}
-				}  
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+						redirect (action: 'buscarEtiqueta')
+						}
+					}
+				}
 		}
 		else
 		{
@@ -974,6 +1018,13 @@ class ComentarioController {
 				if (urlVista == "perfilUsuario")
 				{
 					redirect (action: 'consultarComentarioPorUsuario')
+				}
+				else
+				{
+					if (urlVista == "consultarComentarioTag")
+					{
+						redirect (action: 'buscarEtiqueta')
+					}
 				}
 			}
 		}
@@ -1049,7 +1100,7 @@ class ComentarioController {
 				{
 					serviceResponse = "Respuesta exitosa"
 				}
-		   
+				
 				if (urlVista == "consultarComentarios")
 				{
 					redirect (action: 'consultarTodosLosComentarios')
@@ -1059,6 +1110,13 @@ class ComentarioController {
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
+					}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
 					}
 				}
 		}
@@ -1130,10 +1188,22 @@ class ComentarioController {
 	def buscarEtiqueta = {
 		
 		urlVista = "consultarComentarioTag"
+		nombreEtiqueta = null
+		nombreEtiqueta = params.etiqueta
+		
+		if (nombreEtiqueta != null) 
+		{
+			nombreTag = nombreEtiqueta
+		}
+		if (nombreEtiqueta == null)
+		{
+			nombreEtiqueta = nombreTag
+		}
+
 		/**
 		* Se ubica la URL del servicio que lista a todos los Comentarios
 		*/
-		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + params.etiqueta )
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + nombreEtiqueta )
 		def listaComentario
 		
 		/**
@@ -1156,7 +1226,6 @@ class ComentarioController {
 			else
 			{
 				listaComentario = procesarXmlComentario(miXml)
-				println("mensaje = " + miXml.mensaje)
 			}
 		}
 		else{
@@ -1165,7 +1234,105 @@ class ComentarioController {
 			render connection.responseMessage
 		}
  
-		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:params.etiqueta, error: mensaje])
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:nombreEtiqueta, error: mensaje])
+	}
+	
+	
+	/**
+	* Metodo que se encarga de listar los comentarios sin etiqueta
+	*/
+	def buscarSinEtiqueta = {
+		
+		urlVista = "consultarComentarioSinTag"
+		
+		/**
+		* Se ubica la URL del servicio que lista a todos los Comentarios
+		*/
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarSinEtiqueta")
+		def listaComentario
+		
+		/**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+		def connection = url.openConnection()
+		connection.setRequestMethod("GET" )
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		
+		if(connection.responseCode == 200)
+		{
+			mensaje = ""
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			if (miXml.mensaje == "La etiqueta no existe")
+			{
+				mensaje = miXml.mensaje
+			}
+			else
+			{
+				listaComentario = procesarXmlComentario(miXml)
+			}
+		}
+		else{
+			render "Se ha generado un error:"
+			render connection.responseCode
+			render connection.responseMessage
+		}
+ 
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, error: mensaje])
+	}
+	
+	/**
+	* Metodo que se encarga de redireccionar a la vista seleccionar id comentario
+	*/
+	def busquedaPorId = {
+		
+		render (view:'seleccionarIdComentario', model:[usuario:session.nickname])
+	}
+	
+	/**
+	* Metodo que se encarga de listar los comentarios por id
+	*/
+	def buscarPorId  = {
+		
+		urlVista = "consultarComentarioId"
+
+		/**
+		* Se ubica la URL del servicio que lista a todos los Comentarios
+		*/
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" + params.idcomentario)
+		def listaComentario
+		
+		/**
+		* Se establece la conexion con el servicio
+		* Se determina el tipo de peticion (GET) y
+		* el contenido de la misma (Archivo plano XML)
+		*/
+		def connection = url.openConnection()
+		connection.setRequestMethod("GET" )
+		connection.setRequestProperty("Content-Type" ,"text/xml" )
+		
+		if(connection.responseCode == 200)
+		{
+			mensaje = ""
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			println("fecha = " + miXml.mensaje)
+			if (miXml.mensaje == "La etiqueta no existe")
+			{
+				mensaje = miXml.mensaje
+			}
+			else
+			{
+				listaComentario = procesarXmlComentario(miXml)
+			}
+		}
+		else{
+			render "Se ha generado un error:"
+			render connection.responseCode
+			render connection.responseMessage
+		}
+ 
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, idComentario:params.idcomentario, error: mensaje])
 	}
 	
 } // fin Comentario Controller
