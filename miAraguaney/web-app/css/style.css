@@ -64,8 +64,8 @@ img { margin: 0px; padding: 0px; border: none; }
 
 #header  #site_title {
 	float: left;
-	width: 300px;
-	padding: 90px 0 40px 0px;
+	width: 250px;
+	padding: 74px 0px 0px 0px;
 }
 
 #site_title h1 {
@@ -76,7 +76,7 @@ img { margin: 0px; padding: 0px; border: none; }
 #site_title h1 a {
 	margin: 0px;
 	padding: 0px;
-	font-size: 30px;
+	font-size: 28px;
 	color: #ffffff;
 	font-weight: bold;
 	text-decoration: none;
@@ -89,7 +89,6 @@ img { margin: 0px; padding: 0px; border: none; }
 
 #site_title h1 a span {
 	display: block;
-	margin-left: 2px;
 	font-size: 14px;
 	color: #416902;
 	font-weight: bold;
@@ -122,7 +121,7 @@ img { margin: 0px; padding: 0px; border: none; }
 	float: right;
 	display: block;
 	height: 35px;
-	width: 80px;
+	width: 125px;
 	margin: 0;
 	padding: 8px 0 0 0;
 	text-align: center;
@@ -131,39 +130,70 @@ img { margin: 0px; padding: 0px; border: none; }
 	color: #333333;	
 	font-weight: bold;
 	outline: none;
+	
 }
 
 #menu li a:hover, #menu li .current {
 	color: #333333;
 	background: url(images/menu_hover.png) no-repeat top;
-	font-family: Helvetica, sans-serif;
+	font-family: Helvetica, sans-serif;.
+	visibility: hidden;
+	
 }
 
 /* end of menu */
+
+.menuh a:hover{
+	background-color:rgba(255,255,255,0.3);/*tambien puede ser simplemente color #999*/
+	color:#fff;
+}
+.menuh a:active{
+	color:#090;
+	text-shadow: 0px 1px 1px #000000;
+	filter: dropshadow(color=#000000, offx=0, offy=1);
+}
+#menu .submenu li a{
+	margin:0; /*resetear margin padding y bullet*/
+	padding:0;
+	list-style:none;
+	position:absolute;/*poscion absoluta para ser movido o enmarcado dentro de relative*/
+	left:0;/*alineando el submenu a la izq*/
+	top:40px;/*SIEMPRE DEBE SER EL ISMO ALTO DEL BOTON sino hay un salo de 1 o mas pixeles y estaria cerrando el submenu*/
+	background-color:#fff;
+	border:#999 1px solid;
+/*transicion para todo el submenu*/
+	-webkit-transition: all 500ms ease;
+	-moz-transition: all 500ms ease;
+	-o-transition: all 500ms ease;
+	transition: all 500ms ease;
+/*ocultar y hidden el menu*/
+	opacity:0;/*colocar algo invisible en todos los browser pero en ie6*/
+	
+}
 
 /* Search */
 
 #header #search_box {
 	position: absolute;
-	width: 335px;
-	height: 72px;
-	bottom: 30px;
-	right: 50px;
-	background: url(images/search.png)
+	width: 300px;
+	height: 51px;
+	bottom: -23px;
+	right: 12px;
+	background: url("images/search-copia.png")
 }
 
 #search_box form {
 	width: 280px;
 	height: 27px;
 	margin: 0;
-	padding: 25px 0 0 0;
+	padding: 20px 0 0 0;
 }
 
 #searchfield {
-	height: 17px;
-	width: 270px;
+	height: 12px;
+	width: 240px;
 	padding: 4px 5px 6px 5px;
-	color: #fff;
+	color: #333;
 	font-size: 12px;
 	font-variant: normal;
 	line-height: normal;
@@ -357,7 +387,7 @@ nav ul li a:hover{
 }
 
 nav .footer_credit{
-	color: #ccc;
+	color: #333;
 	padding: 0px;
 	list-style: none;
 	text-decoration:none;

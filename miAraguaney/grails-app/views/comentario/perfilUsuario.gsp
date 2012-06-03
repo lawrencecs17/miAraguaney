@@ -3,7 +3,9 @@
 <head>
 <title>Perfil Usuario</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
+ <link rel="stylesheet" href="${resource(dir: 'css', file: 'menu.css')}" type="text/css">
 
 <script language="javascript" type="text/javascript">
 function clearText(field) {
@@ -15,19 +17,51 @@ function clearText(field) {
 <body>
 <div id="header_wrapper">
   <div id="header">
-    <div id="site_title">
-      <h1>miAraguaney</h1>
+<div id="site_title">
+      <h1>MiAraguaney</h1>
     </div>
-    <div id="menu">
-      <ul>
-      	  <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link>
-          <li><a href="#">Token</a></li> 
-          <li><a href="#">Usuario</a></li>  
-          <li><a href="#">Hashtag</a></li>  
-          <li><a href="#">Comentar</a>
-          <li><a href="#" class="current">MiAraguaney</a></li>        
-      </ul>
+<!-- NUEVO MENU-->    
+
+<div class="container_12">
+      <ul class="menuh grid_10"><!-- ordenada o desordenada-->
+          <li><a href="#" class="first">Token</a>
+            <ul class="submenu">
+                  <li><a href="#" class="first">Iniciar Sesion</a></li>
+                    <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link>
+                    <li><a href="#" class="last">Consultar Token</a></li>
+                </ul>
+          </li>
+            <li>
+              <a href="#" class="meddle">HashTag</a>
+                <ul class="submenu">
+                  <li><a href="#" class="first">Crear</a></li>
+                    <li><a href="#">Consultar</a></li>
+                    <li><a href="#">Modificar</a></li>
+                    <li><a href="#" class="last">Eliminar</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="meddle">Usuario</a>
+                <ul class="submenu">
+                  <li><a href="#" class="first">Registar</a></li>
+                    <li><a href="#">Consultar</a></li>
+                    <li><a href="#">Modificar</a></li>
+                    <li><a href="#">Activar</a></li>
+                    <li><a href="#" class="last">Desactivar</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="meddle">Comentar</a>
+                <ul class="submenu">
+                  <li><a href="#" class="first">Publicar</a></li>
+                    <li><a href="#">Consultar</a></li>
+                    <li><a href="#">Modificar</a></li>
+                    <li><a href="#" class="last">Eliminar</a></li>
+                </ul>
+            </li>
+            <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+        </ul>
     </div>
+<!-- FIN NUEVO MENU-->
+
     <!-- end of menu -->
     <div id="search_box">
       <form action="#" method="get">
@@ -35,21 +69,20 @@ function clearText(field) {
       </form>
     </div>
     <div class="cleaner"></div>
-    <h3 align="left"><img src="${resource( dir:'images/fotoPerfil',file:"${usuario}.png")}" width="80" height="60"  /> Bienvenido ${usuario}</h3>
+   <h3 align="left"><img src="${resource( dir:'images/fotoPerfil',file:"${usuario}.png")}" width="80" height="60"  /> Bienvenido ${usuario}</h3>
   </div>
   <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
-<div id="content_wrapper">
-
+<div id="content_wrapper" class="law">
 <form id="form1" name="form1" method="post" action="agregarComentario">
-<table align="center" width="50%" border="4">
-  <tr>
-    <td height="76%"><textarea name="mensaje" cols="79%" rows="4" ></textarea></td>
+<table align="center" width="200px" border="12" class="law">
+  <tr class="law">
+    <td height="76%" align="center"><textarea name="mensaje" cols="79%" rows="4"  ></textarea></td>
   </tr>
   
    <tr>
-    <td align="center" height="23">Etiquetas:
+    <td align="center" height="23" >Etiquetas:
       <label>
         <input type="text" size="90"name="etiquetas" id="etiquetas">
       </label>
@@ -69,7 +102,7 @@ function clearText(field) {
    </tr>
 </table>
 </form>
-<table align="center" width="50%" border="4">
+<table align="center" width="50%" border="0" class="law">
 <g:each in="${comentarios}" var="comentario">
 
   	<tr style="color: black" bgcolor="#557C12">
@@ -137,22 +170,22 @@ function clearText(field) {
 		  	<tr style="color: black">
 		    	<td>
 		    	<div align="left">
-		    
+
 		    	<g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
 		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
 		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
 		    	</g:if>
-		  
+
 		    	<g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
 		            ${comentario2.cantidadLike} MeGusta<a href="" title="Like" ></a>
 		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
 		    	</g:elseif>
-		    
+
 		    	<g:elseif test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
 		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
 		            ${comentario2.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
 		    	</g:elseif>
-		        
+
 		        </div>
 		    	</td>
 		  	</tr>
@@ -160,7 +193,7 @@ function clearText(field) {
 		    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
 		  	</tr>
 		  	<tr style="color: black">
-		  
+
 		  		<g:if test = "${ session.nickname.equals(comentario2.autor) }">
 		    		<td height="23">
 		    		<div align="center">
@@ -174,13 +207,14 @@ function clearText(field) {
 		    <tr>
 		    	<td height="4">&nbsp;</td>
 		  	</tr>
-		 		
+
 		</g:if>
-		
+
 	</g:each>
-	
+
 </g:each>
 </table>
+
 
   <!-- end of content -->
   <!-- end of sidebar -->
@@ -195,13 +229,18 @@ function clearText(field) {
         <li><a href="#">Comentar</a></li>
         <li><a href="#">Hashtag</a></li>
       </ul>
-      <ul class="footer_credit"> 
+    
+  
+        <ul class="footer_credit">
+          
           <li>Diseñado y Desarrollado por:</li>
           <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
-          <li>Copyright &copy; 2012</li>  
-      </ul>      
+          <li>Copyright &copy; 2012</li>
+          
+        </ul>
+        
   </nav>
-</div>
+  </div>
 <!-- end of footer -->
 </body>
 </html>
