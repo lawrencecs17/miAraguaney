@@ -634,8 +634,63 @@ class UsuarioController {
 	  return nombreUsuario
 	}
 	
+	def vistaSubirFoto = {
+		def miArchivo = "archivo"
+		def miPath= "../../miAraguaney/miAraguaney/web-app/images/fotoPerfil"
+		render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname])		
+	}
 	
-	
-	
+	def save = {		
+
+			// Save Avatar if uploaded
+			def fotoPerfil = request.getFile('adjunto')
+			try
+			{
+				if (!fotoPerfil.isEmpty()) {							
+						
+						/*def url = new URL("http://localhost:8080/miOrquidea/usuario/uploadFile" )
+						def connection = url.openConnection()
+						connection.setRequestMethod("POST")
+						connection.setRequestProperty("Content-Type" ,"multipart/form-data" )
+						connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(params)
+						writer.flush()
+						writer.close()
+						connection.connect()*/
+						/************Respuesta*************/
+						//def miXml = new XmlSlurper().parseText(connection.content.text)
+					File miPath = new File("../miAraguaney/web-app/images/fotoPerfil")
+					miPath.mkdirs()
+					def limpiarDir = new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png")
+					boolean limpio = true
+					if(limpiarDir.exists())
+					{
+						limpio = limpiarDir.delete()
+					}
+					
+					if(limpio)
+					{
+						fotoPerfil.transferTo(new File("../miAraguaney/web-app/images/fotoPerfil/${session.usuario.nickname}.png"))				
+						redirect(action:"index")
+					}
+					else
+					{
+						def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+						render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname,alerta:miALerta])
+					}
+					
+				}
+				else
+				{
+					redirect(action:"vistaSubirFoto")
+				} 
+			}
+			catch(Exception)
+			{
+				def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+				render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname,alerta:miALerta])					
+			}		
+	}
 	
 }
