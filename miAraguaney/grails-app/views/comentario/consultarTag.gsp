@@ -77,17 +77,29 @@ function clearText(field) {
 <!-- end of header_wrapper -->
        
 <div id="content_wrapper">
-<h3 align="center" style="color: #557C12">Etiquetas Generales</h3>
-<table align="center" width="25%" border="4">
-		<tr style="color: black" bgcolor="#557C12">
-			<td align="center" width="100px" ><strong>Nombre</strong></td>
-		</tr>
-	<g:each in="${etiquetas}" var="etiqueta">
-		<tr style="color: black" bgcolor="#9FC740">
-			<td align="center">${etiqueta}</td>		
-		</tr>
-	</g:each>
+<h3 align="center" style="color: #557C12">Escriba Etiqueta</h3>
+
+<form id="form1" name="form1" method="post" action="buscarEtiqueta">
+<table align="center" width="30%" border="4">
+   <tr>
+    <td height="23">Etiqueta:      <label>
+        <input type="text" size="28%"name="etiqueta" id="etiquetas" required="required">
+    </td>
+   </tr>
+   <tr>
+    <td height="23">
+    <div align="center">
+      <form name="form1" method="post" action="">
+        <label>
+          <input type="submit" name="button" id="button" value="Aceptar">
+        </label>
+      </form>
+    </div>
+    </td>
+    </tr> 
 </table>
+</form>
+
 
   <!-- end of content -->
   <!-- end of sidebar -->
@@ -112,3 +124,4 @@ function clearText(field) {
 <!-- end of footer -->
 </body>
 </html>
+

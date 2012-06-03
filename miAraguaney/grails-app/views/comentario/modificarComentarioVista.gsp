@@ -53,7 +53,7 @@ function clearText(field) {
                 <a href="#" class="meddle">Comentarios</a>
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
-                    <li><a href="#">Consultar C.Tag</a></li>
+                    <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
                     <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>

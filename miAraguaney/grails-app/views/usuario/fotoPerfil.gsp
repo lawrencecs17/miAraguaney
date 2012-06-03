@@ -75,9 +75,9 @@ function clearText(field) {
   <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
-<div id="content_wrapper" class="law">
+<div id="content_wrapper">
 			<g:form action="save" controller="usuario" method="post" enctype="multipart/form-data">
-               	<table width="400" border="0" align="center">
+               	<table width="400" border="0" align="center" class="law">
 				  <tr>
 				    <td style="background-color: #537c11"><input type="file" name="adjunto" id="adjunto" /></td>
 				  </tr>

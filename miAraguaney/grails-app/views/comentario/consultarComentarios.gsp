@@ -53,7 +53,7 @@ function clearText(field) {
                 <a href="#" class="meddle">Comentarios</a>
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
-                    <li><a href="#">Consultar C.Tag</a></li>
+                    <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
                     <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>
@@ -78,9 +78,9 @@ function clearText(field) {
        
 <div id="content_wrapper">
 <h3 align="center" style="color: #557C12">Comentarios Generales</h3>
-<table align="center" width="50%" border="4">
-<g:each in="${comentarios}" var="comentario">
 
+<g:each in="${comentarios}" var="comentario">
+<table align="center" width="50%" border="12" class="law">
   	<tr style="color: black" bgcolor="#557C12">
     	<td>${comentario.autor} ${comentario.fecha}</td>
   	</tr>
@@ -187,9 +187,17 @@ function clearText(field) {
 		</g:if>
 		
 	</g:each>
-	
-</g:each>
 </table>
+</g:each>
+
+<p>&nbsp;</p>
+	<form id="form1" name="form1" method="post" action="consultarComentarioPorUsuario">
+		 <div align="center">
+		     <label>
+		        <input type="submit" name="button" id="button" value="Volver">
+		     </label>
+		 </div>
+	</form>
 
   <!-- end of content -->
   <!-- end of sidebar -->

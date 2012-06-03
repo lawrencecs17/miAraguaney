@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>Perfil Usuario</title>
+<title>Consultar Comentarios</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'style.css')}" type="text/css">
  <link rel="stylesheet" href="${resource(dir: 'css', file: 'grid_12.css')}" type="text/css">
@@ -31,7 +31,7 @@ function clearText(field) {
                   <li><a href="#" class="last">Consultar Token</a></li>
             </ul>
           </li>
-              <li>
+            <li>
                 <a href="#" class="first">HashTag</a>
                 <ul class="submenu">
                     <li>
@@ -57,7 +57,8 @@ function clearText(field) {
                     <li><a href="#">Consultar S.Tag</a></li>
                 </ul>
             </li>
-            <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
+            <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>
+           <!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
         </ul>
     </div>
 <!-- FIN NUEVO MENU-->
@@ -74,36 +75,24 @@ function clearText(field) {
   <!-- end of header -->
 </div>
 <!-- end of header_wrapper -->
+       
 <div id="content_wrapper">
-<h3 align="center" style="color: #557C12">Comentarios Usuario</h3>
 
-<form id="form1" name="form1" method="post" action="agregarComentario" >
-<table align="center" width="200px" border="12" class="law">
-  <tr class="law">
-    <td height="76%" align="center"><textarea name="mensaje" cols="79%" rows="4"  ></textarea></td>
-  </tr>
-  
-   <tr>
-    <td align="center" height="23" >Etiquetas:
-      <label>
-        <input type="text" size="90"name="etiquetas" id="etiquetas">
-      </label>
+<g:if test = "${ error == 'La etiqueta no existe'}">
+	<h4 align="center" style="color: #557C12"> La Etiqueta "${etiqueta}" no existe</h4>
+	<form id="form1" name="form1" method="post" action="busquedaEtiqueta">
+		 <div align="center">
+		     <label>
+		        <input type="submit" name="button" id="button" value="Volver">
+		     </label>
+		 </div>
+	</form>
+	
+</g:if>
+<g:else>
 
-     </td>
-     </tr>
-    
-   <tr>
-    <td height="23"><div align="center">
-      <form name="form1" method="post" action="">
-        <label>
-          <input type="submit" name="button" id="button" value="Publicar">
-        </label>
-      </form>
-    </div>
-     </td>
-   </tr>
-</table>
-</form>
+<h4 align="center" style="color: #557C12"> Comentarios Etiqueta por "${etiqueta}"</h4>
+
 
 <g:each in="${comentarios}" var="comentario">
 <table align="center" width="50%" border="12" class="law">
@@ -172,22 +161,22 @@ function clearText(field) {
 		  	<tr style="color: black">
 		    	<td>
 		    	<div align="left">
-
+		    
 		    	<g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
 		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
 		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
 		    	</g:if>
-
+		  
 		    	<g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
 		            ${comentario2.cantidadLike} MeGusta<a href="" title="Like" ></a>
 		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
 		    	</g:elseif>
-
+		    
 		    	<g:elseif test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
 		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
 		            ${comentario2.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
 		    	</g:elseif>
-
+		        
 		        </div>
 		    	</td>
 		  	</tr>
@@ -195,7 +184,7 @@ function clearText(field) {
 		    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
 		  	</tr>
 		  	<tr style="color: black">
-
+		  
 		  		<g:if test = "${ session.nickname.equals(comentario2.autor) }">
 		    		<td height="23">
 		    		<div align="center">
@@ -209,15 +198,23 @@ function clearText(field) {
 		    <tr>
 		    	<td height="4">&nbsp;</td>
 		  	</tr>
-
+		 		
 		</g:if>
-
+		
 	</g:each>
-</table>
+</table>	
 </g:each>
 
-
-
+<p>&nbsp;</p>
+	<form id="form1" name="form1" method="post" action="busquedaEtiqueta">
+		 <div align="center">
+		     <label>
+		        <input type="submit" name="button" id="button" value="Volver">
+		     </label>
+		 </div>
+	</form>
+	
+</g:else>
   <!-- end of content -->
   <!-- end of sidebar -->
   <div class="cleaner"></div>
@@ -231,18 +228,14 @@ function clearText(field) {
         <li><a href="#">Comentar</a></li>
         <li><a href="#">Hashtag</a></li>
       </ul>
-    
-  
-        <ul class="footer_credit">
-          
+      <ul class="footer_credit"> 
           <li>Diseñado y Desarrollado por:</li>
           <li>Lawrence Cermeño | Sara Villarreal | Ricardo Portela</li>
-          <li>Copyright &copy; 2012</li>
-          
-        </ul>
-        
+          <li>Copyright &copy; 2012</li>  
+      </ul>      
   </nav>
-  </div>
+</div>
 <!-- end of footer -->
 </body>
 </html>
+
