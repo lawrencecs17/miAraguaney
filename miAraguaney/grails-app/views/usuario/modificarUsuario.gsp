@@ -79,7 +79,7 @@ function clearText(field) {
 <form id="form1" name="form1" method="post" action="modificarUsuario">
   
   <p>&nbsp;</p>
-  <table width="491" border="0" align="center">
+  <table width="300" border="0" align="center">
   <tr>
     <td colspan="3" align="center"><p>Introduce los siguientes datos:</p></td>
     </tr>
@@ -88,26 +88,22 @@ function clearText(field) {
   <tr>
     <td colspan="3"><p>&nbsp;</p></td>
     </tr>
-  <tr>
-    <td width="93">Email: </td>
-    <td colspan="2"><input type="text" name="email" id="email"  required="required" /></td>
+  <tr align="right">
+    <td width="145"  align="right">Email: </td>
+    <td width="145" align="left" ><input type="text" name="email" id="email"  required="required" /></td>
   </tr>
-  <tr>
-    <td>Password: </td>
-    <td colspan="2"><input type="password" name="password" id="password"  required="required"  /></td>
+  <tr align="center">
+    <td align="right">Password: </td>
+    <td align="left"><input type="password" name="password" id="password"  required="required"  /></td>
     </tr>
   <tr>
-    <td height="54">&nbsp;</td>
-    <td width="215" align="center"><label>
-      <input type="submit" name="btnentrar" id="btnentrar" value="Aceptar" />
-    </label>
-      <div></div></td>
-    <td width="169" align="center"><input type="button" name="btncancelar" id="btncancelar" value="Cancelar" /></td>
+    <td  align="right">
+      <input type="submit" name="btnentrar" id="btnentrar" value="Aceptar" /></td>
+    <td  align="left"><input type="button" name="btncancelar" id="btncancelar" value="Cancelar" /></td>
     </tr>
   </table>
   <p>&nbsp;</p>
 </form>
-
   <!-- end of content -->
   <!-- end of sidebar -->
   <div class="cleaner"></div>
