@@ -17,6 +17,8 @@ class ComentarioController {
 	static String mensaje
 	static String nombreEtiqueta = ""
 	static String nombreTag
+	static String nombreComentario1
+	static String nombreCom1
 	   
     def index() { 
 		render (view:'consultarTodos')
@@ -644,6 +646,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -722,6 +738,20 @@ class ComentarioController {
 						if (urlVista == "consultarComentarioTag")
 						{
 							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -802,6 +832,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -880,6 +924,20 @@ class ComentarioController {
 						{
 							redirect (action: 'buscarEtiqueta')
 						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
 					}
 				}
 		}
@@ -957,11 +1015,11 @@ class ComentarioController {
 				}
 		   
                 if (urlVista == "consultarComentarios")
-			    {
+				{
 					redirect (action: 'consultarTodosLosComentarios')
-			    }
-			    else
-			    {
+				}
+				else
+				{
 					if (urlVista == "perfilUsuario")
 					{
 						redirect (action: 'consultarComentarioPorUsuario')
@@ -970,7 +1028,21 @@ class ComentarioController {
 					{
 						if (urlVista == "consultarComentarioTag")
 						{
-						redirect (action: 'buscarEtiqueta')
+							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -985,45 +1057,59 @@ class ComentarioController {
 	* Metodo que se encarga de eliminar un comentario por nickname y idComentario
 	*/
 	def eliminarComentario = {
-		
+
 		if(Token.tokenVigente(session.usuario.email))
-		{
+        {
 			def nick = session.nickname
-		 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)			
+		 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
 			def connection = url.openConnection()
+			
 			connection.setRequestMethod("DELETE")
 			connection.setDoOutput(true)
 			connection.connect()
-			def serviceResponse = "No hay respuesta!"		
+			def serviceResponse = "No hay respuesta!"	
 			
 			if(connection.responseCode == 200)
 			{			
 				def miXml = new XmlSlurper().parseText(connection.content.text)
 				serviceResponse = miXml.mensaje
-					
+				mensaje = miXml.mensaje 
 				if(serviceResponse == "")
 				{
 					serviceResponse = "Comentario eliminado"
 				}
 			}
-				
 			if (urlVista == "consultarComentarios")
 			{
-				redirect (action: 'consultarTodosLosComentarios')
+					redirect (action: 'consultarTodosLosComentarios')
 			}
 			else
 			{
-				if (urlVista == "perfilUsuario")
-				{
-					redirect (action: 'consultarComentarioPorUsuario')
-				}
-				else
-				{
-					if (urlVista == "consultarComentarioTag")
+					if (urlVista == "perfilUsuario")
 					{
-						redirect (action: 'buscarEtiqueta')
+						redirect (action: 'consultarComentarioPorUsuario')
 					}
-				}
+					else
+					{
+						if (urlVista == "consultarComentarioTag")
+						{
+							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'busquedaPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
+						}
+					}
 			}
 		}
 		else
@@ -1114,6 +1200,20 @@ class ComentarioController {
 						if (urlVista == "consultarComentarioTag")
 						{
 							redirect (action: 'buscarEtiqueta')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioId")
+							{
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
+							}
 						}
 					}
 				}
@@ -1294,11 +1394,22 @@ class ComentarioController {
 	def buscarPorId  = {
 		
 		urlVista = "consultarComentarioId"
-
+		nombreComentario1 = null
+		nombreComentario1 = params.idcomentario
+		
+		if (nombreComentario1 != null)
+		{
+			nombreCom1 = nombreComentario1
+		}
+		if (nombreComentario1 == null)
+		{
+			nombreComentario1 = nombreCom1
+		}
+		
 		/**
 		* Se ubica la URL del servicio que lista a todos los Comentarios
 		*/
-		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" + params.idcomentario)
+		def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" + nombreComentario1)
 		def listaComentario
 		
 		/**
@@ -1314,7 +1425,8 @@ class ComentarioController {
 		{
 			mensaje = ""
 			def miXml = new XmlSlurper().parseText(connection.content.text)
-			if (miXml.mensaje == "La etiqueta no existe")
+			
+			if (miXml.mensaje == "El comentario no existe")
 			{
 				mensaje = miXml.mensaje
 			}
@@ -1329,7 +1441,7 @@ class ComentarioController {
 			render connection.responseMessage
 		}
  
-		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, idComentario:params.idcomentario, error: mensaje])
+		render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, idComentario:nombreComentario1, error: mensaje])
 	}
 	
 	
