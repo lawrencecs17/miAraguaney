@@ -86,7 +86,7 @@ function clearText(field) {
    <tr>
     <td align="center" height="23" >Etiquetas:
       <label>
-        <input type="text" size="90"name="etiquetas" id="etiquetas">
+        <input type="text" size="90"name="etiquetas" id="etiquetas" required="required">
       </label>
 
      </td>

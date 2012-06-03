@@ -369,7 +369,6 @@ class UsuarioController {
 		*
 		*/
 	   def parametro = new Usuario (params) as XML
-	   
 	   def connection = url.openConnection()
 	   connection.setRequestMethod("POST")
 	   connection.setRequestProperty("Content-Type" ,"text/xml" )
