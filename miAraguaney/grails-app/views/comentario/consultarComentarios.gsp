@@ -20,6 +20,7 @@ function clearText(field) {
     </div>
     <div id="menu">
       <ul>
+          <li><g:link controller="usuario" action="cerrarSesion"> Salir</g:link>
           <li><a href="#">Token</a></li> 
           <li><a href="#">Usuario</a></li>  
           <li><a href="#">Hashtag</a></li>  
