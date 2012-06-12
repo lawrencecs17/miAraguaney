@@ -421,15 +421,15 @@ class UsuarioController {
 		   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarUsuario" )
 		   
 		   xml.Usuario() {
-				  nombre (params)
-				  apellido(params.mensaje)
-				  clave(params.mensaje)
-				  correo(params.mensaje)
-				  nickname(params.mensaje)
-				  fecha_nac(params.mensaje)
-				  pais(params.mensaje)
-				  biografia(params.mensaje)
-				  foto(params.mensaje)
+				  nombre (params.nombre)
+				  apellido(params.apellido)
+				  clave(params.password)
+				  correo(params.email)
+				  nickname(params.nickname)
+				  fecha_nac(params.fechaRegistro)
+				  pais(params.pais)
+				  biografia(params.biografia)
+				  //foto(params.mensaje)
 		   }
 		   
 		   def connection = url.openConnection()
@@ -455,7 +455,6 @@ class UsuarioController {
 			  serviceResponse = "ERROR 007"
 			  redireccion = "vistaRegistroUsuario"
 		  }
-		  
 		  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 	   }
 
