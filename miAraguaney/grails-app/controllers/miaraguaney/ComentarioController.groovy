@@ -64,7 +64,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-			render(view:"perfil",model:[email:session.usuario.email,usuario:session.usuario.nickname,alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email,usuario:session.nickname,alerta:miAlerta])
 		}
    }
    
@@ -1404,7 +1404,6 @@ try
 			   render connection.responseCode
 			   render connection.responseMessage
 		   }
-	
 		   render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
 	   }
 	   catch(Exception)

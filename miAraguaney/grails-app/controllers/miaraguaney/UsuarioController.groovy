@@ -89,7 +89,7 @@ class UsuarioController {
 			{
 				serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
 				def nickname = buscarUsuarioPorCorreo (params.email)
-				session.nickname = nickname
+				//session.nickname = params.nickname
 				session.email = params.email
 				session.password = params.password
 				obtenerUsuario()
@@ -131,6 +131,7 @@ class UsuarioController {
 		connection.setDoOutput(true)
 		connection.connect()
 		def miXml = new XmlSlurper().parseText(connection.content.text)
+		session.nickname = miXml.nickname
 		Usuario usuario = procesarUnXml(miXml)
 		session.usuario = usuario
 	}
