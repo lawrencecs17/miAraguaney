@@ -275,52 +275,66 @@ class UsuarioController {
 		
 		def cerrarSesion = {
 			
-				def serviceResponse = "No hay respuesta"
-				/**
-				 * Se establece la URL de la ubicacion
-				 * del servicio
-				 */
-				def url = new URL("http://localhost:8080/miOrquidea/token/anularToken" )
-				/**
-				 * Se extraen los parametros y convierte a formato
-				 * XML para luego ser enviada a la aplicacion miOrquidea
-				 */
-				def gXml = new StringWriter()
-				def xml = new MarkupBuilder(gXml)
+			if (bandera.equals("miOrquidea"))
+			{
 				
-				xml.usuario() {
-					email(session.email)
-					password(session.password)
-				}
-				
-				def connection = url.openConnection()
-				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-				   
-				Writer writer = new OutputStreamWriter(connection.outputStream)
-				writer.write(gXml.toString())
-				writer.flush()
-				writer.close()
-				connection.connect()
-							
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				
-				serviceResponse = miXml.mensaje
-				
-				if(serviceResponse == "")
-				{
-					serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
-					session.removeAttribute("usuario")
-					session.removeAttribute("nickname")
-					session.removeAttribute("email")
-					session.removeAttribute("password")
-					render (view :'../index')
-				}
-				else
-				{
-					render (view :'registroExitoso', model:[aviso:serviceResponse])
-				}
+					def serviceResponse = "No hay respuesta"
+					/**
+					 * Se establece la URL de la ubicacion
+					 * del servicio
+					 */
+					def url = new URL("http://localhost:8080/miOrquidea/token/anularToken" )
+					/**
+					 * Se extraen los parametros y convierte a formato
+					 * XML para luego ser enviada a la aplicacion miOrquidea
+					 */
+					def gXml = new StringWriter()
+					def xml = new MarkupBuilder(gXml)
+					
+					xml.usuario() {
+						email(session.email)
+						password(session.password)
+					}
+					
+					def connection = url.openConnection()
+					connection.setRequestMethod("POST")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+					   
+					Writer writer = new OutputStreamWriter(connection.outputStream)
+					writer.write(gXml.toString())
+					writer.flush()
+					writer.close()
+					connection.connect()
+								
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					
+					serviceResponse = miXml.mensaje
+					
+					if(serviceResponse == "")
+					{
+						serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
+						session.removeAttribute("usuario")
+						session.removeAttribute("nickname")
+						session.removeAttribute("email")
+						session.removeAttribute("password")
+						render (view :'../index')
+					}
+					else
+					{
+						render (view :'registroExitoso', model:[aviso:serviceResponse])
+					}
+			}
+			else
+			{
+				serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
+				session.removeAttribute("usuario")
+				session.removeAttribute("nickname")
+				session.removeAttribute("email")
+				session.removeAttribute("password")
+				session.removeAttribute("token")
+				render (view :'../index')
+			}
 		}
 		
 		def destruirSesion()
