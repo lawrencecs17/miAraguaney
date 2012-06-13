@@ -39,86 +39,187 @@ class UsuarioController {
 		 */
 		def iniciarSesion = {
 		
-				/**
-				 * Se inicializa la variable que recibe la respuesta del servidor
-				 */
-				def serviceResponse = "No hay respuesta"
-				/**
-				 * Se establece la URL de la ubicacion
-				 * del servicio
-				 */
-				def url = new URL("http://localhost:8080/miOrquidea/token/iniciarSesion" )
-				/**
-				 * Se extraen los parametros y convierte a formato
-				 * XML para luego ser enviada a la aplicacion miOrquidea
-				 */
-				
-				def gXml = new StringWriter()
-				def xml = new MarkupBuilder(gXml)
-				def redireccion = "../"
-				/**
-				 * Se construye el XML que se enviara al servicio
-				 */
-				xml.usuario() {
-					email(params.email)
-					password(params.password)
-				}
-				/**
-				 * Se establece el tipo de conexion
-				 */
-				/*****************************************************************/
-				def connection = url.openConnection()
-				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-				Writer writer = new OutputStreamWriter(connection.outputStream)
-				writer.write(gXml.toString())
-				writer.flush()
-				writer.close()
-				connection.connect()
-				/*****************************************************************/
-				
-				/**
+			if (bandera.equals("miOrquidea"))
+		    { 
+					/**
+					 * Se inicializa la variable que recibe la respuesta del servidor
+					 */
+					def serviceResponse = "No hay respuesta"
+					
+					/**
+					 * Se establece la URL de la ubicacion
+					 * del servicio
+					 */
+					def url = new URL("http://localhost:8080/miOrquidea/token/iniciarSesion" )
+					/**
+					 * Se extraen los parametros y convierte a formato
+					 * XML para luego ser enviada a la aplicacion miOrquidea
+					 */
+					
+					def gXml = new StringWriter()
+					def xml = new MarkupBuilder(gXml)
+					def redireccion = "../"
+					
+					/**
+					 * Se construye el XML que se enviara al servicio
+					 */
+					xml.usuario() {
+						email(params.email)
+						password(params.password)
+					}
+					
+					/**
+					 * Se establece el tipo de conexion
+					 */
+					/*****************************************************************/
+					def connection = url.openConnection()
+					connection.setRequestMethod("POST")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+					Writer writer = new OutputStreamWriter(connection.outputStream)
+					writer.write(gXml.toString())
+					writer.flush()
+					writer.close()
+					connection.connect()
+					/*****************************************************************/
+					
+					/**
+					 * Se recoge la respuesta por parte del servidor
+					 */
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					serviceResponse = miXml.mensaje
+					
+					/**
+					 * Caso de exito de incio de sesion
+					 */
+					if(serviceResponse == "")
+					{
+						serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
+						def nickname = buscarUsuarioPorCorreo (params.email)
+						//session.nickname = params.nickname
+						session.email = params.email
+						session.password = params.password
+						obtenerUsuario()
+						redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
+					}
+					/**
+					 * Ha fallado el incio el de sesion
+					 */
+					else
+					{
+						if(params.email=="" || params.password=="")
+						{
+							serviceResponse ="Debe ingresar email y password para acceder a su perfil."
+							render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+						}
+						else if(serviceResponse =="Login y/o Password invalidos")
+						{
+							render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+						}
+						else
+						{
+							redireccion="vistaPerfil"
+							render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+						}
+									
+					}
+		    }
+			else
+			{
+					/**
+					* Se inicializa la variable que recibe la respuesta del servidor
+					*/
+				    def serviceResponse = "No hay respuesta"
+				   
+				   /**
+					* Se establece la URL de la ubicacion
+					* del servicio
+					*/
+				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/login" )
+				   /**
+					* Se extraen los parametros y convierte a formato
+					* XML para luego ser enviada a la aplicacion miOrquidea
+					*/
+				   
+				   def gXml = new StringWriter()
+				   def xml = new MarkupBuilder(gXml)
+				   def redireccion = "../"
+				   
+				   /**
+				   * Se construye el XML que se enviara al servicio
+				   */
+				  xml.Login() {
+					  nickname(params.email)
+					  clave(params.password)
+				  }
+				  
+				  /**
+				  * Se establece el tipo de conexion
+				  */
+				 /*****************************************************************/
+				 def connection = url.openConnection()
+				 connection.setRequestMethod("POST")
+				 connection.setRequestProperty("Content-Type" ,"text/xml" )
+				 connection.doOutput=true
+				 Writer writer = new OutputStreamWriter(connection.outputStream)
+				 writer.write(gXml.toString())
+				 writer.flush()
+				 writer.close()
+				 connection.connect()
+				 /*****************************************************************/
+				 
+				 /**
 				 * Se recoge la respuesta por parte del servidor
 				 */
 				def miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse = miXml.mensaje
+				serviceResponse = miXml.nickname
+				 
 				/**
-				 * Caso de exito de incio de sesion
-				 */
-				if(serviceResponse == "")
-				{
-					serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
-					def nickname = buscarUsuarioPorCorreo (params.email)
-					//session.nickname = params.nickname
-					session.email = params.email
-					session.password = params.password
-					obtenerUsuario()
-					redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
-				}
-				/**
-				 * Ha fallado el incio el de sesion
-				 */
-				else
-				{
-					if(params.email=="" || params.password=="")
-					{
-						serviceResponse ="Debe ingresar email y password para acceder a su perfil."
-						render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
-					}
-					else if(serviceResponse =="Login y/o Password invalidos")
-					{
-						render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
-					}
-					else
-					{
-						redireccion="vistaPerfil"
-						render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
-					}
-								
-				}
+				* Caso de campos nulos
+				*/
+			   if(serviceResponse == "ERROR 001")
+			   {
+				   serviceResponse = "ERROR 001: campos vacios"
+				   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+			   }
+			   
+			   /**
+			   * Caso de clave incorrecta
+			   */
+			  if(serviceResponse == "ERROR 003")
+			  {
+				  serviceResponse = "ERROR 003: clave incorrecta"
+				  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+			  }
+			  
+			  /** 
+			  * Caso de Nickname no existe
+			  */
+			 if(serviceResponse == "ERROR 332: Nickname no existe")
+			 {
+				 serviceResponse = "ERROR 332: Nickname no existe"
+				 render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+			 }
+			 
+			 /**
+			  * Caso de exito de incio de sesion
+			  */
+			 else 
+			 {
+				serviceResponse = "El usuario $params.email ha inciado sesion correctamente"
+				//def nickname = params.email
+				session.nickname = params.email //es el nickname de la interfaz
+				//session.email = params.email
+				session.password = params.password
+				session.token = miXml.token
+				obtenerCorreoSpring()
+				//obtenerUsuario()
+				redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
+			 }
+			 
+		  }
 			
-			}
+		}
 		
 		/**
 		 * Se obtiene el usuario que acaba de loguearse y se almacena en una variable de sesion
@@ -135,6 +236,20 @@ class UsuarioController {
 			Usuario usuario = procesarUnXml(miXml)
 			session.usuario = usuario
 		}
+		
+		/**
+		* Se obtiene el correo que acaba de loguearse y se almacena en una variable de sesion del servidor Spring
+		*/
+	   def obtenerCorreoSpring = {
+		   
+		   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+		   def connection = url.openConnection()
+		   connection.setRequestMethod("GET")
+		   connection.setDoOutput(true)
+		   connection.connect()
+		   def miXml = new XmlSlurper().parseText(connection.content.text)
+		   session.email = miXml.correo
+	   }
 		
 		/**
 		 * Se procesa el XML que retornara un objeto tipo Usuario
