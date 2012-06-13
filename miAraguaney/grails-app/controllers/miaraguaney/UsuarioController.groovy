@@ -431,7 +431,7 @@ class UsuarioController {
 			}
 			else
 			{
-				render (view :'registroExitoso', model:[aviso:serviceResponse])
+				render (view :'iniciarSesion', model:[aviso:serviceResponse])
 			}
 		}
 			
@@ -440,34 +440,64 @@ class UsuarioController {
 		 */
 		def eliminarUsuario = {
 			
-				if(Token.tokenVigente(session.usuario.email))
-				{
-					def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario?email=$params.email&password=$params.password" )
-					def connection = url.openConnection()
-					connection.setRequestMethod("DELETE")
-					connection.setDoOutput(true)
-					connection.connect()
-					def serviceResponse = "Datos incorrectos!"
-					def miXml
-					
-						if(connection.responseCode == 200)
-						{
-											
-							miXml = new XmlSlurper().parseText(connection.content.text)
-							serviceResponse = miXml.mensaje 
-							
-							if(serviceResponse == "")
+			if (bandera.equals("miOrquidea"))
+			{
+					if(Token.tokenVigente(session.usuario.email))
+					{
+						def url = new URL("http://localhost:8080/miOrquidea/usuario/eliminarUsuario?email=$params.email&password=$params.password" )
+						def connection = url.openConnection()
+						connection.setRequestMethod("DELETE")
+						connection.setDoOutput(true)
+						connection.connect()
+						def serviceResponse = "Datos incorrectos!"
+						def miXml
+						
+							if(connection.responseCode == 200)
 							{
-								serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro							
+												
+								miXml = new XmlSlurper().parseText(connection.content.text)
+								serviceResponse = miXml.mensaje 
+								
+								if(serviceResponse == "")
+								{
+									serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro							
+								}
+								
 							}
-							
-						}
-						render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
+							render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
+					}
+					else
+					{
+						destruirSesion()
+					}
+			}
+			else
+			{
+				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname" )
+				def connection = url.openConnection()
+				connection.setRequestMethod("DELETE")
+				connection.setDoOutput(true)
+				connection.connect()
+
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				def serviceResponse = miXml.nickname
+				
+				if (serviceResponse == "ERROR 100") 
+				{
+					serviceResponse = "ERROR 100: Token vencido"
+				}
+				
+				if (serviceResponse == "ERROR 222") 
+				{
+					serviceResponse = "ERROR 222: El usuario no existe en el sistema"
 				}
 				else
 				{
-					destruirSesion()
+					serviceResponse = "El usuario "+miXml.nickname+" ha eliminado su cuenta exitosamente.</br> "
 				}
+				
+				render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
+			}
 			
 		}
 		
