@@ -413,7 +413,8 @@ class UsuarioController {
 			   */
 			   def gXml = new StringWriter()
 			   def xml = new MarkupBuilder(gXml)
-			   
+			   def concatenarFecha = params.fechaRegistro.split("-")
+			   String fecha = concatenarFecha[2] + "/" + concatenarFecha[1] + "/" + concatenarFecha[0]
 			   /**
 				* Se establece la URL de la ubicacion
 				* del servicio Spring
@@ -426,7 +427,7 @@ class UsuarioController {
 					  clave(params.password)
 					  correo(params.email)
 					  nickname(params.nickname)
-					  fecha_nac(params.fechaRegistro)
+					  fecha_nac(fecha)
 					  pais(params.pais)
 					  biografia(params.biografia)
 					  foto("")
@@ -673,10 +674,7 @@ class UsuarioController {
 				}
 		    }
 			else
-			{//***************************************************************************************************************************************
-				//***************************************************************************************************************************************
-				//***************************************************************************************************************************************
-				//***************************************************************************************************************************************
+			{
 				def serviceResponse = "No hay respuesta"
 				
 				/**
@@ -690,6 +688,8 @@ class UsuarioController {
 				*/
 				def gXml = new StringWriter()
 				def xml = new MarkupBuilder(gXml)
+				def concatenarFecha = params.fechaRegistro.split("-")
+				String fecha = concatenarFecha[2] + "/" + concatenarFecha[1] + "/" + concatenarFecha[0]
 				
 				xml.Usuario() {
 					   nombre (params.nombre)
@@ -697,7 +697,7 @@ class UsuarioController {
 					   clave(params.password)
 					   correo(params.email2)
 					   nickname(params.nickname)
-					   fecha_nac(params.fechaRegistro)
+					   fecha_nac(fecha)
 					   pais(params.pais)
 					   biografia(params.biografia)
 					   foto("")
