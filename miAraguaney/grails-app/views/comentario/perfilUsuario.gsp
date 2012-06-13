@@ -80,13 +80,13 @@ function clearText(field) {
 <form id="form1" name="form1" method="post" action="agregarComentario" >
 <table align="center" width="200px" border="12" class="law">
   <tr class="law">
-    <td height="76%" align="center"><textarea name="mensaje" cols="79%" rows="4"  ></textarea></td>
+    <td height="76%" align="center"><textarea name="mensaje" cols="79%" rows="4" required="required" ></textarea></td>
   </tr>
   
    <tr>
     <td align="center" height="23" >Etiquetas:
       <label>
-        <input type="text" size="90"name="etiquetas" id="etiquetas" required="required">
+        <input type="text" size="90"name="etiquetas" id="etiquetas" >
       </label>
 
      </td>
