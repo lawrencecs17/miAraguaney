@@ -731,42 +731,76 @@ class UsuarioController {
 			
 			if(params.email == session.usuario.email && params.password == session.usuario.password)
 			{
-			
-					def email = params.email
-					def password = params.password
-					def serviceResponse = "No hay respuesta"
-					
+				def email = params.email
+				def password = params.password
+				def serviceResponse = "No hay respuesta"
+				
+				if (bandera.equals("miOrquidea"))
+				{		
+						/**
+						* Se ubica la URL del servicio que lista a todos los usuarios
+						*/
+					   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
+					   def listUsuario
+					   
+					   /**
+						* Se establece la conexion con el servicio
+						* Se determina el tipo de peticion (GET) y
+						* el contenido de la misma (Archivo plano XML)
+						*/
+					   def connection = url.openConnection()
+					   connection.setRequestMethod("GET" )
+					   connection.setRequestProperty("Content-Type" ,"text/xml" )
+					   
+					   if(connection.responseCode == 200)
+					   {
+						   def miXml = new XmlSlurper().parseText(connection.content.text)
+						   listUsuario = procesarXML(miXml)
+						   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
+						   if(miUsuario!=null)
+						   {			  
+							   miUsuario.email2 = email
+							   render (view:'actualizarUsuario',model:[usuario:miUsuario])
+						   }
+					   }
+					   else
+					   {
+						   render "Se ha generado un error:"
+						   render connection.responseCode
+						   render connection.responseMessage
+					   }
+				}
+				else
+				{
 					/**
 					* Se ubica la URL del servicio que lista a todos los usuarios
 					*/
-				   def url = new URL("http://localhost:8080/miOrquidea/usuario/" )
+				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
 				   def listUsuario
-				   /**
-					* Se establece la conexion con el servicio
-					* Se determina el tipo de peticion (GET) y
-					* el contenido de la misma (Archivo plano XML)
-					*/
-				   def connection = url.openConnection()
-				   connection.setRequestMethod("GET" )
-				   connection.setRequestProperty("Content-Type" ,"text/xml" )
 				   
-				   if(connection.responseCode == 200)
-				   {
-					   def miXml = new XmlSlurper().parseText(connection.content.text)
-					   listUsuario = procesarXML(miXml)
-					   Usuario miUsuario = buscarUsuario(listUsuario,email,password)
-					   if(miUsuario!=null)
-					   {			  
-						   miUsuario.email2 = email
-						   render (view:'actualizarUsuario',model:[usuario:miUsuario])
-					   }
-				   }
-				   else
-				   {
-					   render "Se ha generado un error:"
-					   render connection.responseCode
-					   render connection.responseMessage
-				   }
+				   /**
+				   * Se establece la conexion con el servicio
+				   * Se determina el tipo de peticion (GET) y
+				   * el contenido de la misma (Archivo plano XML)
+				   */
+				  def connection = url.openConnection()
+				  connection.setRequestMethod("GET" )
+				  connection.setRequestProperty("Content-Type" ,"text/xml" )
+
+				  def miXml = new XmlSlurper().parseText(connection.content.text)
+
+				  Usuario miUsuario = new Usuario()
+				  miUsuario.apellido = miXml.apellido
+				  miUsuario.biografia = miXml.biografia
+				  miUsuario.email2 = miXml.correo
+				  miUsuario.fechaRegistro = miXml.fecha_nac
+				  miUsuario.nickname = miXml.nickname
+				  miUsuario.nombre = miXml.nombre
+				  miUsuario.pais = miXml.pais
+				  miUsuario.password = miXml.clave
+				  
+				  render (view:'actualizarUsuario',model:[usuario:miUsuario])
+				}
 			}
 			else
 			{
