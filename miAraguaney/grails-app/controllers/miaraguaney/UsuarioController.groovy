@@ -358,14 +358,20 @@ class UsuarioController {
 			
 			if(session.usuario)
 			{
-			
-				if(Token.tokenVigente(session.usuario.email))
+				if (bandera.equals("miOrquidea"))
 				{
-					redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
+						if(Token.tokenVigente(session.usuario.email))
+						{
+							redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
+						}
+						else
+						{
+							destruirSesion()
+						}
 				}
 				else
 				{
-					destruirSesion()
+					redirect (controller:"comentario",  action:"consultarComentarioPorUsuario")
 				}
 			}
 			else
@@ -378,49 +384,55 @@ class UsuarioController {
 		 * Accion para consumir servivios de activar usuario
 		 */
 		def activarUsuario = {		
-				
-					
-					def serviceResponse = "No hay respuesta"
-					/**
-					 * Se establece la URL de la ubicacion
-					 * del servicio
-					 */
-					def url = new URL("http://localhost:8080/miOrquidea/usuario/activarUsuario" )
-					/**
-					 * Se extraen los parametros y convierte a formato
-					 * XML para luego ser enviada a la aplicacion miOrquidea
-					 *
-					 */
-					def parametro = new Usuario (params) as XML
-					
-					
-					def connection = url.openConnection()
-					connection.setRequestMethod("PUT")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
-					connection.doOutput=true
-					
-						Writer writer = new OutputStreamWriter(connection.outputStream)
-						writer.write(parametro.toString())
-						writer.flush()
-						writer.close()
-						connection.connect()
 						
-							if(connection.responseCode == 200)
-							{
-								serviceResponse = "El usuario tiene su cuenta activa en este momento"							
-								redirect(action:'vistaIniciarSesion')													
-							}
-							else
-							{
-								serviceResponse = "No aplica proceso de activacion para este usuario"
-								render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.usuario.nickname])
-							}
-									
+				def serviceResponse = "No hay respuesta"
 				
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
+				*/
+				def url = new URL("http://localhost:8080/miOrquidea/usuario/activarUsuario" )
+				
+				/**
+				* Se extraen los parametros y convierte a formato
+				* XML para luego ser enviada a la aplicacion miOrquidea
+				*
+				*/
+				def parametro = new Usuario (params) as XML
+					
+				def connection = url.openConnection()
+				connection.setRequestMethod("PUT")
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.doOutput=true
+					
+					Writer writer = new OutputStreamWriter(connection.outputStream)
+					writer.write(parametro.toString())
+					writer.flush()
+					writer.close()
+					connection.connect()
+						
+					if(connection.responseCode == 200)
+					{
+						serviceResponse = "El usuario tiene su cuenta activa en este momento"							
+						redirect(action:'vistaIniciarSesion')													
+					}
+					else
+					{
+						serviceResponse = "No aplica proceso de activacion para este usuario"
+						render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.usuario.nickname])
+					}	
 		}
 		
 		def vistaActivarUsuario =	{
-			render (view:'activarUsuario',model:[usuario:session.nickname])
+			
+			if (bandera.equals("miOrquidea"))
+			{
+				render (view:'activarUsuario',model:[usuario:session.nickname])
+			}
+			else
+			{
+				render (view :'registroExitoso', model:[aviso:serviceResponse])
+			}
 		}
 			
 		/*
