@@ -193,7 +193,7 @@ class ComentarioController {
 	  return listaComentario
   }
   
-/**
+  /**
   * Metodo encargado de buscar un comentario en especifico por
   *  el id del Comentario
   */
@@ -201,9 +201,9 @@ class ComentarioController {
   {
 	  try
 	  {
-		  /**
-		  * Se ubica la URL del servicio que lista los comentario por idComentario
-		  */
+		 /**
+		 * Se ubica la URL del servicio que lista los comentario por idComentario
+		 */
 		 def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorComentario?idComentario=" +  idComentario)
 		 def xmlComentario
 		 
@@ -657,6 +657,7 @@ class ComentarioController {
 	* Metodo que se encarga de crear una calificacion like en el comentario 
 	*/
 	def crearComentarioLike () {
+		
 	try
 	{
 		if(Token.tokenVigente(session.usuario.email))
@@ -751,14 +752,15 @@ class ComentarioController {
 		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
-	   } //fin metodo crear calificacion like
+	} //fin metodo crear calificacion like
 	
 	/**
 	* Metodo que se encarga de crear una calificacion dislike en el comentario
 	*/
 	def crearComentarioDislike () {
-try
-{
+		
+	try
+	{
 		if(Token.tokenVigente(session.usuario.email))
 		{
 			def serviceResponse = "No hay respuesta"
@@ -851,7 +853,7 @@ try
 		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
-	   } //fin metodo crear calificacion dislike
+	} //fin metodo crear calificacion dislike
 	
 	/**
 	* Metodo que se encarga de modificar una calificacion like en la calificacion del comentario
@@ -860,198 +862,199 @@ try
 		
 		try
 		{
-		if(Token.tokenVigente(session.usuario.email))
-		{
-			def serviceResponse = "No hay respuesta"
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				def serviceResponse = "No hay respuesta"
+				
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
+				*/
+					def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
 			
-			/**
-			* Se establece la URL de la ubicacion
-			* del servicio
-			*/
-				def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
-		
-				def nick = session.nickname
-			   
-			    /**
-				* Con estas funciones creamos el XML
-				*/
-			    def gXml = new StringWriter()
-			    def xml = new MarkupBuilder(gXml)
-				
-			    /**
-				* Creando el XML calificacion like modificado para pasarlo al servicio
-				*/
-			    xml.calificacion() {
-					   comentario (id:params.id)
-					   dislike(false)
-					   like(true)
-					   persona(nick)
-			    }
-			   
-				def connection = url.openConnection()
-				connection.setRequestMethod("PUT")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-					Writer writer = new OutputStreamWriter(connection.outputStream)
-					writer.write(gXml.toString())
-					writer.flush()
-					writer.close()
-					connection.connect()
-					
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					
-					/**
-					* Lo que me responde el servidor
+					def nick = session.nickname
+				   
+				    /**
+					* Con estas funciones creamos el XML
 					*/
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Calificacion like modificado"
-					}
-			   
-					if (urlVista == "consultarComentarios")
-					{
-						redirect (action: 'consultarTodosLosComentarios')
-					}
-					else
-					{
-						if (urlVista == "perfilUsuario")
+				    def gXml = new StringWriter()
+				    def xml = new MarkupBuilder(gXml)
+					
+				    /**
+					* Creando el XML calificacion like modificado para pasarlo al servicio
+					*/
+				    xml.calificacion() {
+						   comentario (id:params.id)
+						   dislike(false)
+						   like(true)
+						   persona(nick)
+				    }
+				   
+					def connection = url.openConnection()
+					connection.setRequestMethod("PUT")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(gXml.toString())
+						writer.flush()
+						writer.close()
+						connection.connect()
+						
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						
+						/**
+						* Lo que me responde el servidor
+						*/
+						if(serviceResponse == "")
 						{
-							redirect (action: 'consultarComentarioPorUsuario')
+							serviceResponse = "Calificacion like modificado"
+						}
+				   
+						if (urlVista == "consultarComentarios")
+						{
+							redirect (action: 'consultarTodosLosComentarios')
 						}
 						else
 						{
-							if (urlVista == "consultarComentarioTag")
+							if (urlVista == "perfilUsuario")
 							{
-								redirect (action: 'buscarEtiqueta')
+								redirect (action: 'consultarComentarioPorUsuario')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioId")
+								if (urlVista == "consultarComentarioTag")
 								{
-									redirect (action: 'buscarPorId')
+									redirect (action: 'buscarEtiqueta')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioSinTag")
+									if (urlVista == "consultarComentarioId")
 									{
-										redirect (action: 'buscarSinEtiqueta')
+										redirect (action: 'buscarPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
 									}
 								}
 							}
 						}
-					}
-		}
-		else
-		{
-			destruirSesion()
-		}
-	}
-	catch(Exception)
-	{
-		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
-	}
-	   } //fin metodo modificar calificacion like
-	
-	/**
-	* Metodo que se encarga de modificar una calificacion dislike en el comentario
-	*/
-	def modificarComentarioDislike () {
-		try
-		{
-		if(Token.tokenVigente(session.usuario.email))
-		{
-			def serviceResponse = "No hay respuesta"
-			/**
-			* Se establece la URL de la ubicacion
-			* del servicio
-			*/
-				def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
-		
-				def nick = session.nickname
-			   
-			    /**
-				* Con estas funciones creamos el XML
-				*/
-			    def gXml = new StringWriter()
-			    def xml = new MarkupBuilder(gXml)
-				
-			    /**
-				* Creando el XML calificacion dislike modificado para pasarlo al servicio
-				*/
-			    xml.calificacion() {
-					   comentario (id:params.id)
-					   dislike(true)
-					   like(false)
-					   persona(nick)
-			    }
-			   
-				def connection = url.openConnection()
-				connection.setRequestMethod("PUT")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-					Writer writer = new OutputStreamWriter(connection.outputStream)
-					writer.write(gXml.toString())
-					writer.flush()
-					writer.close()
-					connection.connect()
-					
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					
-					/**
-					 * Lo que me responde el servidor
-					 */
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Calificacion dislike modificado"
-					}
-			   
-					if (urlVista == "consultarComentarios")
-					{
-						redirect (action: 'consultarTodosLosComentarios')
-					}
-					else
-					{
-						if (urlVista == "perfilUsuario")
-						{
-							redirect (action: 'consultarComentarioPorUsuario')
-						}
-						else
-						{
-							if (urlVista == "consultarComentarioTag")
-							{
-								redirect (action: 'buscarEtiqueta')
-							}
-							else
-							{
-								if (urlVista == "consultarComentarioId")
-								{
-									redirect (action: 'buscarPorId')
-								}
-								else
-								{
-									if (urlVista == "consultarComentarioSinTag")
-									{
-										redirect (action: 'buscarSinEtiqueta')
-									}
-								}
-							}
-						}
-					}
-		}
-		else
-		{
-			destruirSesion()
-		}
+			}
+			else
+			{
+				destruirSesion()
+			}
 		}
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
-	   } //fin metodo modificar calificacion dislike
+	} //fin metodo modificar calificacion like
+	
+	/**
+	* Metodo que se encarga de modificar una calificacion dislike en el comentario
+	*/
+	def modificarComentarioDislike () {
+		
+		try
+		{
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				def serviceResponse = "No hay respuesta"
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
+				*/
+					def url = new URL("http://localhost:8080/miOrquidea/calificacion/modificarCalificacion" )
+			
+					def nick = session.nickname
+				   
+				    /**
+					* Con estas funciones creamos el XML
+					*/
+				    def gXml = new StringWriter()
+				    def xml = new MarkupBuilder(gXml)
+					
+				    /**
+					* Creando el XML calificacion dislike modificado para pasarlo al servicio
+					*/
+				    xml.calificacion() {
+						   comentario (id:params.id)
+						   dislike(true)
+						   like(false)
+						   persona(nick)
+				    }
+				   
+					def connection = url.openConnection()
+					connection.setRequestMethod("PUT")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(gXml.toString())
+						writer.flush()
+						writer.close()
+						connection.connect()
+						
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						
+						/**
+						 * Lo que me responde el servidor
+						 */
+						if(serviceResponse == "")
+						{
+							serviceResponse = "Calificacion dislike modificado"
+						}
+				   
+						if (urlVista == "consultarComentarios")
+						{
+							redirect (action: 'consultarTodosLosComentarios')
+						}
+						else
+						{
+							if (urlVista == "perfilUsuario")
+							{
+								redirect (action: 'consultarComentarioPorUsuario')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioTag")
+								{
+									redirect (action: 'buscarEtiqueta')
+								}
+								else
+								{
+									if (urlVista == "consultarComentarioId")
+									{
+										redirect (action: 'buscarPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
+									}
+								}
+							}
+						}
+			}
+			else
+			{
+				destruirSesion()
+			}
+			}
+			catch(Exception)
+			{
+				def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			}
+	} //fin metodo modificar calificacion dislike
 	
 	/**
 	* Metodo que se encarga de redireccionar a la vista modificar comentario
@@ -1059,21 +1062,21 @@ try
 	def modificarComentarioUsuario = { 
 		try
 		{
-		if(Token.tokenVigente(session.usuario.email))
-		{
-			def comentarioMensaje = params.id.split(",")
-			render (view:'modificarComentarioVista', model:[comentario:comentarioMensaje[0], mensaje:comentarioMensaje[1], usuario:session.nickname])
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				def comentarioMensaje = params.id.split(",")
+				render (view:'modificarComentarioVista', model:[comentario:comentarioMensaje[0], mensaje:comentarioMensaje[1], usuario:session.nickname])
+			}
+			else
+			{
+				destruirSesion()
+			}
 		}
-		else
+		catch(Exception)
 		{
-			destruirSesion()
+			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
-	}
-	catch(Exception)
-	{
-		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
-	}
 	}
 	
 	/**
@@ -1082,97 +1085,97 @@ try
 	def modificarComentario = {
 		try
 		{
-		if(Token.tokenVigente(session.usuario.email))
-		{
-			def serviceResponse = "No hay respuesta"
-			/**
-			* Se establece la URL de la ubicacion
-			* del servicio
-			*/
-				def url = new URL("http://localhost:8080/miOrquidea/comentario/modificarComentario" )
-				def nick = session.nickname
-			   
-			    /**
-				* Con estas funciones creamos el XML
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				def serviceResponse = "No hay respuesta"
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
 				*/
-			    def gXml = new StringWriter()
-			    def xml = new MarkupBuilder(gXml)
-				
-			    /**
-				* Creando el XML Comentario modificado para pasarlo al servicio
-				*/
-			    xml.comentario() {
-					   idComentario (id:params.id)
-					   mensaje(params.mensaje)
-					   usuario(nick)
-			    }
-			   
-				def connection = url.openConnection()
-				connection.setRequestMethod("PUT")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-					Writer writer = new OutputStreamWriter(connection.outputStream)
-					writer.write(gXml.toString())
-					writer.flush()
-					writer.close()
-					connection.connect()
+					def url = new URL("http://localhost:8080/miOrquidea/comentario/modificarComentario" )
+					def nick = session.nickname
+				   
+				    /**
+					* Con estas funciones creamos el XML
+					*/
+				    def gXml = new StringWriter()
+				    def xml = new MarkupBuilder(gXml)
 					
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					
-					/**
-					 * Lo que me responde el servidor
-					 */
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Comentario modificado"
-					}
-			   
-	                if (urlVista == "consultarComentarios")
-					{
-						redirect (action: 'consultarTodosLosComentarios')
-					}
-					else
-					{
-						if (urlVista == "perfilUsuario")
+				    /**
+					* Creando el XML Comentario modificado para pasarlo al servicio
+					*/
+				    xml.comentario() {
+						   idComentario (id:params.id)
+						   mensaje(params.mensaje)
+						   usuario(nick)
+				    }
+				   
+					def connection = url.openConnection()
+					connection.setRequestMethod("PUT")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(gXml.toString())
+						writer.flush()
+						writer.close()
+						connection.connect()
+						
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						
+						/**
+						 * Lo que me responde el servidor
+						 */
+						if(serviceResponse == "")
 						{
-							redirect (action: 'consultarComentarioPorUsuario')
+							serviceResponse = "Comentario modificado"
+						}
+				   
+		                if (urlVista == "consultarComentarios")
+						{
+							redirect (action: 'consultarTodosLosComentarios')
 						}
 						else
 						{
-							if (urlVista == "consultarComentarioTag")
+							if (urlVista == "perfilUsuario")
 							{
-								redirect (action: 'buscarEtiqueta')
+								redirect (action: 'consultarComentarioPorUsuario')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioId")
+								if (urlVista == "consultarComentarioTag")
 								{
-									redirect (action: 'buscarPorId')
+									redirect (action: 'buscarEtiqueta')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioSinTag")
+									if (urlVista == "consultarComentarioId")
 									{
-										redirect (action: 'buscarSinEtiqueta')
+										redirect (action: 'buscarPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
 									}
 								}
 							}
 						}
-					}
+				}
+			
+			else
+			{
+				destruirSesion()
 			}
-		
-		else
-		{
-			destruirSesion()
 		}
-	}
-	catch(Exception)
-	{
-		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
-	}
-	   } //fin metodo modificar comentario
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		}
+	} //fin metodo modificar comentario
 	
 	/**
 	* Metodo que se encarga de eliminar un comentario por nickname y idComentario
@@ -1181,65 +1184,65 @@ try
 
 		try
 		{
-		if(Token.tokenVigente(session.usuario.email))
-        {
-				def nick = session.nickname
-			 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
-				def connection = url.openConnection()
-				
-				connection.setRequestMethod("DELETE")
-				connection.setDoOutput(true)
-				connection.connect()
-				def serviceResponse = "No hay respuesta!"	
-				
-				if(connection.responseCode == 200)
-				{			
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					mensaje = miXml.mensaje 
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Comentario eliminado"
-					}
-				}
-				if (urlVista == "consultarComentarios")
-				{
-						redirect (action: 'consultarTodosLosComentarios')
-				}
-				else
-				{
-						if (urlVista == "perfilUsuario")
+			if(Token.tokenVigente(session.usuario.email))
+	        {
+					def nick = session.nickname
+				 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
+					def connection = url.openConnection()
+					
+					connection.setRequestMethod("DELETE")
+					connection.setDoOutput(true)
+					connection.connect()
+					def serviceResponse = "No hay respuesta!"	
+					
+					if(connection.responseCode == 200)
+					{			
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						mensaje = miXml.mensaje 
+						if(serviceResponse == "")
 						{
-							redirect (action: 'consultarComentarioPorUsuario')
+							serviceResponse = "Comentario eliminado"
 						}
-						else
-						{
-							if (urlVista == "consultarComentarioTag")
+					}
+					if (urlVista == "consultarComentarios")
+					{
+							redirect (action: 'consultarTodosLosComentarios')
+					}
+					else
+					{
+							if (urlVista == "perfilUsuario")
 							{
-								redirect (action: 'buscarEtiqueta')
+								redirect (action: 'consultarComentarioPorUsuario')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioId")
+								if (urlVista == "consultarComentarioTag")
 								{
-									redirect (action: 'busquedaPorId')
+									redirect (action: 'buscarEtiqueta')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioSinTag")
+									if (urlVista == "consultarComentarioId")
 									{
-										redirect (action: 'buscarSinEtiqueta')
+										redirect (action: 'busquedaPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
 									}
 								}
 							}
-						}
-				}
-		}
-		else
-		{
-			destruirSesion()
-		}
-		}
+					}
+			}
+			else
+			{
+				destruirSesion()
+			}
+			}
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
@@ -1269,7 +1272,7 @@ try
 		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
 		   render(view:"error",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
-		}
+	}
 	
 	/**
 	* Invocacion al servicio de registrar comentario
@@ -1277,98 +1280,98 @@ try
 	def responderComentario = {
 		try
 		{
-		if(Token.tokenVigente(session.usuario.email))
-		{
-			def serviceResponse = "No hay respuesta"
-			/**
-			* Se establece la URL de la ubicacion
-			* del servicio
-			*/
-			
-				def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentado" )
-		
-				def nick = session.nickname
-			   
-			    /**
-				* Con estas funciones creamos el XML
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				def serviceResponse = "No hay respuesta"
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
 				*/
-			    def gXml = new StringWriter()
-			    def xml = new MarkupBuilder(gXml)
 				
-			    /**
-				* Creando el XML para pasarlo al servicio
-				*/
-			    xml.comentario() {
-					   comentario (id:params.id)
-					   autorComentado(nick)
-					   mensaje(params.mensaje)
-			    }
-				def connection = url.openConnection()
-				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-					Writer writer = new OutputStreamWriter(connection.outputStream)
-					writer.write(gXml.toString())
-					writer.flush()
-					writer.close()
-					connection.connect()
+					def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentado" )
+			
+					def nick = session.nickname
+				   
+				    /**
+					* Con estas funciones creamos el XML
+					*/
+				    def gXml = new StringWriter()
+				    def xml = new MarkupBuilder(gXml)
 					
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					
-					/**
-					 * Lo que me responde el servidor
-					 */
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Respuesta exitosa"
-					}
-					
-					if (urlVista == "consultarComentarios")
-					{
-						redirect (action: 'consultarTodosLosComentarios')
-					}
-					else
-					{
-						if (urlVista == "perfilUsuario")
+				    /**
+					* Creando el XML para pasarlo al servicio
+					*/
+				    xml.comentario() {
+						   comentario (id:params.id)
+						   autorComentado(nick)
+						   mensaje(params.mensaje)
+				    }
+					def connection = url.openConnection()
+					connection.setRequestMethod("POST")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(gXml.toString())
+						writer.flush()
+						writer.close()
+						connection.connect()
+						
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						
+						/**
+						 * Lo que me responde el servidor
+						 */
+						if(serviceResponse == "")
 						{
-							redirect (action: 'consultarComentarioPorUsuario')
+							serviceResponse = "Respuesta exitosa"
+						}
+						
+						if (urlVista == "consultarComentarios")
+						{
+							redirect (action: 'consultarTodosLosComentarios')
 						}
 						else
 						{
-							if (urlVista == "consultarComentarioTag")
+							if (urlVista == "perfilUsuario")
 							{
-								redirect (action: 'buscarEtiqueta')
+								redirect (action: 'consultarComentarioPorUsuario')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioId")
+								if (urlVista == "consultarComentarioTag")
 								{
-									redirect (action: 'buscarPorId')
+									redirect (action: 'buscarEtiqueta')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioSinTag")
+									if (urlVista == "consultarComentarioId")
 									{
-										redirect (action: 'buscarSinEtiqueta')
+										redirect (action: 'buscarPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
 									}
 								}
 							}
 						}
-					}
-		}
-		else
-		{
-			destruirSesion()
-		}
 			}
-			catch(Exception)
+			else
 			{
-			   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
-			   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+				destruirSesion()
 			}
+		}
+		catch(Exception)
+		{
+			 def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			 render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		}
 		
-	   } //fin metodo agregar comentario
+	} //fin metodo agregar comentario
 	
 	/**
 	* Invocacion al servicio de consultar todos los Comentarios
