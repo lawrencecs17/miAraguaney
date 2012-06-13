@@ -10,6 +10,8 @@ import java.util.Date
 class EtiquetaController {
 
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
+	String bandera = "miOrquidea"
+	//String bandera = "Spring"
 	
 	    def index() { 
 			
@@ -25,30 +27,63 @@ class EtiquetaController {
 		   
 	   try
 	   {
-		   /**
-			* Se ubica la URL del servicio que lista a todas las Etiquetas
-			*/
-		   def url = new URL("http://localhost:8080/miOrquidea/etiqueta/listarTodos" )
-		   def listaEtiqueta
-		   
-		   /**
-			* Se establece la conexion con el servicio
-			* Se determina el tipo de peticion (GET) y
-			* el contenido de la misma (Archivo plano XML)
-			*/
-		   def connection = url.openConnection()
-		   connection.setRequestMethod("GET" )
-		   connection.setRequestProperty("Content-Type" ,"text/xml" )
-		   
-		   if(connection.responseCode == 200)
+		   if (bandera.equals("miOrquidea"))
 		   {
-			   def miXml = new XmlSlurper().parseText(connection.content.text)
-			   listaEtiqueta = procesarXmlEtiqueta(miXml)
+			   /**
+				* Se ubica la URL del servicio que lista a todas las Etiquetas
+				*/
+			   def url = new URL("http://localhost:8080/miOrquidea/etiqueta/listarTodos" )
+			   def listaEtiqueta
+			   
+			   /**
+				* Se establece la conexion con el servicio
+				* Se determina el tipo de peticion (GET) y
+				* el contenido de la misma (Archivo plano XML)
+				*/
+			   def connection = url.openConnection()
+			   connection.setRequestMethod("GET" )
+			   connection.setRequestProperty("Content-Type" ,"text/xml" )
+			   
+			   if(connection.responseCode == 200)
+			   {
+				   def miXml = new XmlSlurper().parseText(connection.content.text)
+				   listaEtiqueta = procesarXmlEtiqueta(miXml)
+			   }
+			   else
+			   {
+				   render "Se ha generado un error:"
+				   render connection.responseCode
+				   render connection.responseMessage
+			   }
 		   }
-		   else{
-			   render "Se ha generado un error:"
-			   render connection.responseCode
-			   render connection.responseMessage
+		   else
+		   {
+			   /**
+			   * Se ubica la URL del servicio que lista a todas las Etiquetas
+			   */
+			  def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/etiquetas" )
+			  def listaEtiqueta
+			  
+			  /**
+			   * Se establece la conexion con el servicio
+			   * Se determina el tipo de peticion (GET) y
+			   * el contenido de la misma (Archivo plano XML)
+			   */
+			  def connection = url.openConnection()
+			  connection.setRequestMethod("GET" )
+			  connection.setRequestProperty("Content-Type" ,"text/xml" )
+			  
+			  if(connection.responseCode == 200)
+			  {
+				  def miXml = new XmlSlurper().parseText(connection.content.text)
+				  listaEtiqueta = procesarXmlEtiqueta(miXml)
+			  }
+			  else
+			  {
+				  render "Se ha generado un error:"
+				  render connection.responseCode
+				  render connection.responseMessage
+			  }
 		   }
 		   
 		   render (view:"consultarEtiquetas", model:[etiquetas:listaEtiqueta, usuario:session.nickname])   
