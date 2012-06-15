@@ -13,12 +13,15 @@ class ComentarioController {
 
    	private static Log log = LogFactory.getLog("Logs."+ComentarioController.class.getName())
 	ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
+	ArrayList<ComentarioCliente> listaReply = new ArrayList<ComentarioCliente>()
 	static String urlVista  
 	static String mensaje
 	static String nombreEtiqueta = ""
 	static String nombreTag
 	static String nombreComentario1
 	static String nombreCom1
+	static String bandera = "miOrquidea"
+	//static String bandera = "Spring"
 	   
     def index() { 
 		redirect (action:'consultarTodosLosComentarios')
@@ -32,34 +35,49 @@ class ComentarioController {
 	   
 		try
 		{
-		   urlVista = "consultarComentarios"
-		   /**
-		   * Se ubica la URL del servicio que lista a todos los Comentarios
-		   */
-		   def url = new URL("http://localhost:8080/miOrquidea/comentario/listarTodos" )
-		   def listaComentario
-		   
-		   /**
-		   * Se establece la conexion con el servicio
-		   * Se determina el tipo de peticion (GET) y
-		   * el contenido de la misma (Archivo plano XML)
-		   */
-		   def connection = url.openConnection()
-		   connection.setRequestMethod("GET" )
-		   connection.setRequestProperty("Content-Type" ,"text/xml" )
-		   
-		   if(connection.responseCode == 200)
-		   {
-			   def miXml = new XmlSlurper().parseText(connection.content.text)
-			   listaComentario = procesarXmlComentario(miXml)
-		   }
-		   else{
-			   render "Se ha generado un error:"
-			   render connection.responseCode
-			   render connection.responseMessage 
-		   }
-	
-		   render (view: urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
+				   urlVista = "consultarComentarios"
+				   /**
+				   * Se ubica la URL del servicio que lista a todos los Comentarios
+				   */
+				   if (bandera.equals("miOrquidea"))
+				   {
+					   def url = new URL("http://localhost:8080/miOrquidea/comentario/listarTodos" )
+				   }
+				   else
+				   {
+					   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios" )
+				   }
+				   def listaComentario
+				   
+				   /**
+				   * Se establece la conexion con el servicio
+				   * Se determina el tipo de peticion (GET) y
+				   * el contenido de la misma (Archivo plano XML)
+				   */
+				   def connection = url.openConnection()
+				   connection.setRequestMethod("GET" )
+				   connection.setRequestProperty("Content-Type" ,"text/xml" )
+				   
+				   if (bandera.equals("miOrquidea"))
+				   {
+					   if(connection.responseCode == 200)
+					   {
+						   def miXml = new XmlSlurper().parseText(connection.content.text)
+						   listaComentario = procesarXmlComentario(miXml)
+					   }
+					   else{
+						   render "Se ha generado un error:"
+						   render connection.responseCode
+						   render connection.responseMessage 
+					   }
+				   }
+				   else
+				   {
+					   def miXml = new XmlSlurper().parseText(connection.content.text)
+					   listaComentario = procesarXmlComentarioSpring(miXml)
+				   }
+
+			   render (view: urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, servicio: bandera])
 		}
 		catch(Exception)
 		{
@@ -311,30 +329,49 @@ class ComentarioController {
 	*/
 	  try
 	  {
-			def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
-			def cantidadLike
+		  def cantidadLike
+		  if (bandera.equals("miOrquidea"))
+		  {
+				def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
+				
+				/**
+				 * Se establece la conexion con el servicio
+				 * Se determina el tipo de peticion (GET) y
+				 * el contenido de la misma (Archivo plano XML)
+				 */
+				def connection = url.openConnection()
+				connection.setRequestMethod("GET" )
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				
+				if(connection.responseCode == 200)
+				{
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					cantidadLike = miXml.like
+				}
+				else{
+					render "Se ha generado un error:"
+					render connection.responseCode
+					render connection.responseMessage
+				}
+		  }
+		  else
+		  {
+			  def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuacion/megusta/" + comentario)
+			  
+			  /**
+			  * Se establece la conexion con el servicio
+			  * Se determina el tipo de peticion (GET) y
+			  * el contenido de la misma (Archivo plano XML)
+			  */
+			 def connection = url.openConnection()
+			 connection.setRequestMethod("GET" )
+			 connection.setRequestProperty("Content-Type" ,"text/xml" )
+			 
+			 def miXml = new XmlSlurper().parseText(connection.content.text)
+			 cantidadLike = miXml.count.text()
+		  }
 			
-			/**
-			 * Se establece la conexion con el servicio
-			 * Se determina el tipo de peticion (GET) y
-			 * el contenido de la misma (Archivo plano XML)
-			 */
-			def connection = url.openConnection()
-			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
-			
-			if(connection.responseCode == 200)
-			{
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				cantidadLike = miXml.like
-			}
-			else{
-				render "Se ha generado un error:"
-				render connection.responseCode
-				render connection.responseMessage
-			}
-			
-			return cantidadLike
+		  return cantidadLike
 	  }
 	  catch(Exception)
 	  {
@@ -354,30 +391,49 @@ class ComentarioController {
 	 */
 	   try
 	   {
-			 def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
-			 def cantidadDislike
+		   def cantidadDislike
+		   if (bandera.equals("miOrquidea"))
+		   {
+				 def url = new URL("http://localhost:8080/miOrquidea/calificacion/consultarLikeDislile?idComentario=" + comentario)
+				  
+				 /**
+				 * Se establece la conexion con el servicio
+				 * Se determina el tipo de peticion (GET) y
+				 * el contenido de la misma (Archivo plano XML)
+				 */
+				 def connection = url.openConnection()
+				 connection.setRequestMethod("GET" )
+				 connection.setRequestProperty("Content-Type" ,"text/xml" )
+				 
+				 if(connection.responseCode == 200)
+				 {
+					 def miXml = new XmlSlurper().parseText(connection.content.text)
+					 cantidadDislike = miXml.dislike
+				 }
+				 else{
+					 render "Se ha generado un error:"
+					 render connection.responseCode
+					 render connection.responseMessage
+				 }
+		   }
+		   else
+		   {
+			   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuacion/nomegusta/" + comentario)
+			   
+			  /**
+			  * Se establece la conexion con el servicio
+			  * Se determina el tipo de peticion (GET) y
+			  * el contenido de la misma (Archivo plano XML)
+			  */
+			  def connection = url.openConnection()
+			  connection.setRequestMethod("GET" )
+			  connection.setRequestProperty("Content-Type" ,"text/xml" )
+			  
+			  def miXml = new XmlSlurper().parseText(connection.content.text)
+			  cantidadDislike = miXml.count.text()
+		   }
 			 
-			 /**
-			 * Se establece la conexion con el servicio
-			 * Se determina el tipo de peticion (GET) y
-			 * el contenido de la misma (Archivo plano XML)
-			 */
-			 def connection = url.openConnection()
-			 connection.setRequestMethod("GET" )
-			 connection.setRequestProperty("Content-Type" ,"text/xml" )
-			 
-			 if(connection.responseCode == 200)
-			 {
-				 def miXml = new XmlSlurper().parseText(connection.content.text)
-				 cantidadDislike = miXml.dislike
-			 }
-			 else{
-				 render "Se ha generado un error:"
-				 render connection.responseCode
-				 render connection.responseMessage
-			 }
-			 
-			 return cantidadDislike
+		   return cantidadDislike
 			 
 		}
 	    catch(Exception)
@@ -398,30 +454,49 @@ class ComentarioController {
 	  */
 		try
 		{
-			  def url = new URL("http://localhost:8080/miOrquidea/comentario/contarComentados?idComentario=" + comentario)
-			  def cantidadComentados
+			def cantidadComentados
+			if (bandera.equals("miOrquidea"))
+			{
+				  def url = new URL("http://localhost:8080/miOrquidea/comentario/contarComentados?idComentario=" + comentario)
+				  
+				  /**
+				   * Se establece la conexion con el servicio
+				  * Se determina el tipo de peticion (GET) y
+				  * el contenido de la misma (Archivo plano XML)
+				  */
+				  def connection = url.openConnection()
+				  connection.setRequestMethod("GET" )
+				  connection.setRequestProperty("Content-Type" ,"text/xml" )
+				  
+				  if(connection.responseCode == 200)
+				  {
+					  def miXml = new XmlSlurper().parseText(connection.content.text)
+					  cantidadComentados = miXml.comentados
+				  }
+				  else{
+					  render "Se ha generado un error:"
+					  render connection.responseCode
+					  render connection.responseMessage
+				  }
+			}
+			else
+			{
+				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/replyComentarios/" + comentario)
+				
+				/**
+				 * Se establece la conexion con el servicio
+				* Se determina el tipo de peticion (GET) y
+				* el contenido de la misma (Archivo plano XML)
+				*/
+				def connection = url.openConnection()
+				connection.setRequestMethod("GET" )
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				cantidadComentados = miXml.count.text()
+			}
 			  
-			  /**
-			   * Se establece la conexion con el servicio
-			  * Se determina el tipo de peticion (GET) y
-			  * el contenido de la misma (Archivo plano XML)
-			  */
-			  def connection = url.openConnection()
-			  connection.setRequestMethod("GET" )
-			  connection.setRequestProperty("Content-Type" ,"text/xml" )
-			  
-			  if(connection.responseCode == 200)
-			  {
-				  def miXml = new XmlSlurper().parseText(connection.content.text)
-				  cantidadComentados = miXml.comentados
-			  }
-			  else{
-				  render "Se ha generado un error:"
-				  render connection.responseCode
-				  render connection.responseMessage
-			  }
-			  
-			  return cantidadComentados
+		    return cantidadComentados
 		}
 		catch(Exception)
 		{
@@ -1747,6 +1822,136 @@ class ComentarioController {
 	 
 	   return listaComentario
    }
+	
+	
+	/**
+	* Metodo encargado de procesar el archivo XML recibido del
+	* servicio Spring app
+	* @param xml
+	* @return
+	*/
+	def procesarXmlComentarioSpring(def xml)
+	{
+	   ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
+	   listaComentario.clear()
+	   listaComentado.clear()
+	   String nickname = session.nickname
+	   
+	   /**
+	   * recorro toda el xml de los comentarios registrados en el sistema spring
+	   */
+	   for (int i=0;i< xml.comentario.size();i++)
+	   {
+		   ComentarioCliente comentario = new ComentarioCliente()
+		   comentario.idComentario = xml.comentario[i].id.text()
+		   comentario.mensaje = xml.comentario[i].mensaje
+		   comentario.fecha = xml.comentario[i].fecha_creacion
+		   if (xml.reply == "0")
+		   {
+			   comentario.principal = true
+		   }
+		   else
+		   {
+			   comentario.principal = false
+		   }
+		   comentario.autor = xml.nickName
+		   
+		   /**
+		   * busca la cantidad de like que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadLike = buscarLike(xml.comentario[i].id.text())
+		   if (cantidadLike)
+		   {
+			   comentario.cantidadLike = cantidadLike
+		   }
+		   if (comentario.cantidadLike == '')
+			   comentario.cantidadLike = '0'
+ 
+		   /**
+		   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadDislike = buscarDislike(xml.comentario[i].id.text())
+		   if (cantidadDislike)
+		   {
+			   comentario.cantidadDislike = cantidadDislike
+		   }
+		   if (comentario.cantidadDislike == '')
+				 comentario.cantidadDislike = '0'
+				 
+		   /**
+		   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
+		   */
+		   def cantidadComentados = buscarComentados(xml.comentario[i].id.text())
+		   if (cantidadComentados)
+		   {
+			  comentario.cantidadComentados = cantidadComentados
+		   }
+		   
+		   /**
+		   * lista de las respuestas que tiene un comentario
+		   */
+		   
+		   def listaRespuesta = buscarRespuestaSpring(xml.comentario[i].id.text())
+		   listaComentario.add(comentario)
+	   }
+	   return listaComentario
+   }
+	
+	/**
+	* Metodo encargado de buscar todos las respuestas que tiene un comentario en
+	* el servicio spring
+	*/
+	def buscarRespuestaSpring(String idComentario)
+	{
+		/**
+		* Se ubica la URL del servicio que lista a todas los Usuarios
+		*/
+		 try
+		 {
+			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/replyComentarios/" + idComentario )
+			def lista
+			/**
+			 * Se establece la conexion con el servicio
+			 * Se determina el tipo de peticion (GET) y
+			 * el contenido de la misma (Archivo plano XML)
+			 */
+			def connection = url.openConnection()
+			connection.setRequestMethod("GET" )
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			lista = procesarXmlRespuestaSpring(miXml, idComentario)
+
+			return lista
+		 }
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		}
+	}
+	
+	/**
+	* Metodo encargado de listar todas las respuertas por id comentario registrada en
+	* el servicio spring y retorna la lista de respuesta
+	*/
+	def procesarXmlRespuestaSpring(def xml, String idComentarioPrincipial)
+	{
+		/**
+		* recorro toda el xml de las respuesta registradas en el sistema spring
+		*/
+		for (int i=0;i< xml.comentario.size();i++)
+		{
+			ComentarioCliente comentarioRespuesta = new ComentarioCliente()
+			comentarioRespuesta.fecha = xml.comentario[i].fecha_creacion.text()
+			comentarioRespuesta.mensaje = xml.comentario[i].mensaje.text()
+			comentarioRespuesta.idComentarioComentado = idComentarioPrincipial
+			
+			listaComentado.add(comentarioRespuesta)
+		}
+		
+		return listaComentado
+	}
 	
 } // fin Comentario Controller
 

@@ -61,7 +61,8 @@ function clearText(field) {
            <!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->
         </ul>
     </div>
-<!-- FIN NUEVO MENU-->
+    
+<!------------------------------------------------------ FIN NUEVO MENU ------------------------------------------------------------------>
 
     <!-- end of menu -->
     <div id="search_box">
@@ -80,7 +81,9 @@ function clearText(field) {
 <h3 align="center" style="color: #557C12">Comentarios Generales</h3>
 
 <g:each in="${comentarios}" var="comentario">
+
 <table align="center" width="50%" border="12" class="law">
+
   	<tr style="color: black" bgcolor="#557C12">
     	<td>${comentario.autor} ${comentario.fecha}</td>
   	</tr>
@@ -88,24 +91,34 @@ function clearText(field) {
     	<td>
     	<div align="left">
     
-    	<g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
-            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
-            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
-            <a>${comentario.cantidadComentados} Comentados</a>
-    	</g:if>
-  
-    	<g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
-            ${comentario.cantidadLike} MeGusta<a href="" title="Like" ></a>
-            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
-            <a>${comentario.cantidadComentados} Comentados</a>
-    	</g:elseif>
-    
-    	<g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
-            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
-            ${comentario.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
-            <a>${comentario.cantidadComentados} Comentados</a>
-    	</g:elseif>
-        
+    		<g:if test = "${ servicio == 'miOrquidea' }">
+    		
+		    	<g:if test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'false'}">
+		            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+		            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
+		            <a>${comentario.cantidadComentados} Comentados</a>
+		    	</g:if>
+		  
+		    	<g:elseif test = "${ comentario.calificacionLike == 'true' && comentario.calificacionDislike == 'false'}">
+		            ${comentario.cantidadLike} MeGusta<a href="" title="Like" ></a>
+		            ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
+		            <a>${comentario.cantidadComentados} Comentados</a>
+		    	</g:elseif>
+		    
+		    	<g:elseif test = "${ comentario.calificacionLike == 'false' && comentario.calificacionDislike == 'true'}">
+		            ${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
+		            ${comentario.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
+		            <a>${comentario.cantidadComentados} Comentados</a>
+		    	</g:elseif>
+		    	
+		    </g:if>
+			<!------------Servicio Spring--------------->
+			<g:else>
+			
+				${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+		        ${comentario.cantidadDislike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
+			
+        	</g:else>
         </div>
     	</td>
   	</tr>
@@ -136,57 +149,85 @@ function clearText(field) {
     	<td height="4">&nbsp;</td>
   	</tr>
   	
-	<g:each in="${comentados}" var="comentario2">
-
-		<g:if test = "${ comentario2.idComentarioComentado == comentario.idComentario }">
-    
-		  	<tr style="color: black" bgcolor="#9FC740">
-		    	<td>${comentario2.autor} ${comentario2.fecha}</td>
-		  	</tr>
-		  	<tr style="color: black">
-		    	<td>
-		    	<div align="left">
-		    
-		    	<g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
-		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
-		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
-		    	</g:if>
-		  
-		    	<g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
-		            ${comentario2.cantidadLike} MeGusta<a href="" title="Like" ></a>
-		            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
-		    	</g:elseif>
-		    
-		    	<g:elseif test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
-		            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
-		            ${comentario2.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
-		    	</g:elseif>
-		        
-		        </div>
-		    	</td>
-		  	</tr>
-		  	<tr>
-		    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
-		  	</tr>
-		  	<tr style="color: black">
-		  
-		  		<g:if test = "${ session.nickname.equals(comentario2.autor) }">
-		    		<td height="23">
-		    		<div align="center">
-		            	<g:link id="${comentario2.idComentario},${comentario2.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
-		            	<g:link id="${comentario2.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
-		        	</div>
-		     		</td>
-		  		</g:if>
-
-		  	</tr>
-		    <tr>
-		    	<td height="4">&nbsp;</td>
-		  	</tr>
-		 		
-		</g:if>
+  	<!------------------------------------------------- Las respuestas ------------------------------------------------------------->
+  	
+  		<g:if test = "${ servicio == 'miOrquidea' }">
+  		
+			<g:each in="${comentados}" var="comentario2">
 		
-	</g:each>
+				<g:if test = "${ comentario2.idComentarioComentado == comentario.idComentario }">
+		    
+				  	<tr style="color: black" bgcolor="#9FC740">
+				    	<td>${comentario2.autor} ${comentario2.fecha}</td>
+				  	</tr>
+				  	<tr style="color: black">
+				    	<td>
+				    	<div align="left">
+				    
+				    	<g:if test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'false'}">
+				            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
+				            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="crearComentarioDislike">NoMeGusta</g:link>
+				    	</g:if>
+				  
+				    	<g:elseif test = "${ comentario2.calificacionLike == 'true' && comentario2.calificacionDislike == 'false'}">
+				            ${comentario2.cantidadLike} MeGusta<a href="" title="Like" ></a>
+				            ${comentario2.cantidadDislike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioDislike">NoMeGusta</g:link> 
+				    	</g:elseif>
+				    
+				    	<g:elseif test = "${ comentario2.calificacionLike == 'false' && comentario2.calificacionDislike == 'true'}">
+				            ${comentario2.cantidadLike} <g:link id="${comentario2.idComentario}" controller="comentario" action="modificarComentarioLike">MeGusta</g:link> 
+				            ${comentario2.cantidadDislike} NoMeGusta<a href="" title="Dislike"></a>
+				    	</g:elseif>
+				        
+				        </div>
+				    	</td>
+				  	</tr>
+				  	<tr>
+				    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
+				  	</tr>
+				  	<tr style="color: black">
+				  
+				  		<g:if test = "${ session.nickname.equals(comentario2.autor) }">
+				    		<td height="23">
+				    		<div align="center">
+				            	<g:link id="${comentario2.idComentario},${comentario2.mensaje}" controller="comentario" action="modificarComentarioUsuario">Modificar</g:link> 
+				            	<g:link id="${comentario2.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
+				        	</div>
+				     		</td>
+				  		</g:if>
+		
+				  	</tr>
+				    <tr>
+				    	<td height="4">&nbsp;</td>
+				  	</tr>
+				 		
+				</g:if>
+				
+			</g:each>
+			
+		</g:if>
+		<!------------Servicio Spring--------------->
+		<g:else>
+		
+				<g:each in="${comentados}" var="comentario2">
+		
+				<g:if test = "${ comentario2.idComentarioComentado == comentario.idComentario }">
+		    
+				  	<tr style="color: black" bgcolor="#9FC740">
+				    	<td>${comentario2.fecha}</td>
+				  	</tr>
+				  	<tr>
+				    	<td align="center" height="76%"><textarea name="textarea" cols="79%" rows="4" disabled="disabled">${comentario2.mensaje}</textarea></td>
+				  	</tr>
+				    <tr>
+				    	<td height="4">&nbsp;</td>
+				  	</tr>
+				 		
+				 </g:if>
+				
+				 </g:each>
+		
+		</g:else>
 </table>
 </g:each>
 
