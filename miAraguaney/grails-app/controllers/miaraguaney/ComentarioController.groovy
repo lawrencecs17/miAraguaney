@@ -36,16 +36,17 @@ class ComentarioController {
 		try
 		{
 				   urlVista = "consultarComentarios"
+				   def url
 				   /**
 				   * Se ubica la URL del servicio que lista a todos los Comentarios
 				   */
 				   if (bandera.equals("miOrquidea"))
 				   {
-					   def url = new URL("http://localhost:8080/miOrquidea/comentario/listarTodos" )
+					   url = new URL("http://localhost:8080/miOrquidea/comentario/listarTodos" )
 				   }
 				   else
 				   {
-					   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios" )
+					   url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios" )
 				   }
 				   def listaComentario
 				   
@@ -81,7 +82,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.email,usuario:session.nickname,alerta:miAlerta])
 		}
    }

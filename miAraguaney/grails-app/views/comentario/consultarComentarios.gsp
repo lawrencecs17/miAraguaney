@@ -112,7 +112,7 @@ function clearText(field) {
 		    	</g:elseif>
 		    	
 		    </g:if>
-			<!------------Servicio Spring--------------->
+	
 			<g:else>
 			
 				${comentario.cantidadLike} <g:link id="${comentario.idComentario}" controller="comentario" action="crearComentarioLike">MeGusta</g:link>
@@ -206,7 +206,7 @@ function clearText(field) {
 			</g:each>
 			
 		</g:if>
-		<!------------Servicio Spring--------------->
+
 		<g:else>
 		
 				<g:each in="${comentados}" var="comentario2">
