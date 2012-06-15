@@ -250,7 +250,7 @@ class ComentarioController {
 	  }
 	  catch(Exception)
 	  {
-		  def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera +  ",intente luego."
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -293,7 +293,7 @@ class ComentarioController {
 	  }
 	 catch(Exception)
 	 {
-		 def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	 }
   }
@@ -376,7 +376,7 @@ class ComentarioController {
 	  }
 	  catch(Exception)
 	  {
-		  def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -439,7 +439,7 @@ class ComentarioController {
 		}
 	    catch(Exception)
 	    {
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	    }
    }
@@ -501,7 +501,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -546,7 +546,7 @@ class ComentarioController {
 		 }
 		 catch(Exception)
 		 {
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		 }
 	 }
@@ -607,7 +607,7 @@ class ComentarioController {
 		  }
 		  catch(Exception)
 		  {
-			 def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		  }
 	  }
@@ -723,7 +723,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 							
@@ -825,7 +825,7 @@ class ComentarioController {
 	}
 	catch(Exception)
 	{
-		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion like
@@ -926,7 +926,7 @@ class ComentarioController {
 	}
 	catch(Exception)
 	{
-		def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion dislike
@@ -1027,7 +1027,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar calificacion like
@@ -1127,7 +1127,7 @@ class ComentarioController {
 			}
 			catch(Exception)
 			{
-				def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 			}
 	} //fin metodo modificar calificacion dislike
@@ -1248,7 +1248,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar comentario
@@ -1321,7 +1321,7 @@ class ComentarioController {
 			}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}// fin metodo eliminar comentario
@@ -1345,7 +1345,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"error",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1443,7 +1443,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			 def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			 render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 		
@@ -1487,7 +1487,7 @@ class ComentarioController {
 	   }
 	   catch(Exception)
 	   {
-		  def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		  render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	   }
    }
@@ -1570,7 +1570,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1623,7 +1623,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1695,7 +1695,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1927,7 +1927,7 @@ class ComentarioController {
 		 }
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
