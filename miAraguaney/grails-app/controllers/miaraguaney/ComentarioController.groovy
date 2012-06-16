@@ -37,6 +37,7 @@ class ComentarioController {
 		{
 				   urlVista = "consultarComentarios"
 				   def url
+				   
 				   /**
 				   * Se ubica la URL del servicio que lista a todos los Comentarios
 				   */
@@ -75,14 +76,14 @@ class ComentarioController {
 				   else
 				   {
 					   def miXml = new XmlSlurper().parseText(connection.content.text)
-					   listaComentario = procesarXmlComentarioSpring(miXml)
+					   listaComentario = procesarXmlComentarioSpring(miXml ,"1")
 				   }
 
 			   render (view: urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, servicio: bandera])
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 001"
 			render(view:"perfil",model:[email:session.email,usuario:session.nickname,alerta:miAlerta])
 		}
    }
@@ -250,7 +251,7 @@ class ComentarioController {
 	  }
 	  catch(Exception)
 	  {
-		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera +  ",intente luego."
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera +  ",intente luego. ERROR : 002"
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -293,7 +294,7 @@ class ComentarioController {
 	  }
 	 catch(Exception)
 	 {
-		 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 003"
 		 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	 }
   }
@@ -376,7 +377,7 @@ class ComentarioController {
 	  }
 	  catch(Exception)
 	  {
-		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 004"
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -439,7 +440,7 @@ class ComentarioController {
 		}
 	    catch(Exception)
 	    {
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 005"
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	    }
    }
@@ -501,7 +502,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 006"
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -546,7 +547,7 @@ class ComentarioController {
 		 }
 		 catch(Exception)
 		 {
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 007"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		 }
 	 }
@@ -607,7 +608,7 @@ class ComentarioController {
 		  }
 		  catch(Exception)
 		  {
-			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 008"
 			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		  }
 	  }
@@ -723,7 +724,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 009"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 							
@@ -825,7 +826,7 @@ class ComentarioController {
 	}
 	catch(Exception)
 	{
-		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 010"
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion like
@@ -926,7 +927,7 @@ class ComentarioController {
 	}
 	catch(Exception)
 	{
-		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 011"
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion dislike
@@ -1027,7 +1028,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 012"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar calificacion like
@@ -1127,7 +1128,7 @@ class ComentarioController {
 			}
 			catch(Exception)
 			{
-				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 013"
 				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 			}
 	} //fin metodo modificar calificacion dislike
@@ -1150,7 +1151,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor, intente luego. ERROR : 014"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1248,7 +1249,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 015"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar comentario
@@ -1321,7 +1322,7 @@ class ComentarioController {
 			}
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 016"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}// fin metodo eliminar comentario
@@ -1345,7 +1346,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 017"
 		   render(view:"error",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1443,7 +1444,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 018"
 			 render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 		
@@ -1461,9 +1462,18 @@ class ComentarioController {
 	   */
 	   try
 	   {
-		   def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorUsuario?usuario=" + session.nickname )
 		   def listaComentario
+		   def url
 		   
+		   if (bandera.equals("miOrquidea"))
+		   {
+			  url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorUsuario?usuario=" + session.nickname )
+		   }
+		   else
+		   {
+			  url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
+		   }	 
+		     
 		   /**
 		   * Se establece la conexion con el servicio
 		   * Se determina el tipo de peticion (GET) y
@@ -1472,23 +1482,33 @@ class ComentarioController {
 		   def connection = url.openConnection()
 		   connection.setRequestMethod("GET" )
 		   connection.setRequestProperty("Content-Type" ,"text/xml" )
-		   
-		   if(connection.responseCode == 200)
+			
+		   if (bandera.equals("miOrquidea"))
+		   {
+				   if(connection.responseCode == 200)
+				   {
+					   def miXml = new XmlSlurper().parseText(connection.content.text)
+					   listaComentario = procesarXmlComentario(miXml)
+				   }
+				   else
+				   {
+					   	render "Se ha generado un error:"
+						render connection.responseCode
+						render connection.responseMessage
+				   }
+		   }
+		   else
 		   {
 			   def miXml = new XmlSlurper().parseText(connection.content.text)
-			   listaComentario = procesarXmlComentario(miXml)
+			   listaComentario = procesarXmlComentarioSpring(miXml, "2")
 		   }
-		   else{
-			   render "Se ha generado un error:"
-			   render connection.responseCode
-			   render connection.responseMessage
-		   }
+	
 		   render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
 	   }
 	   catch(Exception)
 	   {
-		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
-		  render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 019"
+		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	   }
    }
 	
@@ -1570,7 +1590,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 020"
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1623,7 +1643,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 021"
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1695,7 +1715,7 @@ class ComentarioController {
 		}
 		catch(Exception)
 		{
-		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 022"
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1831,7 +1851,7 @@ class ComentarioController {
 	* @param xml
 	* @return
 	*/
-	def procesarXmlComentarioSpring(def xml)
+	def procesarXmlComentarioSpring(def xml, String opcion)
 	{
 	   ArrayList<ComentarioCliente> listaComentario = new ArrayList<ComentarioCliente>()
 	   listaComentario.clear()
@@ -1847,15 +1867,33 @@ class ComentarioController {
 		   comentario.idComentario = xml.comentario[i].id.text()
 		   comentario.mensaje = xml.comentario[i].mensaje
 		   comentario.fecha = xml.comentario[i].fecha_creacion
-		   if (xml.reply == "0")
+		   
+		   if (opcion == "1")
 		   {
-			   comentario.principal = true
+			   if (xml.reply == "0")
+			   {
+				   comentario.principal = true
+			   }
+			   else
+			   {
+				   comentario.principal = false
+			   }
+			   comentario.autor = xml.nickName
 		   }
 		   else
 		   {
-			   comentario.principal = false
+			  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
+			  
+				  if (tipoRespuesta == "0")
+				  {
+					  comentario.principal = true
+				  }
+				  else
+				  {
+					  comentario.principal = false
+				  }
+				  comentario.autor = xml.nickName
 		   }
-		   comentario.autor = xml.nickName
 		   
 		   /**
 		   * busca la cantidad de like que tiene un comentario por el idComentario del xml
@@ -1927,7 +1965,7 @@ class ComentarioController {
 		 }
 		catch(Exception)
 		{
-			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 023"
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1952,6 +1990,40 @@ class ComentarioController {
 		}
 		
 		return listaComentado
+	}
+	
+	/**
+	* Metodo de buscar los datos de un comentairo por id comentario registrada en
+	* el servicio spring 
+	*/
+	def buscarComentarioSpring (String idComentario)
+	{
+		/**
+		* Se ubica la URL del servicio que lista a todas los Usuarios
+		*/
+		 try
+		 {
+			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentario/" + idComentario )
+			def lista
+			/**
+			 * Se establece la conexion con el servicio
+			 * Se determina el tipo de peticion (GET) y
+			 * el contenido de la misma (Archivo plano XML)
+			 */
+			def connection = url.openConnection()
+			connection.setRequestMethod("GET" )
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			lista = miXml.reply
+
+			return lista
+		 }
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 024"
+			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		}
 	}
 	
 } // fin Comentario Controller
