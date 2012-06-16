@@ -100,6 +100,7 @@ class UsuarioController {
 						session.email = params.email
 						session.password = params.password
 						obtenerUsuario()
+
 						redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
 					}
 					/**

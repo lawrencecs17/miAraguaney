@@ -10,7 +10,7 @@ import java.util.Date
 class EtiquetaController {
 
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
-	String bandera = "miOrquidea"
+	static String bandera = "miOrquidea"
 	//String bandera = "Spring"
 	
 	    def index() { 
@@ -27,13 +27,13 @@ class EtiquetaController {
 		   
 	   try
 	   {
+		   def listaEtiqueta
 		   if (bandera.equals("miOrquidea"))
 		   {
 			   /**
 				* Se ubica la URL del servicio que lista a todas las Etiquetas
 				*/
 			   def url = new URL("http://localhost:8080/miOrquidea/etiqueta/listarTodos" )
-			   def listaEtiqueta
 			   
 			   /**
 				* Se establece la conexion con el servicio
@@ -47,7 +47,9 @@ class EtiquetaController {
 			   if(connection.responseCode == 200)
 			   {
 				   def miXml = new XmlSlurper().parseText(connection.content.text)
+				   println("entre")
 				   listaEtiqueta = procesarXmlEtiqueta(miXml)
+				   println("sali")
 			   }
 			   else
 			   {
@@ -62,7 +64,6 @@ class EtiquetaController {
 			   * Se ubica la URL del servicio que lista a todas las Etiquetas
 			   */
 			  def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/etiquetas" )
-			  def listaEtiqueta
 			  
 			  /**
 			   * Se establece la conexion con el servicio
@@ -90,7 +91,7 @@ class EtiquetaController {
 	   }
 	   catch(Exception)
 	   {
-		   def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego."
 		   render(view:"errorEtiqueta",model:[email:session.email,usuario:session.nickname,alerta:miAlerta])
 	   }
 	   }// fin consultarTodasLasEtiquetas

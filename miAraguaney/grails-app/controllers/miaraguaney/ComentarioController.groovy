@@ -646,15 +646,18 @@ class ComentarioController {
 		
 		try
 		{
+			if (bandera.equals("miOrquidea"))
+			{
 				if(Token.tokenVigente(session.usuario.email))
 				{
 					def serviceResponse = "No hay respuesta"
+					
 					/**
 					* Se establece la URL de la ubicacion
 					* del servicio
 					*/
-		
 					def url = new URL("http://localhost:8080/miOrquidea/comentario/crearComentario" )
+					
 					/**
 					* Se extraen los parametros y convierte a formato
 					* XML para luego ser enviada a la aplicacion miOrquidea
@@ -714,13 +717,89 @@ class ComentarioController {
 						}
 						
 						redirect (action: 'consultarComentarioPorUsuario', model:[usuario:session.nickname])
-		
-		
+				}
+				else
+				{
+					destruirSesion()
+				}
+			}
+			else
+			{
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
+				*/
+				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarComentario" )
+				
+				/**
+				* Se extraen los parametros y convierte a formato
+				* XML para luego ser enviada a la aplicacion miOrquidea
+				*
+				*/
+				def nick = session.nickname
+			   
+				/**
+				* Con estas funciones creamos el XML
+				*/
+				def gXml = new StringWriter()
+				def xml = new MarkupBuilder(gXml)
+				
+				/**
+				* Creando el XML Comentario para pasarlo al servicio
+				*/
+				def listaEtiquetas = null
+				listaEtiquetas = params.etiquetas
+				def nuevaFecha = new Date()
+				def conversionFecha = nuevaFecha.format('dd/MM/yyyy')
+				
+				xml.comentario() {
+					   id(session.token)
+					   mensaje(params.mensaje)
+					   fecha_creacion(nuevaFecha)
+					   adjunto("no")
+					   nickName(session.nickname)
+				}
+				
+				def connection = url.openConnection()
+				connection.setRequestMethod("POST")
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.doOutput=true
+					Writer writer = new OutputStreamWriter(connection.outputStream)
+					writer.write(gXml.toString())
+					writer.flush()
+					writer.close()
+					connection.connect()
+					
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					def serviceResponse = miXml.nickName
+					
+					if (serviceResponse == "ERROR 111")
+					{
+						def miAlerta = "ERROR 111: Token incorrecto"
+						render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 					}
-					else
+					if (serviceResponse == "ERROR 100")
 					{
 						destruirSesion()
 					}
+					else
+					{
+						if (listaEtiquetas != '')
+						{
+							def arrayetiquetas = listaEtiquetas.split(",")
+							def sizearray= arrayetiquetas.size()
+							if (sizearray >0)
+							{
+								for (int i=0;i< sizearray ;i++)
+								{
+									insertarEtiquetaSpring(arrayetiquetas[i])
+								}
+							}
+						}
+						
+						redirect (action: 'consultarComentarioPorUsuario', model:[usuario:session.nickname])
+					}
+			}
 		}
 		catch(Exception)
 		{
@@ -1503,7 +1582,7 @@ class ComentarioController {
 			   listaComentario = procesarXmlComentarioSpring(miXml, "2")
 		   }
 	
-		   render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname])
+		   render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, servicio:bandera])
 	   }
 	   catch(Exception)
 	   {
@@ -1532,6 +1611,17 @@ class ComentarioController {
 	    render (view:'consultarTag', model:[usuario:session.nickname])
 	}
 	
+	
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	//***************************************************************************************************************************************************
+	
 	/**
 	* Metodo que se encarga de listar los comentarios por etiqueta
 	*/
@@ -1555,38 +1645,38 @@ class ComentarioController {
 		*/
 		try
 		{
-			def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + nombreEtiqueta )
-			def listaComentario
-			
-			/**
-			* Se establece la conexion con el servicio
-			* Se determina el tipo de peticion (GET) y
-			* el contenido de la misma (Archivo plano XML)
-			*/
-			def connection = url.openConnection()
-			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
-			
-			if(connection.responseCode == 200)
-			{
-				mensaje = ""
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				if (miXml.mensaje == "La etiqueta no existe")
+				def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + nombreEtiqueta )
+				def listaComentario
+				
+				/**
+				* Se establece la conexion con el servicio
+				* Se determina el tipo de peticion (GET) y
+				* el contenido de la misma (Archivo plano XML)
+				*/
+				def connection = url.openConnection()
+				connection.setRequestMethod("GET" )
+				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				
+				if(connection.responseCode == 200)
 				{
-					mensaje = miXml.mensaje 
-			    }
-				else
-				{
-					listaComentario = procesarXmlComentario(miXml)
+					mensaje = ""
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					if (miXml.mensaje == "La etiqueta no existe")
+					{
+						mensaje = miXml.mensaje 
+				    }
+					else
+					{
+						listaComentario = procesarXmlComentario(miXml)
+					}
 				}
-			}
-			else{
-				render "Se ha generado un error:"
-				render connection.responseCode
-				render connection.responseMessage
-			}
-	 
-			render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:nombreEtiqueta, error: mensaje])
+				else{
+					render "Se ha generado un error:"
+					render connection.responseCode
+					render connection.responseMessage
+				}
+		 
+				render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:nombreEtiqueta, error: mensaje])
 		}
 		catch(Exception)
 		{
@@ -2018,6 +2108,60 @@ class ComentarioController {
 			lista = miXml.reply
 
 			return lista
+		 }
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 024"
+			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		}
+	}
+	
+	/*
+	 * metodo que agregar etiquetas al servicio spring
+	 */
+	def insertarEtiquetaSpring(String etiqueta)
+	{
+		/**
+		* Se ubica la URL del servicio insertar etiqueta
+		*/
+		 try
+		 {
+			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarEtiqueta")
+
+			/**
+			* Con estas funciones creamos el XML
+			*/
+			def gXml = new StringWriter()
+			def xml = new MarkupBuilder(gXml)
+			
+			/**
+			* Creando el XML Comentario para pasarlo al servicio
+			*/
+			def listaEtiquetas = null
+			listaEtiquetas = params.etiquetas
+			xml.Etiqueta() {
+				   nombre (etiqueta)
+			}
+			
+			/**
+			 * Se establece la conexion con el servicio
+			 * Se determina el tipo de peticion (GET) y
+			 * el contenido de la misma (Archivo plano XML)
+			 */
+			
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+				
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				//def serviceResponse = miXml.mensaje
+
 		 }
 		catch(Exception)
 		{
