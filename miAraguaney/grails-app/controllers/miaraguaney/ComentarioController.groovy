@@ -1942,8 +1942,18 @@ class ComentarioController {
 		*/
 		try
 		{
-				def url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + nombreEtiqueta )
-				def listaComentario
+			    def listaComentario
+				def url
+				
+				if (bandera.equals("miOrquidea"))
+				{
+					url = new URL("http://localhost:8080/miOrquidea/comentario/listarPorEtiqueta?nombre=" + nombreEtiqueta )
+				}
+				else
+				{
+					url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/etiquetaComentarios/" + nombreEtiqueta )
+				}
+				
 				
 				/**
 				* Se establece la conexion con el servicio
@@ -1954,26 +1964,34 @@ class ComentarioController {
 				connection.setRequestMethod("GET" )
 				connection.setRequestProperty("Content-Type" ,"text/xml" )
 				
-				if(connection.responseCode == 200)
+				if (bandera.equals("miOrquidea"))
 				{
-					mensaje = ""
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					if (miXml.mensaje == "La etiqueta no existe")
+					if(connection.responseCode == 200)
 					{
-						mensaje = miXml.mensaje 
-				    }
-					else
-					{
-						listaComentario = procesarXmlComentario(miXml)
+						mensaje = ""
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						if (miXml.mensaje == "La etiqueta no existe")
+						{
+							mensaje = miXml.mensaje 
+					    }
+						else
+						{
+							listaComentario = procesarXmlComentario(miXml)
+						}
+					}
+					else{
+						render "Se ha generado un error:"
+						render connection.responseCode
+						render connection.responseMessage
 					}
 				}
-				else{
-					render "Se ha generado un error:"
-					render connection.responseCode
-					render connection.responseMessage
+				else
+				{
+					def miXml = new XmlSlurper().parseText(connection.content.text)
+					listaComentario = procesarXmlComentarioSpring(miXml ,"3")
 				}
 		 
-				render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:nombreEtiqueta, error: mensaje])
+				render (view:urlVista, model:[comentarios:listaComentario, comentados: listaComentado, usuario:session.nickname, etiqueta:nombreEtiqueta, error: mensaje, servicio:bandera])
 		}
 		catch(Exception)
 		{
@@ -2235,8 +2253,9 @@ class ComentarioController {
 	/**
 	* Metodo encargado de procesar el archivo XML recibido del
 	* servicio Spring app
-	* @param xml
-	* @return
+	* opcion 1 para consultar todos los comentarios 
+	* opcion 2 para consultar todos los comentarios por usuario
+	* opcion 3 para consultar todos los comentarios por etiqueta
 	*/
 	def procesarXmlComentarioSpring(def xml, String opcion)
 	{
@@ -2269,55 +2288,62 @@ class ComentarioController {
 		   }
 		   else
 		   {
-			  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
-			  
-				  if (tipoRespuesta == "0")
-				  {
-					  comentario.principal = true
-				  }
-				  else
-				  {
-					  comentario.principal = false
-				  }
-				  comentario.autor = xml.nickName
+			   if (opcion == "2")
+			   {
+				  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
+				  
+					  if (tipoRespuesta == "0")
+					  {
+						  comentario.principal = true
+					  }
+					  else
+					  {
+						  comentario.principal = false
+					  }
+					  comentario.autor = xml.nickName
+			   }
 		   }
 		   
-		   /**
-		   * busca la cantidad de like que tiene un comentario por el idComentario del xml
-		   */
-		   def cantidadLike = buscarLike(xml.comentario[i].id.text())
-		   if (cantidadLike)
+		   if (opcion != "3")
 		   {
-			   comentario.cantidadLike = cantidadLike
-		   }
-		   if (comentario.cantidadLike == '')
-			   comentario.cantidadLike = '0'
- 
-		   /**
-		   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
-		   */
-		   def cantidadDislike = buscarDislike(xml.comentario[i].id.text())
-		   if (cantidadDislike)
-		   {
-			   comentario.cantidadDislike = cantidadDislike
-		   }
-		   if (comentario.cantidadDislike == '')
-				 comentario.cantidadDislike = '0'
-				 
-		   /**
-		   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
-		   */
-		   def cantidadComentados = buscarComentados(xml.comentario[i].id.text())
-		   if (cantidadComentados)
-		   {
-			  comentario.cantidadComentados = cantidadComentados
+			   /**
+			   * busca la cantidad de like que tiene un comentario por el idComentario del xml
+			   */
+			   def cantidadLike = buscarLike(xml.comentario[i].id.text())
+			   if (cantidadLike)
+			   {
+				   comentario.cantidadLike = cantidadLike
+			   }
+			   if (comentario.cantidadLike == '')
+				   comentario.cantidadLike = '0'
+	 
+			   /**
+			   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
+			   */
+			   def cantidadDislike = buscarDislike(xml.comentario[i].id.text())
+			   if (cantidadDislike)
+			   {
+				   comentario.cantidadDislike = cantidadDislike
+			   }
+			   if (comentario.cantidadDislike == '')
+					 comentario.cantidadDislike = '0'
+					 
+			   /**
+			   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
+			   */
+			   def cantidadComentados = buscarComentados(xml.comentario[i].id.text())
+			   if (cantidadComentados)
+			   {
+				  comentario.cantidadComentados = cantidadComentados
+			   }
+			   
+			   /**
+			   * lista de las respuestas que tiene un comentario
+			   */
+			   
+			   def listaRespuesta = buscarRespuestaSpring(xml.comentario[i].id.text())
 		   }
 		   
-		   /**
-		   * lista de las respuestas que tiene un comentario
-		   */
-		   
-		   def listaRespuesta = buscarRespuestaSpring(xml.comentario[i].id.text())
 		   listaComentario.add(comentario)
 	   }
 	   return listaComentario
