@@ -1498,17 +1498,19 @@ class ComentarioController {
 
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
-	        {
+			if (bandera.equals("miOrquidea"))
+			{
+				if(Token.tokenVigente(session.usuario.email))
+		        {
 					def nick = session.nickname
 				 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
 					def connection = url.openConnection()
-					
+						
 					connection.setRequestMethod("DELETE")
 					connection.setDoOutput(true)
 					connection.connect()
 					def serviceResponse = "No hay respuesta!"	
-					
+						
 					if(connection.responseCode == 200)
 					{			
 						def miXml = new XmlSlurper().parseText(connection.content.text)
@@ -1519,44 +1521,102 @@ class ComentarioController {
 							serviceResponse = "Comentario eliminado"
 						}
 					}
+					
 					if (urlVista == "consultarComentarios")
 					{
 							redirect (action: 'consultarTodosLosComentarios')
 					}
 					else
 					{
-							if (urlVista == "perfilUsuario")
+						if (urlVista == "perfilUsuario")
+						{
+							redirect (action: 'consultarComentarioPorUsuario')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioTag")
 							{
-								redirect (action: 'consultarComentarioPorUsuario')
+								redirect (action: 'buscarEtiqueta')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioTag")
+								if (urlVista == "consultarComentarioId")
 								{
-									redirect (action: 'buscarEtiqueta')
+									redirect (action: 'busquedaPorId')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioId")
+									if (urlVista == "consultarComentarioSinTag")
 									{
-										redirect (action: 'busquedaPorId')
-									}
-									else
-									{
-										if (urlVista == "consultarComentarioSinTag")
-										{
-											redirect (action: 'buscarSinEtiqueta')
-										}
+										redirect (action: 'buscarSinEtiqueta')
 									}
 								}
 							}
+						}
 					}
+				}
+				else
+				{
+					destruirSesion()
+				}
 			}
 			else
 			{
-				destruirSesion()
+			   def nick = session.nickname
+			   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/borrar/comentario/" + params.id )
+			   def connection = url.openConnection()
+				   
+			   connection.setRequestMethod("DELETE")
+			   connection.setDoOutput(true)
+			   connection.connect()
+			   def serviceResponse = "No hay respuesta!"
+			   
+			   def miXml = new XmlSlurper().parseText(connection.content.text)
+			   serviceResponse = miXml.nickName
+
+			   if(serviceResponse == "ERROR 999")
+			   {
+				   def miAlerta = "ERROR 111: Token incorrecto"
+				   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			   }
+			   if (serviceResponse == "ERROR 100")
+			   {
+				   destruirSesion()
+			   }
+			   if (urlVista == "consultarComentarios")
+			   {
+					   redirect (action: 'consultarTodosLosComentarios')
+			   }
+			   else
+			   {
+				   if (urlVista == "perfilUsuario")
+				   {
+					   redirect (action: 'consultarComentarioPorUsuario')
+				   }
+				   else
+				   {
+					   if (urlVista == "consultarComentarioTag")
+					   {
+						   redirect (action: 'buscarEtiqueta')
+					   }
+					   else
+					   {
+						   if (urlVista == "consultarComentarioId")
+						   {
+							   redirect (action: 'busquedaPorId')
+						   }
+						   else
+						   {
+							   if (urlVista == "consultarComentarioSinTag")
+							   {
+								   redirect (action: 'buscarSinEtiqueta')
+							   }
+						   }
+					   }
+				   }
+			   }
 			}
-			}
+		}
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 016"
@@ -1706,10 +1766,11 @@ class ComentarioController {
 					   id (session.token)
 					   mensaje(params.mensaje)
 					   fecha_creacion(conversionFecha)
+					   adjunto("no")
 					   nickName(nick)
-					   reply()
+					   reply(params.id)
 				}
-				
+
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
 				connection.setRequestProperty("Content-Type" ,"text/xml" )
