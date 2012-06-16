@@ -990,91 +990,164 @@ class ComentarioController {
 		
 	try
 	{
-		if(Token.tokenVigente(session.usuario.email))
+		def serviceResponse = "No hay respuesta"
+		if (bandera.equals("miOrquidea"))
 		{
-			def serviceResponse = "No hay respuesta"
+			if(Token.tokenVigente(session.usuario.email))
+			{
+				/**
+				* Se establece la URL de la ubicacion
+				* del servicio
+				*/
+					def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
 			
-			/**
-			* Se establece la URL de la ubicacion
-			* del servicio
-			*/
-				def url = new URL("http://localhost:8080/miOrquidea/calificacion/crearCalificacion" )
-		
-				def nick = session.nickname
-			   
-			    /**
-				* Con estas funciones creamos el XML
-				*/
-			    def gXml = new StringWriter()
-			    def xml = new MarkupBuilder(gXml)
-				
-			    /**
-				* Creando el XML Calificacion dislike para pasarlo al servicio
-				*/
-			    xml.calificacion() {
-					   comentario (id:params.id)
-					   dislike(true)
-					   like(false)
-					   persona(nick)
-			    }
-			   
-				def connection = url.openConnection()
-				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
-				connection.doOutput=true
-					Writer writer = new OutputStreamWriter(connection.outputStream)
-					writer.write(gXml.toString())
-					writer.flush()
-					writer.close()
-					connection.connect()
+					def nick = session.nickname
+				   
+				    /**
+					* Con estas funciones creamos el XML
+					*/
+				    def gXml = new StringWriter()
+				    def xml = new MarkupBuilder(gXml)
 					
-					def miXml = new XmlSlurper().parseText(connection.content.text)
-					serviceResponse = miXml.mensaje
-					
-					/**
-					 * Lo que me responde el servidor
-					 */
-					if(serviceResponse == "")
-					{
-						serviceResponse = "Calificacion dislike creado"
-					}
-			   
-					if (urlVista == "consultarComentarios")
-					{
-						redirect (action: 'consultarTodosLosComentarios')
-					}
-					else
-					{
-						if (urlVista == "perfilUsuario")
+				    /**
+					* Creando el XML Calificacion dislike para pasarlo al servicio
+					*/
+				    xml.calificacion() {
+						   comentario (id:params.id)
+						   dislike(true)
+						   like(false)
+						   persona(nick)
+				    }
+				   
+					def connection = url.openConnection()
+					connection.setRequestMethod("POST")
+					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.doOutput=true
+						Writer writer = new OutputStreamWriter(connection.outputStream)
+						writer.write(gXml.toString())
+						writer.flush()
+						writer.close()
+						connection.connect()
+						
+						def miXml = new XmlSlurper().parseText(connection.content.text)
+						serviceResponse = miXml.mensaje
+						
+						/**
+						 * Lo que me responde el servidor
+						 */
+						if(serviceResponse == "")
 						{
-							redirect (action: 'consultarComentarioPorUsuario')
+							serviceResponse = "Calificacion dislike creado"
+						}
+				   
+						if (urlVista == "consultarComentarios")
+						{
+							redirect (action: 'consultarTodosLosComentarios')
 						}
 						else
 						{
-							if (urlVista == "consultarComentarioTag")
+							if (urlVista == "perfilUsuario")
 							{
-								redirect (action: 'buscarEtiqueta')
+								redirect (action: 'consultarComentarioPorUsuario')
 							}
 							else
 							{
-								if (urlVista == "consultarComentarioId")
+								if (urlVista == "consultarComentarioTag")
 								{
-									redirect (action: 'buscarPorId')
+									redirect (action: 'buscarEtiqueta')
 								}
 								else
 								{
-									if (urlVista == "consultarComentarioSinTag")
+									if (urlVista == "consultarComentarioId")
 									{
-										redirect (action: 'buscarSinEtiqueta')
+										redirect (action: 'buscarPorId')
+									}
+									else
+									{
+										if (urlVista == "consultarComentarioSinTag")
+										{
+											redirect (action: 'buscarSinEtiqueta')
+										}
 									}
 								}
 							}
 						}
-					}
+			}
+			else
+			{
+				destruirSesion()
+			}
 		}
 		else
 		{
-			destruirSesion()
+			/**
+			* Se establece la URL de la ubicacion
+			* del servicio
+			*/
+			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
+				
+			def nick = session.nickname
+			
+			/**
+			* Con estas funciones creamos el XML
+			*/
+			def gXml = new StringWriter()
+			def xml = new MarkupBuilder(gXml)
+				
+			/**
+			* Creando el XML Calificacion like para pasarlo al servicio
+			*/
+			xml.Comentario() {
+				   id (params.id)
+				   adjunto(0)
+				   nickName(nick)
+			}
+			
+			def connection = url.openConnection()
+			connection.setRequestMethod("POST")
+			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.doOutput=true
+				Writer writer = new OutputStreamWriter(connection.outputStream)
+				writer.write(gXml.toString())
+				writer.flush()
+				writer.close()
+				connection.connect()
+					
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			//serviceResponse = miXml.nickName
+			
+			if (urlVista == "consultarComentarios")
+			{
+				redirect (action: 'consultarTodosLosComentarios')
+			}
+			else
+			{
+				if (urlVista == "perfilUsuario")
+				{
+					redirect (action: 'consultarComentarioPorUsuario')
+				}
+				else
+				{
+					if (urlVista == "consultarComentarioTag")
+					{
+						redirect (action: 'buscarEtiqueta')
+					}
+					else
+					{
+						if (urlVista == "consultarComentarioId")
+						{
+							redirect (action: 'buscarPorId')
+						}
+						else
+						{
+							if (urlVista == "consultarComentarioSinTag")
+							{
+								redirect (action: 'buscarSinEtiqueta')
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	catch(Exception)
