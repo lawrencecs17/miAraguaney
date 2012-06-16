@@ -1114,35 +1114,47 @@ class ComentarioController {
 				connection.connect()
 					
 			def miXml = new XmlSlurper().parseText(connection.content.text)
-			//serviceResponse = miXml.nickName
+			serviceResponse = miXml.nickName
 			
-			if (urlVista == "consultarComentarios")
+			if (serviceResponse == "ERROR 111")
 			{
-				redirect (action: 'consultarTodosLosComentarios')
+				def miAlerta = "ERROR 111: Token incorrecto"
+				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			}
+			if (serviceResponse == "ERROR 100")
+			{
+				destruirSesion()
 			}
 			else
 			{
-				if (urlVista == "perfilUsuario")
+				if (urlVista == "consultarComentarios")
 				{
-					redirect (action: 'consultarComentarioPorUsuario')
+					redirect (action: 'consultarTodosLosComentarios')
 				}
 				else
 				{
-					if (urlVista == "consultarComentarioTag")
+					if (urlVista == "perfilUsuario")
 					{
-						redirect (action: 'buscarEtiqueta')
+						redirect (action: 'consultarComentarioPorUsuario')
 					}
 					else
 					{
-						if (urlVista == "consultarComentarioId")
+						if (urlVista == "consultarComentarioTag")
 						{
-							redirect (action: 'buscarPorId')
+							redirect (action: 'buscarEtiqueta')
 						}
 						else
 						{
-							if (urlVista == "consultarComentarioSinTag")
+							if (urlVista == "consultarComentarioId")
 							{
-								redirect (action: 'buscarSinEtiqueta')
+								redirect (action: 'buscarPorId')
+							}
+							else
+							{
+								if (urlVista == "consultarComentarioSinTag")
+								{
+									redirect (action: 'buscarSinEtiqueta')
+								}
 							}
 						}
 					}
@@ -1709,7 +1721,7 @@ class ComentarioController {
 					connection.connect()
 						
 				def miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse = miXml.mensaje
+				serviceResponse = miXml.nickName
 				
 				if (urlVista == "consultarComentarios")
 				{
