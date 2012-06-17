@@ -49,8 +49,16 @@ function clearText(field) {
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
                     <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    
+                    <g:if test = "${ servicio == 'miOrquidea' }">
+                    	<li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    	<li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    </g:if>
+                    <g:else>
+                    	<li><g:link controller="" action="">Activar</g:link></li>
+                    	<li><g:link controller="" action="">Foto de Perfil</g:link></li>
+                    </g:else>
+                    
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
@@ -59,8 +67,16 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    
+                    <g:if test = "${ servicio == 'miOrquidea' }">
+                    	<li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    </g:if>
+                    <g:else>
+                    	<li><g:link controller="" action="">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="" action="">Consultar P.Ids</g:link></li>
+                    </g:else>
+                    
                 </ul>
             </li>
             <li><a href="#" class="last">MiAraguaney</a></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->

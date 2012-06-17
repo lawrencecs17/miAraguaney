@@ -752,7 +752,7 @@ class ComentarioController {
 				def nuevaFecha = new Date()
 				def conversionFecha = nuevaFecha.format('dd/MM/yyyy')
 				
-				xml.comentario() {
+				xml.Comentario() {
 					   id(session.token)
 					   mensaje(params.mensaje)
 					   fecha_creacion(nuevaFecha)
@@ -797,7 +797,8 @@ class ComentarioController {
 							}
 						}
 						
-						redirect (action: 'consultarComentarioPorUsuario', model:[usuario:session.nickname])
+						
+					redirect (action: 'consultarComentarioPorUsuario', model:[usuario:session.nickname])
 					}
 			}
 		}
@@ -817,6 +818,7 @@ class ComentarioController {
 	try
 	{
 		def serviceResponse = "No hay respuesta"
+		
 		if (bandera.equals("miOrquidea"))
 		{
 			if(Token.tokenVigente(session.usuario.email))
@@ -1116,17 +1118,6 @@ class ComentarioController {
 			def miXml = new XmlSlurper().parseText(connection.content.text)
 			serviceResponse = miXml.nickName
 			
-			if (serviceResponse == "ERROR 111")
-			{
-				def miAlerta = "ERROR 111: Token incorrecto"
-				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
-			}
-			if (serviceResponse == "ERROR 100")
-			{
-				destruirSesion()
-			}
-			else
-			{
 				if (urlVista == "consultarComentarios")
 				{
 					redirect (action: 'consultarTodosLosComentarios')
@@ -1159,7 +1150,6 @@ class ComentarioController {
 						}
 					}
 				}
-			}
 		}
 	}
 	catch(Exception)
@@ -1576,7 +1566,7 @@ class ComentarioController {
 
 			   if(serviceResponse == "ERROR 999")
 			   {
-				   def miAlerta = "ERROR 111: Token incorrecto"
+				   def miAlerta = "ERROR 999: El comentario no existe"
 				   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 			   }
 			   if (serviceResponse == "ERROR 100")
@@ -1655,6 +1645,7 @@ class ComentarioController {
 		try
 		{
 			def serviceResponse = "No hay respuesta"
+			
 			if (bandera.equals("miOrquidea"))
 			{
 				if(Token.tokenVigente(session.usuario.email))
@@ -1784,6 +1775,16 @@ class ComentarioController {
 				def miXml = new XmlSlurper().parseText(connection.content.text)
 				serviceResponse = miXml.nickName
 				
+				if(serviceResponse == "ERROR 111")
+				{
+					def miAlerta = "ERROR 111: Token incorrecto"
+					render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+				}
+				if (serviceResponse == "ERROR 100")
+				{
+					destruirSesion()
+				}
+				
 				if (urlVista == "consultarComentarios")
 				{
 					redirect (action: 'consultarTodosLosComentarios')
@@ -1847,7 +1848,8 @@ class ComentarioController {
 		   }
 		   else
 		   {
-			  url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
+			  //url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
+			  url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios")
 		   }	 
 		     
 		   /**
@@ -1907,18 +1909,7 @@ class ComentarioController {
 		
 	    render (view:'consultarTag', model:[usuario:session.nickname])
 	}
-	
-	
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	//***************************************************************************************************************************************************
-	
+
 	/**
 	* Metodo que se encarga de listar los comentarios por etiqueta
 	*/
@@ -2263,19 +2254,21 @@ class ComentarioController {
 	   listaComentario.clear()
 	   listaComentado.clear()
 	   String nickname = session.nickname
+	   def banderita = false
 	   
 	   /**
 	   * recorro toda el xml de los comentarios registrados en el sistema spring
 	   */
 	   for (int i=0;i< xml.comentario.size();i++)
 	   {
+		   banderita = false
 		   ComentarioCliente comentario = new ComentarioCliente()
-		   comentario.idComentario = xml.comentario[i].id.text()
-		   comentario.mensaje = xml.comentario[i].mensaje
-		   comentario.fecha = xml.comentario[i].fecha_creacion
-		   
+
 		   if (opcion == "1")
 		   {
+			   comentario.mensaje = xml.comentario[i].mensaje
+			   comentario.fecha = xml.comentario[i].fecha_creacion
+			   comentario.idComentario = xml.comentario[i].id.text()
 			   if (xml.reply == "0")
 			   {
 				   comentario.principal = true
@@ -2290,61 +2283,81 @@ class ComentarioController {
 		   {
 			   if (opcion == "2")
 			   {
-				  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
-				  
-					  if (tipoRespuesta == "0")
-					  {
-						  comentario.principal = true
-					  }
-					  else
-					  {
-						  comentario.principal = false
-					  }
-					  comentario.autor = xml.nickName
+				   if (xml.comentario[i].nickName == session.nickname)
+				   {
+						  comentario.mensaje = xml.comentario[i].mensaje
+						  comentario.fecha = xml.comentario[i].fecha_creacion
+					   	  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
+					  
+						  if (tipoRespuesta == "0")
+						  {
+							  comentario.principal = true
+						  }
+						  else
+						  {
+							  comentario.principal = false
+						  }
+						  comentario.autor = xml.nickName
+				   }
+				   else
+				   {
+					   banderita = true
+				   }
 			   }
 		   }
 		   
 		   if (opcion != "3")
 		   {
-			   /**
-			   * busca la cantidad de like que tiene un comentario por el idComentario del xml
-			   */
-			   def cantidadLike = buscarLike(xml.comentario[i].id.text())
-			   if (cantidadLike)
+			   if (banderita == false)
 			   {
-				   comentario.cantidadLike = cantidadLike
+				   /**
+				   * busca la cantidad de like que tiene un comentario por el idComentario del xml
+				   */
+				   def cantidadLike = buscarLike(xml.comentario[i].id.text())
+				   if (cantidadLike)
+				   {
+					   comentario.cantidadLike = cantidadLike
+				   }
+				   if (comentario.cantidadLike == '')
+					   comentario.cantidadLike = '0'
+		 
+				   /**
+				   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
+				   */
+				   def cantidadDislike = buscarDislike(xml.comentario[i].id.text())
+				   if (cantidadDislike)
+				   {
+					   comentario.cantidadDislike = cantidadDislike
+				   }
+				   if (comentario.cantidadDislike == '')
+						 comentario.cantidadDislike = '0'
+						 
+				   /**
+				   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
+				   */
+				   def cantidadComentados = buscarComentados(xml.comentario[i].id.text())
+				   if (cantidadComentados)
+				   {
+					  comentario.cantidadComentados = cantidadComentados
+				   }
+				   
+				   /**
+				   * lista de las respuestas que tiene un comentario
+				   */
+				   
+				   def listaRespuesta = buscarRespuestaSpring(xml.comentario[i].id.text())
+				   
+				   listaComentario.add(comentario)
 			   }
-			   if (comentario.cantidadLike == '')
-				   comentario.cantidadLike = '0'
-	 
-			   /**
-			   * busca la cantidad de dislike que tiene un comentario por el idComentario del xml
-			   */
-			   def cantidadDislike = buscarDislike(xml.comentario[i].id.text())
-			   if (cantidadDislike)
-			   {
-				   comentario.cantidadDislike = cantidadDislike
-			   }
-			   if (comentario.cantidadDislike == '')
-					 comentario.cantidadDislike = '0'
-					 
-			   /**
-			   * busca la cantidad de respuestas que tiene un comentario por el idComentario del xml
-			   */
-			   def cantidadComentados = buscarComentados(xml.comentario[i].id.text())
-			   if (cantidadComentados)
-			   {
-				  comentario.cantidadComentados = cantidadComentados
-			   }
-			   
-			   /**
-			   * lista de las respuestas que tiene un comentario
-			   */
-			   
-			   def listaRespuesta = buscarRespuestaSpring(xml.comentario[i].id.text())
+		   }
+		   else
+		   {
+			   comentario.mensaje = xml.comentario[i].mensaje
+			   comentario.fecha = xml.comentario[i].fecha_creacion
+			   listaComentario.add(comentario)
 		   }
 		   
-		   listaComentario.add(comentario)
+		   
 	   }
 	   return listaComentario
    }
@@ -2482,8 +2495,14 @@ class ComentarioController {
 				writer.close()
 				connection.connect()
 				
-				def miXml = new XmlSlurper().parseText(connection.content.text)
-				//def serviceResponse = miXml.mensaje
+			def miXml = new XmlSlurper().parseText(connection.content.text)
+			def serviceResponse = miXml.nombre
+			
+			if (serviceResponse == "ERROR 012: Nombre Nulo")
+			{
+				def miAlerta = "ERROR 012: Nombre Nulo"
+				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			}
 
 		 }
 		catch(Exception)

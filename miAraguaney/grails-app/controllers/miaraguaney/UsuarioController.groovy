@@ -99,6 +99,7 @@ class UsuarioController {
 						//session.nickname = params.nickname
 						session.email = params.email
 						session.password = params.password
+						session.token = ""
 						obtenerUsuario()
 
 						redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
@@ -150,8 +151,8 @@ class UsuarioController {
 				   * Se construye el XML que se enviara al servicio
 				   */
 				  xml.Login() {
-					  nickname(params.email)
 					  clave(params.password)
+					  nickname(params.email)
 				  }
 				  
 				  /**
@@ -173,14 +174,14 @@ class UsuarioController {
 				 * Se recoge la respuesta por parte del servidor
 				 */
 				def miXml = new XmlSlurper().parseText(connection.content.text)
-				serviceResponse = miXml.nickname
+				serviceResponse = miXml.clave
 				 
 				/**
 				* Caso de campos nulos
 				*/
 			   if(serviceResponse == "ERROR 001")
 			   {
-				   serviceResponse = "ERROR 001: campos vacios"
+				   serviceResponse = "ERROR 001: Nickname nulo"
 				   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			   }
 			   
@@ -189,7 +190,7 @@ class UsuarioController {
 			   */
 			  if(serviceResponse == "ERROR 003")
 			  {
-				  serviceResponse = "ERROR 003: clave incorrecta"
+				  serviceResponse = "ERROR 003: Clave incorrecta"
 				  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			  }
 			  
@@ -276,10 +277,10 @@ class UsuarioController {
 		
 		def cerrarSesion = {
 			
+			def serviceResponse = "No hay respuesta"
+			
 			if (bandera.equals("miOrquidea"))
 			{
-				
-					def serviceResponse = "No hay respuesta"
 					/**
 					 * Se establece la URL de la ubicacion
 					 * del servicio
@@ -344,6 +345,7 @@ class UsuarioController {
 			session.removeAttribute("nickname")
 			session.removeAttribute("email")
 			session.removeAttribute("password")
+			session.removeAttribute("token")
 			render(view:"../index")
 		}
 		
@@ -924,12 +926,12 @@ class UsuarioController {
 					if (miXml.nickname != "ERROR 007")
 					{
 						//El usuario fue registrado
-						serviceResponse  = "Usuario Registrado Exitosamente!"
+						serviceResponse  = "Usuario Modificado Exitosamente!"
 					}
 					else
 					{
-						serviceResponse = miXml.nickname
-					 }
+						serviceResponse = "ERROR 007: Campos vacios"	
+					}
 					render (view :'registroExitoso', model:[aviso:serviceResponse])
 			}
 		}
