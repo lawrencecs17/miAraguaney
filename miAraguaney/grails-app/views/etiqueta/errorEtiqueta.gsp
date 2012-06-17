@@ -26,7 +26,7 @@ function clearText(field) {
       <ul class="menuh grid_10"><!-- ordenada o desordenada-->
           <li><a href="#" class="first">Token</a>
             <ul class="submenu">
-                  <li><g:link controller="usuario" action="index">Iniciar Sesion</g:link></li>
+                  <li><a href="#" class="last">Iniciar Sesion</a></li>
                   <li class="last"><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
                   <li><a href="#" class="last">Consultar Token</a></li>
             </ul>
@@ -43,8 +43,16 @@ function clearText(field) {
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
                     <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    
+                    <g:if test = "${alerta == 'miOrquidea'}">
+                    	<li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    	<li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    </g:if>
+                    <g:else>
+                    	<li><a href="#" class="last">Activar</a></li>
+                    	<li><a href="#" class="last">Foto de Perfil</a></li>
+                    </g:else>	
+                    	
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
@@ -53,8 +61,16 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    
+                    <g:if test = "${ alerta == 'miOrquidea' }">
+                    	<li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    	</g:if>
+                    <g:else>
+                    	<li><a href="#" class="last">Consultar S.Tag</a></li>
+                    	<li><a href="#" class="last">Consultar P.Ids</a></li>
+                    </g:else>
+                    
                 </ul>
             </li>
             <li><g:link controller="usuario" action="index">MiAraguaney</g:link></li><!-- se le coloca una clase al primro y al ultimo para trabajar los bordes-->

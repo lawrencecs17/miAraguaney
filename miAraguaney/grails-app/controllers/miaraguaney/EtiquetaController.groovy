@@ -10,8 +10,8 @@ import java.util.Date
 class EtiquetaController {
 
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
-	//static String bandera = "miOrquidea"
-	String bandera = "Spring"
+	static String bandera = "miOrquidea"
+	//static String bandera = "Spring"
 	
 	    def index() { 
 			

@@ -19,8 +19,8 @@ import groovy.xml.MarkupBuilder
 class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
-	//String bandera = "miOrquidea"
-	String bandera = "Spring"
+	static String bandera = "miOrquidea"
+	//static String bandera = "Spring"
 
 		def index = {								 
 			
@@ -452,7 +452,9 @@ class UsuarioController {
 		 * Accion para consumir servicio de eliminar usuario
 		 */
 		def eliminarUsuario = {
-			
+		
+		try
+		{
 			if (bandera.equals("miOrquidea"))
 			{
 					if(Token.tokenVigente(session.usuario.email))
@@ -511,6 +513,12 @@ class UsuarioController {
 				
 				render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.nickname])
 			}
+		}
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 029"
+			render(view:"perfil",model:[ aviso:miAlerta])
+		}
 			
 		}
 		
@@ -750,6 +758,8 @@ class UsuarioController {
 		
 		def modificarUsuario = {
 			
+		try
+		{
 			if(params.email == session.usuario.email && params.password == session.usuario.password)
 			{
 				def email = params.email
@@ -828,6 +838,12 @@ class UsuarioController {
 				def miAlerta = "Usuario y/o password invalidos"
 				render(view:"modificarUsuario",model:[alerta:miAlerta, servicio:bandera])
 			}
+		}
+		catch(Exception)
+	   {
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 028"
+		   render(view:"perfil",model:[ aviso:miAlerta])
+	   }
 			
 		}
 		
@@ -844,7 +860,9 @@ class UsuarioController {
 		}
 		
 		def modificarDatosUsuario ={
-			
+		
+		try
+		{	
 			if (bandera.equals("miOrquidea"))
 		    { 
 				if(Token.tokenVigente(session.usuario.email))
@@ -952,6 +970,13 @@ class UsuarioController {
 					}
 					render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera, usuario:session.usuario.nickname])
 			}
+			
+		}
+		catch(Exception)
+	   {
+		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 030"
+		   render(view:"perfil",model:[ aviso:miAlerta])
+	   }
 		}
 		
 		/**

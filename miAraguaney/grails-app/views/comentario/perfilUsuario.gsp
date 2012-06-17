@@ -49,8 +49,8 @@ function clearText(field) {
                     	<li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
                     </g:if>
                     <g:else>
-                    	<li><g:link controller="comentario" action="consultarComentarioPorUsuario">Activar</g:link></li>
-                    	<li><g:link controller="comentario" action="consultarComentarioPorUsuario">Foto de Perfil</g:link></li>
+                    	<li><g:link controller="usuario" action="index">Activar</g:link></li>
+                    	<li><g:link controller="usuario" action="index">Foto de Perfil</g:link></li>
                     </g:else>	
                     	
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
@@ -67,8 +67,8 @@ function clearText(field) {
                     	<li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                     	</g:if>
                     <g:else>
-                    	<li><g:link controller="comentario" action="consultarComentarioPorUsuario">Consultar S.Tag</g:link></li>
-                    	<li><g:link controller="comentario" action="consultarComentarioPorUsuario">Consultar P.Ids</g:link></li>
+                    	<li><g:link controller="usuario" action="index">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="usuario" action="index">Consultar P.Ids</g:link></li>
                     </g:else>
                     
                 </ul>

@@ -26,7 +26,7 @@ function clearText(field) {
       <ul class="menuh grid_10"><!-- ordenada o desordenada-->
           <li><a href="#" class="first">Token</a>
             <ul class="submenu">
-                  <li><g:link controller="usuario" action="index">Iniciar Sesion</g:link></li>
+                  <li><a href="#" class="last">Iniciar Sesion</a></li>
                   <li class="last"><g:link controller="usuario" action="cerrarSesion"> Salir</g:link></li>
                   <li><a href="#" class="last">Consultar Token</a></li>
             </ul>
@@ -49,8 +49,8 @@ function clearText(field) {
                     	<li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
                     </g:if>
                     <g:else>
-                    	<li><g:link controller="usuario" action="">Activar</g:link></li>
-                    	<li><g:link controller="usuario" action="">Foto de Perfil</g:link></li>
+                    	<li><a href="#" class="last">Activar</a></li>
+                    	<li><a href="#" class="last">Foto de Perfil</a></li>
                     </g:else>	
                     	
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
@@ -67,8 +67,8 @@ function clearText(field) {
                     	<li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
                     	</g:if>
                     <g:else>
-                    	<li><g:link controller="comentario" action="">Consultar S.Tag</g:link></li>
-                    	<li><g:link controller="comentario" action="">Consultar P.Ids</g:link></li>
+                    	<li><a href="#" class="last">Consultar S.Tag</a></li>
+                    	<li><a href="#" class="last">Consultar P.Ids</a></li>
                     </g:else>
                     
                 </ul>

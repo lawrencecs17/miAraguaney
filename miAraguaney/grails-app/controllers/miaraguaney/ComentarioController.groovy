@@ -20,8 +20,8 @@ class ComentarioController {
 	static String nombreTag
 	static String nombreComentario1
 	static String nombreCom1
-	//static String bandera = "miOrquidea"
-	static String bandera = "Spring"
+	static String bandera = "miOrquidea"
+	//static String bandera = "Spring"
 	   
     def index() { 
 		redirect (action:'consultarTodosLosComentarios')
