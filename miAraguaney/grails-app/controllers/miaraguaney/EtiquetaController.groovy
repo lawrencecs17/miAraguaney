@@ -10,13 +10,13 @@ import java.util.Date
 class EtiquetaController {
 
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
-	static String bandera = "miOrquidea"
-	//String bandera = "Spring"
+	//static String bandera = "miOrquidea"
+	String bandera = "Spring"
 	
 	    def index() { 
 			
 			log.info("Ejemplo de este log")
-			render (view:'consultarTodos')
+			render (view:'consultarEtiquetas')
 		}
 	
 		/**
@@ -87,7 +87,7 @@ class EtiquetaController {
 			  }
 		   }
 		   
-		   render (view:"consultarEtiquetas", model:[etiquetas:listaEtiqueta, usuario:session.nickname])   
+		   render (view:"consultarEtiquetas", model:[etiquetas:listaEtiqueta, usuario:session.nickname, servicio:bandera])   
 	   }
 	   catch(Exception)
 	   {

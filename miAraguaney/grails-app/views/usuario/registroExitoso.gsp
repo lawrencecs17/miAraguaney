@@ -79,6 +79,7 @@ function clearText(field) {
 <!-- FIN NUEVO MENU-->
 
     <!-- end of menu -->
+    
     <div id="search_box">
       <form action="#" method="get">
         <input type="text" value="Enter a keyword" name="q" size="10" id="searchfield" onfocus="clearText(this)" onblur="clearText(this)" />

@@ -20,8 +20,8 @@ class ComentarioController {
 	static String nombreTag
 	static String nombreComentario1
 	static String nombreCom1
-	static String bandera = "miOrquidea"
-	//static String bandera = "Spring"
+	//static String bandera = "miOrquidea"
+	static String bandera = "Spring"
 	   
     def index() { 
 		redirect (action:'consultarTodosLosComentarios')
@@ -1987,7 +1987,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 020"
-		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
 	

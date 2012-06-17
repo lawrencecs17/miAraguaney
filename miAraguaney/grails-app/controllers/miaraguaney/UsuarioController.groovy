@@ -19,8 +19,8 @@ import groovy.xml.MarkupBuilder
 class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
-	String bandera = "miOrquidea"
-	//String bandera = "Spring"
+	//String bandera = "miOrquidea"
+	String bandera = "Spring"
 
 		def index = {								 
 			
@@ -39,6 +39,9 @@ class UsuarioController {
 		 */
 		def iniciarSesion = {
 		
+		try
+		{
+			
 			if (bandera.equals("miOrquidea"))
 		    { 
 					/**
@@ -220,6 +223,12 @@ class UsuarioController {
 			 }
 			 
 		  }
+		}
+		catch(Exception)
+		{
+			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 027"
+			render(view:"perfil",model:[ aviso:miAlerta])
+		}
 			
 		}
 		
@@ -324,7 +333,7 @@ class UsuarioController {
 					}
 					else
 					{
-						render (view :'registroExitoso', model:[aviso:serviceResponse])
+						render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera])
 					}
 			}
 			else
@@ -422,19 +431,20 @@ class UsuarioController {
 					else
 					{
 						serviceResponse = "No aplica proceso de activacion para este usuario"
-						render (view :'registroExitoso', model:[aviso:serviceResponse,usuario:session.usuario.nickname])
+						render (view :'perfil', model:[aviso:serviceResponse,usuario:params.email])
 					}	
 		}
 		
 		def vistaActivarUsuario =	{
 			
+			def serviceResponse = ""
 			if (bandera.equals("miOrquidea"))
 			{
 				render (view:'activarUsuario',model:[usuario:session.nickname])
 			}
 			else
 			{
-				render (view :'iniciarSesion', model:[aviso:serviceResponse])
+				render (view :'../index', model:[aviso:serviceResponse])
 			}
 		}
 			
@@ -529,108 +539,116 @@ class UsuarioController {
 		*/
 	   def registrarUsuario ={
 		   
-		   if (bandera.equals("miOrquidea"))
+		   try
 		   {
+			   if (bandera.equals("miOrquidea"))
+			   {
+					   def serviceResponse = "No hay respuesta"
+					   def redireccion ="../"
+					   
+					   /**
+						* Se establece la URL de la ubicacion
+						* del servicio
+						*/
+					   def url = new URL("http://localhost:8080/miOrquidea/usuario/registrarUsuario" )
+					   
+					   /**
+						* Se extraen los parametros y convierte a formato
+						* XML para luego ser enviada a la aplicacion miOrquidea
+						*
+						*/
+					   def parametro = new Usuario (params) as XML
+					   def connection = url.openConnection()
+					   connection.setRequestMethod("POST")
+					   connection.setRequestProperty("Content-Type" ,"text/xml" )
+					   connection.doOutput=true
+					   
+						   Writer writer = new OutputStreamWriter(connection.outputStream)
+						   writer.write(parametro.toString())
+						   writer.flush()
+						   writer.close()
+						   connection.connect()
+						  
+						   if(connection.responseCode == 201)
+						   {
+							   //El usuario fue registrado
+							   def miXml = new XmlSlurper().parseText(connection.content.text)
+							   serviceResponse  = "Usuario Registrado Exitosamente!"
+							   redireccion = "vistaIniciarSesion"
+						   }
+						   else
+						   {
+							   //Ha ocurrido un error,  posiblemente datos duplicados
+							   // XML vacío ó error en formato de datos entrada
+							   if(connection.responseCode == 200)
+							   {
+								   def miXml = new XmlSlurper().parseText(connection.content.text)
+								   serviceResponse = miXml.mensaje
+								   redireccion = "vistaRegistroUsuario"				  
+							   }
+							}
+					   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+			   }
+			   else
+			   {
 				   def serviceResponse = "No hay respuesta"
 				   def redireccion ="../"
 				   
 				   /**
-					* Se establece la URL de la ubicacion
-					* del servicio
-					*/
-				   def url = new URL("http://localhost:8080/miOrquidea/usuario/registrarUsuario" )
-				   
+				   * Con estas funciones creamos el XML
+				   */
+				   def gXml = new StringWriter()
+				   def xml = new MarkupBuilder(gXml)
+				   def concatenarFecha = params.fechaRegistro.split("-")
+				   String fecha = concatenarFecha[2] + "/" + concatenarFecha[1] + "/" + concatenarFecha[0]
 				   /**
-					* Se extraen los parametros y convierte a formato
-					* XML para luego ser enviada a la aplicacion miOrquidea
-					*
+					* Se establece la URL de la ubicacion
+					* del servicio Spring
 					*/
-				   def parametro = new Usuario (params) as XML
+				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarUsuario" )
+				   
+				   xml.Usuario() {
+						  nombre (params.nombre)
+						  apellido(params.apellido)
+						  clave(params.password)
+						  correo(params.email)
+						  nickname(params.nickname)
+						  fecha_nac(fecha)
+						  pais(params.pais)
+						  biografia(params.biografia)
+						  foto("")
+				   }
+				   
 				   def connection = url.openConnection()
 				   connection.setRequestMethod("POST")
 				   connection.setRequestProperty("Content-Type" ,"text/xml" )
 				   connection.doOutput=true
 				   
 					   Writer writer = new OutputStreamWriter(connection.outputStream)
-					   writer.write(parametro.toString())
+					   writer.write(gXml.toString())
 					   writer.flush()
 					   writer.close()
 					   connection.connect()
-					  
-					   if(connection.responseCode == 201)
-					   {
-						   //El usuario fue registrado
-						   def miXml = new XmlSlurper().parseText(connection.content.text)
-						   serviceResponse  = "Usuario Registrado Exitosamente!"
-						   redireccion = "vistaIniciarSesion"
-					   }
-					   else
-					   {
-						   //Ha ocurrido un error,  posiblemente datos duplicados
-						   // XML vacío ó error en formato de datos entrada
-						   if(connection.responseCode == 200)
-						   {
-							   def miXml = new XmlSlurper().parseText(connection.content.text)
-							   serviceResponse = miXml.mensaje
-							   redireccion = "vistaRegistroUsuario"				  
-						   }
-						}
-				   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
-		   }
-		   else
-		   {
-			   def serviceResponse = "No hay respuesta"
-			   def redireccion ="../"
-			   
-			   /**
-			   * Con estas funciones creamos el XML
-			   */
-			   def gXml = new StringWriter()
-			   def xml = new MarkupBuilder(gXml)
-			   def concatenarFecha = params.fechaRegistro.split("-")
-			   String fecha = concatenarFecha[2] + "/" + concatenarFecha[1] + "/" + concatenarFecha[0]
-			   /**
-				* Se establece la URL de la ubicacion
-				* del servicio Spring
-				*/
-			   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarUsuario" )
-			   
-			   xml.Usuario() {
-					  nombre (params.nombre)
-					  apellido(params.apellido)
-					  clave(params.password)
-					  correo(params.email)
-					  nickname(params.nickname)
-					  fecha_nac(fecha)
-					  pais(params.pais)
-					  biografia(params.biografia)
-					  foto("")
+					   
+				  def miXml = new XmlSlurper().parseText(connection.content.text)
+				  
+				  if (miXml.nickname != "ERROR 007")
+				  {
+					  serviceResponse  = "Usuario Registrado Exitosamente!"
+					  redireccion = "vistaIniciarSesion"
+				  }
+				  else
+				  {
+					  serviceResponse = "ERROR 007"
+					  redireccion = "vistaRegistroUsuario"
+				  }
+				  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			   }
-			   
-			   def connection = url.openConnection()
-			   connection.setRequestMethod("POST")
-			   connection.setRequestProperty("Content-Type" ,"text/xml" )
-			   connection.doOutput=true
-			   
-				   Writer writer = new OutputStreamWriter(connection.outputStream)
-				   writer.write(gXml.toString())
-				   writer.flush()
-				   writer.close()
-				   connection.connect()
-				   
-			  def miXml = new XmlSlurper().parseText(connection.content.text)
-			  
-			  if (miXml.nickname != "ERROR 007")
-			  {
-				  serviceResponse  = "Usuario Registrado Exitosamente!"
-				  redireccion = "vistaIniciarSesion"
-			  }
-			  else
-			  {
-				  serviceResponse = "ERROR 007"
-				  redireccion = "vistaRegistroUsuario"
-			  }
-			  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
+		   }
+		   catch(Exception)
+		   {
+			   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 026"
+			   render(view:"perfil",model:[ aviso:miAlerta])
 		   }
 	
 		}
@@ -727,7 +745,7 @@ class UsuarioController {
 		}
 		
 		def vistaModificarUsuario =	{
-			render (view:'modificarUsuario',model:[usuario:session.nickname])
+			render (view:'modificarUsuario',model:[usuario:session.nickname, servicio:bandera])
 		}
 		
 		def modificarUsuario = {
@@ -763,7 +781,7 @@ class UsuarioController {
 						   if(miUsuario!=null)
 						   {			  
 							   miUsuario.email2 = email
-							   render (view:'actualizarUsuario',model:[usuario:miUsuario])
+							   render (view:'actualizarUsuario',model:[usuario:miUsuario, servicio:bandera])
 						   }
 					   }
 					   else
@@ -808,7 +826,7 @@ class UsuarioController {
 			else
 			{
 				def miAlerta = "Usuario y/o password invalidos"
-				render(view:"modificarUsuario",model:[alerta:miAlerta])
+				render(view:"modificarUsuario",model:[alerta:miAlerta, servicio:bandera])
 			}
 			
 		}
@@ -874,7 +892,7 @@ class UsuarioController {
 								serviceResponse = miXml.mensaje
 							}
 						 }
-						render (view :'registroExitoso', model:[aviso:serviceResponse])
+						render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera, usuario:session.usuario.nickname])
 				}
 				else
 				{
@@ -932,7 +950,7 @@ class UsuarioController {
 					{
 						serviceResponse = "ERROR 007: Campos vacios"	
 					}
-					render (view :'registroExitoso', model:[aviso:serviceResponse])
+					render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera, usuario:session.usuario.nickname])
 			}
 		}
 		

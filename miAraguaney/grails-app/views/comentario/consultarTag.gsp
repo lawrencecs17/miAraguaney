@@ -43,8 +43,16 @@ function clearText(field) {
                 <a href="#" class="meddle">Usuario</a>
                 <ul class="submenu">
                     <li class="first"><g:link controller="usuario" action="vistaModificarUsuario">Modificar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
-                    <li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    
+                    <g:if test = "${alerta == 'miOrquidea'}">
+                    	<li><g:link controller="usuario" action="vistaActivarUsuario">Activar</g:link></li>
+                    	<li><g:link controller="usuario" action="vistaSubirFoto">Foto de Perfil</g:link></li>
+                    </g:if>
+                    <g:else>
+                    	<li><g:link controller="comentario" action="busquedaEtiqueta">Activar</g:link></li>
+                    	<li><g:link controller="comentario" action="busquedaEtiqueta">Foto de Perfil</g:link></li>
+                    </g:else>	
+                    	
                     <li class="last"><g:link controller="usuario" action="vistaEliminarUsuario">Desactivar</g:link></li>
                 </ul>
             </li>
@@ -53,8 +61,16 @@ function clearText(field) {
                 <ul class="submenu">
                     <li><g:link controller="comentario" action="consultarTodosLosComentarios">Consultar Todos</g:link></li>
                     <li><g:link controller="comentario" action="busquedaEtiqueta">Consultar C.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
-                    <li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    
+                    <g:if test = "${ alerta == 'miOrquidea' }">
+                    	<li><g:link controller="comentario" action="buscarSinEtiqueta">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="comentario" action="busquedaPorId">Consultar P.Ids</g:link></li>
+                    	</g:if>
+                    <g:else>
+                    	<li><g:link controller="comentario" action="busquedaEtiqueta">Consultar S.Tag</g:link></li>
+                    	<li><g:link controller="comentario" action="busquedaEtiqueta">Consultar P.Ids</g:link></li>
+                    </g:else>
+                    
                 </ul>
             </li>
             <li><g:link class="last" controller="comentario" action="consultarComentarioPorUsuario">MiAraguaneys</g:link></li>
