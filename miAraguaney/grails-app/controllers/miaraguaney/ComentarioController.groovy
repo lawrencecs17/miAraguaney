@@ -20,7 +20,7 @@ class ComentarioController {
 	static String nombreTag
 	static String nombreComentario1
 	static String nombreCom1
-	static String bandera = "miOrquidea"
+	static String bandera = "miOrquidea1"
 	//static String bandera = "Spring" 
 	static String urlSpring = "localhost"
 	   
@@ -49,6 +49,7 @@ class ComentarioController {
 				   else
 				   {
 					   url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios" )
+					   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios")
 				   }
 				   def listaComentario
 				   
@@ -85,6 +86,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 001"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.email,usuario:session.nickname,alerta:miAlerta])
 		}
    }
@@ -253,6 +255,7 @@ class ComentarioController {
 	  catch(Exception)
 	  {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera +  ",intente luego. ERROR : 002"
+		  log.error (miAlerta)
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -360,7 +363,7 @@ class ComentarioController {
 		  else
 		  {
 			  def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/megusta/" + comentario)
-			  
+			  log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/megusta/" + comentario )
 			  /**
 			  * Se establece la conexion con el servicio
 			  * Se determina el tipo de peticion (GET) y
@@ -379,6 +382,7 @@ class ComentarioController {
 	  catch(Exception)
 	  {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 004"
+		  log.error (miAlerta)
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	  }
   }
@@ -422,7 +426,7 @@ class ComentarioController {
 		   else
 		   {
 			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/nomegusta/" + comentario)
-			   
+			   log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/nomegusta/" + comentario)
 			  /**
 			  * Se establece la conexion con el servicio
 			  * Se determina el tipo de peticion (GET) y
@@ -442,6 +446,7 @@ class ComentarioController {
 	    catch(Exception)
 	    {
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 005"
+		   log.error (miAlerta)
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	    }
    }
@@ -485,6 +490,7 @@ class ComentarioController {
 			else
 			{
 				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + comentario)
+				log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + comentario)
 				
 				/**
 				 * Se establece la conexion con el servicio
@@ -504,6 +510,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 006"
+		   log.error (miAlerta)
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -549,6 +556,7 @@ class ComentarioController {
 		 catch(Exception)
 		 {
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 007"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		 }
 	 }
@@ -610,6 +618,7 @@ class ComentarioController {
 		  catch(Exception)
 		  {
 			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 008"
+			 log.error (miAlerta)
 			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		  }
 	  }
@@ -731,6 +740,7 @@ class ComentarioController {
 				* del servicio
 				*/
 				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarComentario" )
+				log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarComentario")
 				
 				/**
 				* Se extraen los parametros y convierte a formato
@@ -806,6 +816,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 009"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 							
@@ -914,6 +925,7 @@ class ComentarioController {
 			* del servicio
 			*/
 			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
+			log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar")
 				
 			def nick = session.nickname
 			
@@ -982,6 +994,7 @@ class ComentarioController {
 	catch(Exception)
 	{
 		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 010"
+		log.error (miAlerta)
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion like
@@ -1088,7 +1101,8 @@ class ComentarioController {
 			* del servicio
 			*/
 			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
-				
+			log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar")
+			
 			def nick = session.nickname
 			
 			/**
@@ -1156,6 +1170,7 @@ class ComentarioController {
 	catch(Exception)
 	{
 		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 011"
+		log.error (miAlerta)
 		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion dislike
@@ -1257,6 +1272,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 012"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar calificacion like
@@ -1357,6 +1373,7 @@ class ComentarioController {
 			catch(Exception)
 			{
 				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 013"
+				log.error (miAlerta)
 				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 			}
 	} //fin metodo modificar calificacion dislike
@@ -1380,6 +1397,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor, intente luego. ERROR : 014"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1478,6 +1496,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 015"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar comentario
@@ -1555,6 +1574,7 @@ class ComentarioController {
 			{
 			   def nick = session.nickname
 			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/comentario/" + params.id )
+			   log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/comentario/" + params.id)
 			   def connection = url.openConnection()
 				   
 			   connection.setRequestMethod("DELETE")
@@ -1611,6 +1631,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 016"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}// fin metodo eliminar comentario
@@ -1635,6 +1656,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 017"
+		   log.error (miAlerta)
 		   render(view:"error",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -1741,6 +1763,7 @@ class ComentarioController {
 				*/
 				
 				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarReply" )
+				log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarReply")
 			
 				def nick = session.nickname
 				   
@@ -1823,6 +1846,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 018"
+			 log.error (miAlerta)
 			 render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 		
@@ -1851,6 +1875,7 @@ class ComentarioController {
 		   {
 			  //url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
 			  url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios")
+			  log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios")
 		   }	 
 		     
 		   /**
@@ -1887,6 +1912,7 @@ class ComentarioController {
 	   catch(Exception)
 	   {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 019"
+		  log.error (miAlerta)
 		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 	   }
    }
@@ -1944,6 +1970,7 @@ class ComentarioController {
 				else
 				{
 					url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/etiquetaComentarios/" + nombreEtiqueta )
+					log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/etiquetaComentarios/" + nombreEtiqueta)
 				}
 				
 				
@@ -1988,6 +2015,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 020"
+		   log.error (miAlerta)
 		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -2041,6 +2069,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 021"
+		   log.error (miAlerta)
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -2113,6 +2142,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 022"
+		   log.error (miAlerta)
 		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -2375,6 +2405,7 @@ class ComentarioController {
 		 try
 		 {
 			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + idComentario )
+			log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + idComentario )
 			def lista
 			/**
 			 * Se establece la conexion con el servicio
@@ -2393,6 +2424,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 023"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -2431,6 +2463,7 @@ class ComentarioController {
 		 try
 		 {
 			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarComentario/" + idComentario )
+			log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarComentario/" + idComentario )
 			def lista
 			/**
 			 * Se establece la conexion con el servicio
@@ -2449,6 +2482,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 024"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}
@@ -2464,6 +2498,7 @@ class ComentarioController {
 		 try
 		 {
 			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarEtiqueta")
+			log.info("" + bandera + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarEtiqueta" )
 
 			/**
 			* Con estas funciones creamos el XML
@@ -2509,6 +2544,7 @@ class ComentarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 025"
+			log.error (miAlerta)
 			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 	}

@@ -15,7 +15,6 @@ import groovy.xml.MarkupBuilder
  * @author Ricardo Portela
  *
  */
-
 class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs2."+UsuarioController.class.getName())
@@ -616,7 +615,7 @@ class UsuarioController {
 						   {
 							   //El usuario fue registrado
 							   def miXml = new XmlSlurper().parseText(connection.content.text)
-							   log.info (""+ bandera +" : Usuario Registrado Exitosamente! " + params.email+ " y/o " + params.nickname)
+							   log.info (""+ bandera +" : Usuario Registrado Exitosamente! " + params.email+ " y " + params.nickname)
 							   serviceResponse  = "Usuario Registrado Exitosamente!"
 							   redireccion = "vistaIniciarSesion"
 						   }
