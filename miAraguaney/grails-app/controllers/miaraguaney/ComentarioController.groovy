@@ -11,7 +11,7 @@ import groovy.xml.MarkupBuilder
 
 class ComentarioController {
 
-   	private static Log log = LogFactory.getLog("Logs."+ComentarioController.class.getName())
+   	private static Log log = LogFactory.getLog("Logs2."+ComentarioController.class.getName())
 	ArrayList<ComentarioCliente> listaComentado = new ArrayList<ComentarioCliente>()
 	ArrayList<ComentarioCliente> listaReply = new ArrayList<ComentarioCliente>()
 	static String urlVista  
@@ -21,7 +21,8 @@ class ComentarioController {
 	static String nombreComentario1
 	static String nombreCom1
 	static String bandera = "miOrquidea"
-	//static String bandera = "Spring"
+	//static String bandera = "Spring" 
+	static String urlSpring = "localhost"
 	   
     def index() { 
 		redirect (action:'consultarTodosLosComentarios')
@@ -47,7 +48,7 @@ class ComentarioController {
 				   }
 				   else
 				   {
-					   url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios" )
+					   url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios" )
 				   }
 				   def listaComentario
 				   
@@ -358,7 +359,7 @@ class ComentarioController {
 		  }
 		  else
 		  {
-			  def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuacion/megusta/" + comentario)
+			  def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/megusta/" + comentario)
 			  
 			  /**
 			  * Se establece la conexion con el servicio
@@ -420,7 +421,7 @@ class ComentarioController {
 		   }
 		   else
 		   {
-			   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuacion/nomegusta/" + comentario)
+			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuacion/nomegusta/" + comentario)
 			   
 			  /**
 			  * Se establece la conexion con el servicio
@@ -483,7 +484,7 @@ class ComentarioController {
 			}
 			else
 			{
-				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/replyComentarios/" + comentario)
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + comentario)
 				
 				/**
 				 * Se establece la conexion con el servicio
@@ -729,7 +730,7 @@ class ComentarioController {
 				* Se establece la URL de la ubicacion
 				* del servicio
 				*/
-				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarComentario" )
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarComentario" )
 				
 				/**
 				* Se extraen los parametros y convierte a formato
@@ -912,7 +913,7 @@ class ComentarioController {
 			* Se establece la URL de la ubicacion
 			* del servicio
 			*/
-			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
+			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
 				
 			def nick = session.nickname
 			
@@ -1086,7 +1087,7 @@ class ComentarioController {
 			* Se establece la URL de la ubicacion
 			* del servicio
 			*/
-			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
+			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentario/puntuar" )
 				
 			def nick = session.nickname
 			
@@ -1553,7 +1554,7 @@ class ComentarioController {
 			else
 			{
 			   def nick = session.nickname
-			   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/borrar/comentario/" + params.id )
+			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/comentario/" + params.id )
 			   def connection = url.openConnection()
 				   
 			   connection.setRequestMethod("DELETE")
@@ -1739,7 +1740,7 @@ class ComentarioController {
 				* del servicio
 				*/
 				
-				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarReply" )
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarReply" )
 			
 				def nick = session.nickname
 				   
@@ -1848,8 +1849,8 @@ class ComentarioController {
 		   }
 		   else
 		   {
-			  //url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
-			  url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/comentarios")
+			  //url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarComentarios/" + session.nickname )
+			  url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/comentarios")
 		   }	 
 		     
 		   /**
@@ -1942,7 +1943,7 @@ class ComentarioController {
 				}
 				else
 				{
-					url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/etiquetaComentarios/" + nombreEtiqueta )
+					url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/etiquetaComentarios/" + nombreEtiqueta )
 				}
 				
 				
@@ -2373,7 +2374,7 @@ class ComentarioController {
 		*/
 		 try
 		 {
-			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/replyComentarios/" + idComentario )
+			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/replyComentarios/" + idComentario )
 			def lista
 			/**
 			 * Se establece la conexion con el servicio
@@ -2429,7 +2430,7 @@ class ComentarioController {
 		*/
 		 try
 		 {
-			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarComentario/" + idComentario )
+			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarComentario/" + idComentario )
 			def lista
 			/**
 			 * Se establece la conexion con el servicio
@@ -2462,7 +2463,7 @@ class ComentarioController {
 		*/
 		 try
 		 {
-			def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarEtiqueta")
+			def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarEtiqueta")
 
 			/**
 			* Con estas funciones creamos el XML
