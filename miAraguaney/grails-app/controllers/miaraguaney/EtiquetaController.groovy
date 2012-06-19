@@ -16,7 +16,7 @@ class EtiquetaController {
 	
 	    def index() { 
 			
-			log.info("Ejemplo de este log")
+			log.info("index Etiqueta")
 			render (view:'consultarEtiquetas')
 		}
 	
