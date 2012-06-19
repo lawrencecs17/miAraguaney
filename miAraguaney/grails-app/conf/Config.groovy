@@ -86,7 +86,7 @@ log4j = {
 			layout: pattern(conversionPattern: '%d{yyyy-MM-dd HH:mm:ss} %-5p [%c{2}] %m%n')
 	}
 
-	info AraguaneyAppender:'Logs', additivity:false
+	info AraguaneyAppender:'Logs2', additivity:false
 
     error  'org.codehaus.groovy.grails.web.servlet',  //  controllers
            'org.codehaus.groovy.grails.web.pages', //  GSP

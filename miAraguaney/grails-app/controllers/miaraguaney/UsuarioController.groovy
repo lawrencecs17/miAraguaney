@@ -18,7 +18,7 @@ import groovy.xml.MarkupBuilder
 
 class UsuarioController {
 	
-	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
+	private static Log log = LogFactory.getLog("Logs2."+UsuarioController.class.getName())
 	static String bandera = "miOrquidea"
 	//static String bandera = "Spring"
 	static String urlSpring = "localhost"
@@ -42,7 +42,6 @@ class UsuarioController {
 		
 		try
 		{
-			log.error ("Peticion no permitida " + request.method + " en list")
 			if (bandera.equals("miOrquidea"))
 		    { 
 					/**
@@ -105,7 +104,8 @@ class UsuarioController {
 						session.password = params.password
 						session.token = ""
 						obtenerUsuario()
-
+						log.info (""+ bandera +" : Inicio de session con email = "+ params.email + " y usuario = " + session.nickname)
+						
 						redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
 					}
 					/**
@@ -115,11 +115,13 @@ class UsuarioController {
 					{
 						if(params.email=="" || params.password=="")
 						{
+							log.error (""+ bandera +" : Debe ingresar email y password para acceder a su perfil.")
 							serviceResponse ="Debe ingresar email y password para acceder a su perfil."
 							render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 						}
 						else if(serviceResponse =="Login y/o Password invalidos")
 						{
+							log.error (""+ bandera +" : Login y/o Password invalidos. / " + params.email + " , "+ params.password)
 							render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 						}
 						else
@@ -185,6 +187,7 @@ class UsuarioController {
 				*/
 			   if(serviceResponse == "ERROR 001")
 			   {
+				   log.error (""+ bandera +" : ERROR 001: Nickname nulo.")
 				   serviceResponse = "ERROR 001: Nickname nulo"
 				   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			   }
@@ -194,6 +197,7 @@ class UsuarioController {
 			   */
 			  if(serviceResponse == "ERROR 003")
 			  {
+				  log.error (""+ bandera +" : ERROR 003: Clave incorrecta.")
 				  serviceResponse = "ERROR 003: Clave incorrecta"
 				  render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			  }
@@ -203,6 +207,7 @@ class UsuarioController {
 			  */
 			 if(serviceResponse == "ERROR 332: Nickname no existe")
 			 {
+				 log.error (""+ bandera +" : ERROR 332: Nickname no existe.")
 				 serviceResponse = "ERROR 332: Nickname no existe"
 				 render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			 }
@@ -220,6 +225,8 @@ class UsuarioController {
 				session.token = miXml.token
 				obtenerCorreoSpring()
 				//obtenerUsuario()
+				log.info (""+ bandera +" : Inicio de session con nickname = "+ params.email + " y email = " + session.email)
+				
 				redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
 			 }
 			 
@@ -228,6 +235,7 @@ class UsuarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 027"
+			log.error (miAlerta)
 			render(view:"perfil",model:[ aviso:miAlerta])
 		}
 			
@@ -238,15 +246,23 @@ class UsuarioController {
 		 */
 		def obtenerUsuario = {
 			
-			def url = new URL("http://localhost:8080/miOrquidea/usuario/consultaUnUsuario?email=$session.email&password=$session.password" )
-			def connection = url.openConnection()
-			connection.setRequestMethod("GET")
-			connection.setDoOutput(true)
-			connection.connect()
-			def miXml = new XmlSlurper().parseText(connection.content.text)
-			session.nickname = miXml.nickname
-			Usuario usuario = procesarUnXml(miXml)
-			session.usuario = usuario
+			try
+			{
+				def url = new URL("http://localhost:8080/miOrquidea/usuario/consultaUnUsuario?email=$session.email&password=$session.password" )
+				def connection = url.openConnection()
+				connection.setRequestMethod("GET")
+				connection.setDoOutput(true)
+				connection.connect()
+				def miXml = new XmlSlurper().parseText(connection.content.text)
+				session.nickname = miXml.nickname
+				Usuario usuario = procesarUnXml(miXml)
+				session.usuario = usuario
+			}
+			catch(Exception)
+			{
+				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : obtenerUsuairo"
+				log.error (miAlerta)
+			}
 		}
 		
 		/**
@@ -254,13 +270,21 @@ class UsuarioController {
 		*/
 	   def obtenerCorreoSpring = {
 		   
-		   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
-		   def connection = url.openConnection()
-		   connection.setRequestMethod("GET")
-		   connection.setDoOutput(true)
-		   connection.connect()
-		   def miXml = new XmlSlurper().parseText(connection.content.text)
-		   session.email = miXml.correo
+		   try
+		   {
+			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+			   def connection = url.openConnection()
+			   connection.setRequestMethod("GET")
+			   connection.setDoOutput(true)
+			   connection.connect()
+			   def miXml = new XmlSlurper().parseText(connection.content.text)
+			   session.email = miXml.correo
+		   }
+		   catch(Exception)
+		   {
+			   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : obtenerCorreoSpring"
+			   log.error (miAlerta)
+		   }
 	   }
 		
 		/**
@@ -325,6 +349,7 @@ class UsuarioController {
 					
 					if(serviceResponse == "")
 					{
+						log.info (""+ bandera +" : El usuario $session.email ha cerrado sesion correctamente")
 						serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
 						session.removeAttribute("usuario")
 						session.removeAttribute("nickname")
@@ -334,11 +359,13 @@ class UsuarioController {
 					}
 					else
 					{
+						log.error (""+ bandera +" : cerrarSesion : " + serviceResponse)
 						render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera])
 					}
 			}
 			else
 			{
+				log.error (""+ bandera +"El usuario $params.email ha cerrado sesion correctamente")
 				serviceResponse = "El usuario $params.email ha cerrado sesion correctamente"
 				session.removeAttribute("usuario")
 				session.removeAttribute("nickname")
@@ -426,11 +453,13 @@ class UsuarioController {
 						
 					if(connection.responseCode == 200)
 					{
+						log.info (""+ bandera +" : El usuario tiene su cuenta activa en este momento")
 						serviceResponse = "El usuario tiene su cuenta activa en este momento"							
 						redirect(action:'vistaIniciarSesion')													
 					}
 					else
 					{
+						log.info (""+ bandera +" : No aplica proceso de activacion para este usuario : " + params.email)
 						serviceResponse = "No aplica proceso de activacion para este usuario"
 						render (view :'perfil', model:[aviso:serviceResponse,usuario:params.email])
 					}	
@@ -476,6 +505,7 @@ class UsuarioController {
 								
 								if(serviceResponse == "")
 								{
+									log.info (""+ bandera +" : El usuario "+miXml.email+" ha desactivado su cuenta exitosamente")
 									serviceResponse = "El usuario "+miXml.email+" ha desactivado su cuenta exitosamente.</br> "+miXml.fechaRegistro							
 								}
 								
@@ -500,15 +530,18 @@ class UsuarioController {
 				
 				if (serviceResponse == "ERROR 100") 
 				{
+					log.error (""+ bandera +" : ERROR 100: Token vencido")
 					serviceResponse = "ERROR 100: Token vencido"
 				}
 				
 				if (serviceResponse == "ERROR 222") 
 				{
+					log.error (""+ bandera +" : ERROR 222: El usuario no existe en el sistema")
 					serviceResponse = "ERROR 222: El usuario no existe en el sistema"
 				}
 				else
 				{
+					log.info (""+ bandera +" : El usuario "+miXml.nickname+" ha eliminado su cuenta exitosamente")
 					serviceResponse = "El usuario "+miXml.nickname+" ha eliminado su cuenta exitosamente.</br> "
 				}
 				
@@ -518,6 +551,7 @@ class UsuarioController {
 		catch(Exception)
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 029"
+			log.error (miAlerta)
 			render(view:"perfil",model:[ aviso:miAlerta])
 		}
 			
@@ -582,6 +616,7 @@ class UsuarioController {
 						   {
 							   //El usuario fue registrado
 							   def miXml = new XmlSlurper().parseText(connection.content.text)
+							   log.info (""+ bandera +" : Usuario Registrado Exitosamente! " + params.email+ " y/o " + params.nickname)
 							   serviceResponse  = "Usuario Registrado Exitosamente!"
 							   redireccion = "vistaIniciarSesion"
 						   }
@@ -593,6 +628,7 @@ class UsuarioController {
 							   {
 								   def miXml = new XmlSlurper().parseText(connection.content.text)
 								   serviceResponse = miXml.mensaje
+								   log.error (""+ bandera +" : posiblemente datos duplicados " + params.email+ " y " + params.nickname)
 								   redireccion = "vistaRegistroUsuario"				  
 							   }
 							}
@@ -643,11 +679,13 @@ class UsuarioController {
 				  
 				  if (miXml.nickname != "ERROR 007")
 				  {
+					  log.info (""+ bandera +" : Usuario Registrado Exitosamente! " + params.email+ " y/o " + params.nickname)
 					  serviceResponse  = "Usuario Registrado Exitosamente!"
 					  redireccion = "vistaIniciarSesion"
 				  }
 				  else
 				  {
+					  log.error (""+ bandera +" : ERROR 007: campo vacio")
 					  serviceResponse = "ERROR 007"
 					  redireccion = "vistaRegistroUsuario"
 				  }
@@ -657,6 +695,7 @@ class UsuarioController {
 		   catch(Exception)
 		   {
 			   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 026"
+			   log.error (miAlerta)
 			   render(view:"perfil",model:[ aviso:miAlerta])
 		   }
 	
@@ -836,13 +875,15 @@ class UsuarioController {
 			}
 			else
 			{
-				def miAlerta = "Usuario y/o password invalidos"
+				def miAlerta = "Usuario y/o password invalidos " + params.email
+				log.error (""+ bandera +" : " + miAlerta)
 				render(view:"modificarUsuario",model:[alerta:miAlerta, servicio:bandera])
 			}
 		}
 		catch(Exception)
 	   {
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 028"
+		   log.error (miAlerta)
 		   render(view:"perfil",model:[ aviso:miAlerta])
 	   }
 			
@@ -963,10 +1004,12 @@ class UsuarioController {
 					if (miXml.nickname != "ERROR 007")
 					{
 						//El usuario fue registrado
+						log.error (""+ bandera +" : Usuario Modificado Exitosamente")
 						serviceResponse  = "Usuario Modificado Exitosamente!"
 					}
 					else
 					{
+						log.error (""+ bandera +" : ERROR 007: Campos vacios")
 						serviceResponse = "ERROR 007: Campos vacios"	
 					}
 					render (view :'registroExitoso', model:[aviso:serviceResponse, servicio:bandera, usuario:session.usuario.nickname])
@@ -976,6 +1019,7 @@ class UsuarioController {
 		catch(Exception)
 	   {
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 030"
+		   log.error (miAlerta)
 		   render(view:"perfil",model:[ aviso:miAlerta])
 	   }
 		}
@@ -1113,6 +1157,7 @@ class UsuarioController {
 				catch(Exception)
 				{
 					def miAlerta = "Ha ocurrido un error en el servidor, intente luego."
+					log.error (miAlerta)
 					render(view:"fotoPerfil",model:[email:session.usuario.email,path:miPath,archivo:miArchivo,usuario:session.usuario.nickname,alerta:miALerta])					
 				}		
 		}
