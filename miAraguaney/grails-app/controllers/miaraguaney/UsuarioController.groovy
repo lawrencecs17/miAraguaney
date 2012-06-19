@@ -21,6 +21,7 @@ class UsuarioController {
 	private static Log log = LogFactory.getLog("Logs."+UsuarioController.class.getName())
 	static String bandera = "miOrquidea"
 	//static String bandera = "Spring"
+	static String urlSpring = "localhost"
 
 		def index = {								 
 			
@@ -41,7 +42,7 @@ class UsuarioController {
 		
 		try
 		{
-			
+			log.error ("Peticion no permitida " + request.method + " en list")
 			if (bandera.equals("miOrquidea"))
 		    { 
 					/**
@@ -140,7 +141,7 @@ class UsuarioController {
 					* Se establece la URL de la ubicacion
 					* del servicio
 					*/
-				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/login" )
+				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/login" )
 				   /**
 					* Se extraen los parametros y convierte a formato
 					* XML para luego ser enviada a la aplicacion miOrquidea
@@ -253,7 +254,7 @@ class UsuarioController {
 		*/
 	   def obtenerCorreoSpring = {
 		   
-		   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+		   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
 		   def connection = url.openConnection()
 		   connection.setRequestMethod("GET")
 		   connection.setDoOutput(true)
@@ -488,7 +489,7 @@ class UsuarioController {
 			}
 			else
 			{
-				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname" )
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname" )
 				def connection = url.openConnection()
 				connection.setRequestMethod("DELETE")
 				connection.setDoOutput(true)
@@ -613,7 +614,7 @@ class UsuarioController {
 					* Se establece la URL de la ubicacion
 					* del servicio Spring
 					*/
-				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/insertarUsuario" )
+				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarUsuario" )
 				   
 				   xml.Usuario() {
 						  nombre (params.nombre)
@@ -806,7 +807,7 @@ class UsuarioController {
 					/**
 					* Se ubica la URL del servicio que lista a todos los usuarios
 					*/
-				   def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
 				   def listUsuario
 				   
 				   /**
@@ -925,7 +926,7 @@ class UsuarioController {
 				 * Se establece la URL de la ubicacion
 				 * del servicio
 				 */
-				def url = new URL("http://localhost:8084/SPRINGDESESPERADO/rest/updateUsuario" )
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/updateUsuario" )
 				
 				/**
 				* Con estas funciones creamos el XML
