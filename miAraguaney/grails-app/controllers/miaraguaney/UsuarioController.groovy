@@ -143,6 +143,7 @@ class UsuarioController {
 					* del servicio
 					*/
 				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/login" )
+				   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/login")
 				   /**
 					* Se extraen los parametros y convierte a formato
 					* XML para luego ser enviada a la aplicacion miOrquidea
@@ -160,6 +161,8 @@ class UsuarioController {
 					  nickname(params.email)
 				  }
 				  
+				  log.info (gXml.toString())
+				  //println gXml.toString() 
 				  /**
 				  * Se establece el tipo de conexion
 				  */
@@ -272,6 +275,7 @@ class UsuarioController {
 		   try
 		   {
 			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+			   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname")
 			   def connection = url.openConnection()
 			   connection.setRequestMethod("GET")
 			   connection.setDoOutput(true)
@@ -519,6 +523,7 @@ class UsuarioController {
 			else
 			{
 				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname" )
+				log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname")
 				def connection = url.openConnection()
 				connection.setRequestMethod("DELETE")
 				connection.setDoOutput(true)
@@ -650,6 +655,7 @@ class UsuarioController {
 					* del servicio Spring
 					*/
 				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarUsuario" )
+				   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/insertarUsuario")
 				   
 				   xml.Usuario() {
 						  nombre (params.nombre)
@@ -662,6 +668,8 @@ class UsuarioController {
 						  biografia(params.biografia)
 						  foto("")
 				   }
+				   log.info (gXml.toString())
+				   //println gXml.toString()
 				   
 				   def connection = url.openConnection()
 				   connection.setRequestMethod("POST")
@@ -830,7 +838,10 @@ class UsuarioController {
 						   if(miUsuario!=null)
 						   {			  
 							   miUsuario.email2 = email
-							   render (view:'actualizarUsuario',model:[usuario:miUsuario, servicio:bandera])
+							   def concatenarFecha = miUsuario.fechaRegistro.split("-")
+							   def dia = concatenarFecha[2].split(" ")
+							   String fecha = concatenarFecha[0] + "-" + concatenarFecha[1] + "-" + dia[0]
+							   render (view:'actualizarUsuario',model:[usuario:miUsuario, servicio:bandera, concatenarFecha: fecha ])
 						   }
 					   }
 					   else
@@ -846,6 +857,7 @@ class UsuarioController {
 					* Se ubica la URL del servicio que lista a todos los usuarios
 					*/
 				   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
+				   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname")
 				   def listUsuario
 				   
 				   /**
@@ -863,13 +875,15 @@ class UsuarioController {
 				  miUsuario.apellido = miXml.apellido
 				  miUsuario.biografia = miXml.biografia
 				  miUsuario.email2 = miXml.correo
-				  miUsuario.fechaRegistro = miXml.fecha_nac
+				  //miUsuario.fechaRegistro = miXml.fecha_nac
 				  miUsuario.nickname = miXml.nickname
 				  miUsuario.nombre = miXml.nombre
 				  miUsuario.pais = miXml.pais
 				  miUsuario.password = miXml.clave
 				  
-				  render (view:'actualizarUsuario',model:[usuario:miUsuario])
+				  String Fecha = miXml.fecha_nac
+				  
+				  render (view:'actualizarUsuario',model:[usuario:miUsuario, servicio:bandera, concatenarFecha: fecha ])
 				}
 			}
 			else
@@ -967,6 +981,7 @@ class UsuarioController {
 				 * del servicio
 				 */
 				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/updateUsuario" )
+				log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/updateUsuario")
 				
 				/**
 				* Con estas funciones creamos el XML
@@ -987,7 +1002,9 @@ class UsuarioController {
 					   biografia(params.biografia)
 					   foto("")
 				}
-					
+				log.info (gXml.toString())
+				//println gXml.toString()
+				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
 				connection.setRequestProperty("Content-Type" ,"text/xml" )

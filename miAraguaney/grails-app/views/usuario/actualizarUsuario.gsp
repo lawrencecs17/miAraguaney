@@ -128,7 +128,7 @@ function clearText(field) {
     <td align="right">Fecha Nac:</td>
     <td colspan="2">
     <span>
-        <input id="fechaRegistro" name="fechaRegistro" type="text" required="required" class="field text" size="10" tabindex="1"  value="${usuario.fechaRegistro}"/>
+        <input id="fechaRegistro" name="fechaRegistro" type="text" required="required" class="field text" size="10" tabindex="1"  value="${concatenarFecha}"/>
                 <button id="f_rangeStart_trigger">...</button>
         <script type="text/javascript">
                   RANGE_CAL_1 = new Calendar({

@@ -766,10 +766,12 @@ class ComentarioController {
 				xml.Comentario() {
 					   id(session.token)
 					   mensaje(params.mensaje)
-					   fecha_creacion(nuevaFecha)
+					   fecha_creacion(conversionFecha)
 					   adjunto("no")
 					   nickName(session.nickname)
 				}
+				log.info (gXml.toString())
+				//println gXml.toString()
 				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
@@ -943,6 +945,8 @@ class ComentarioController {
 				   adjunto(1)
 				   nickName(nick)
 			}
+			log.info (gXml.toString())
+			//println gXml.toString()
 			
 			def connection = url.openConnection()
 			connection.setRequestMethod("POST")
@@ -1119,6 +1123,8 @@ class ComentarioController {
 				   adjunto(0)
 				   nickName(nick)
 			}
+			log.info (gXml.toString())
+			//println gXml.toString()
 			
 			def connection = url.openConnection()
 			connection.setRequestMethod("POST")
@@ -1785,7 +1791,9 @@ class ComentarioController {
 					   nickName(nick)
 					   reply(params.id)
 				}
-
+				log.info (gXml.toString())
+				//println gXml.toString()
+				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
 				connection.setRequestProperty("Content-Type" ,"text/xml" )
@@ -1847,7 +1855,7 @@ class ComentarioController {
 		{
 			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 018"
 			 log.error (miAlerta)
-			 render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
 		}
 		
 	} //fin metodo agregar comentario
@@ -2514,6 +2522,8 @@ class ComentarioController {
 			xml.Etiqueta() {
 				   nombre (etiqueta)
 			}
+			log.info (gXml.toString())
+			//println gXml.toString() 
 			
 			/**
 			 * Se establece la conexion con el servicio
