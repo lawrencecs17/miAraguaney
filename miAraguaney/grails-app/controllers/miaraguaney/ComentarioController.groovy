@@ -20,8 +20,8 @@ class ComentarioController {
 	static String nombreTag
 	static String nombreComentario1
 	static String nombreCom1
-	static String bandera = "miOrquidea"
-	//static String bandera = "Spring" 
+	//static String bandera = "miOrquidea"
+	static String bandera = "Spring" 
 	static String urlSpring = "172.16.59.82"
 	   
     def index() { 
@@ -256,7 +256,7 @@ class ComentarioController {
 	  {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera +  ",intente luego. ERROR : 002"
 		  log.error (miAlerta)
-		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		  render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	  }
   }
   
@@ -299,7 +299,7 @@ class ComentarioController {
 	 catch(Exception)
 	 {
 		 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 003"
-		 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		 render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	 }
   }
   
@@ -383,7 +383,7 @@ class ComentarioController {
 	  {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 004"
 		  log.error (miAlerta)
-		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		  render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	  }
   }
   
@@ -447,7 +447,7 @@ class ComentarioController {
 	    {
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 005"
 		   log.error (miAlerta)
-		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	    }
    }
    
@@ -511,7 +511,7 @@ class ComentarioController {
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 006"
 		   log.error (miAlerta)
-		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -557,7 +557,7 @@ class ComentarioController {
 		 {
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 007"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		 }
 	 }
 	 
@@ -619,7 +619,7 @@ class ComentarioController {
 		  {
 			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 008"
 			 log.error (miAlerta)
-			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			 render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		  }
 	  }
 	  
@@ -658,7 +658,7 @@ class ComentarioController {
 		{
 			if (bandera.equals("miOrquidea"))
 			{
-				if(Token.tokenVigente(session.usuario.email))
+				if(Token.tokenVigente(session.email))
 				{
 					def serviceResponse = "No hay respuesta"
 					
@@ -791,7 +791,7 @@ class ComentarioController {
 					if (serviceResponse == "ERROR 111")
 					{
 						def miAlerta = "ERROR 111: Token incorrecto"
-						render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+						render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 					}
 					if (serviceResponse == "ERROR 100")
 					{
@@ -821,7 +821,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 009"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 							
 	} //fin metodo agregar comentario
@@ -837,7 +837,7 @@ class ComentarioController {
 		
 		if (bandera.equals("miOrquidea"))
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				/**
 				* Se establece la URL de la ubicacion
@@ -942,6 +942,7 @@ class ComentarioController {
 			/**
 			* Creando el XML Calificacion like para pasarlo al servicio
 			*/
+			println("id comentario = " : params.id)
 			xml.Comentario() {
 				   id (params.id)
 				   adjunto(1)
@@ -1001,7 +1002,7 @@ class ComentarioController {
 	{
 		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 010"
 		log.error (miAlerta)
-		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion like
 	
@@ -1015,7 +1016,7 @@ class ComentarioController {
 		def serviceResponse = "No hay respuesta"
 		if (bandera.equals("miOrquidea"))
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				/**
 				* Se establece la URL de la ubicacion
@@ -1179,7 +1180,7 @@ class ComentarioController {
 	{
 		def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 011"
 		log.error (miAlerta)
-		render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	}
 	} //fin metodo crear calificacion dislike
 	
@@ -1190,7 +1191,7 @@ class ComentarioController {
 		
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				def serviceResponse = "No hay respuesta"
 				
@@ -1281,7 +1282,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 012"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar calificacion like
 	
@@ -1292,7 +1293,7 @@ class ComentarioController {
 		
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				def serviceResponse = "No hay respuesta"
 				/**
@@ -1382,7 +1383,7 @@ class ComentarioController {
 			{
 				def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 013"
 				log.error (miAlerta)
-				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+				render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 			}
 	} //fin metodo modificar calificacion dislike
 	
@@ -1392,7 +1393,7 @@ class ComentarioController {
 	def modificarComentarioUsuario = { 
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				def comentarioMensaje = params.id.split(",")
 				render (view:'modificarComentarioVista', model:[comentario:comentarioMensaje[0], mensaje:comentarioMensaje[1], usuario:session.nickname])
@@ -1406,7 +1407,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor, intente luego. ERROR : 014"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -1416,7 +1417,7 @@ class ComentarioController {
 	def modificarComentario = {
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if(Token.tokenVigente(session.email))
 			{
 				def serviceResponse = "No hay respuesta"
 				/**
@@ -1505,7 +1506,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 015"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	} //fin metodo modificar comentario
 	
@@ -1518,7 +1519,7 @@ class ComentarioController {
 		{
 			if (bandera.equals("miOrquidea"))
 			{
-				if(Token.tokenVigente(session.usuario.email))
+				if(Token.tokenVigente(session.email))
 		        {
 					def nick = session.nickname
 				 	def url = new URL("http://localhost:8080/miOrquidea/comentario/eliminarComentario?idComentario=" + params.id + "&usuario=" +  nick)		
@@ -1596,7 +1597,7 @@ class ComentarioController {
 			   if(serviceResponse == "ERROR 999")
 			   {
 				   def miAlerta = "ERROR 999: El comentario no existe"
-				   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+				   render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 			   }
 			   if (serviceResponse == "ERROR 100")
 			   {
@@ -1640,7 +1641,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 016"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}// fin metodo eliminar comentario
 	
@@ -1651,21 +1652,27 @@ class ComentarioController {
 		
 		try
 		{
-			if(Token.tokenVigente(session.usuario.email))
+			if (bandera == "miOrquidea")
+				if(Token.tokenVigente(session.email))
+				{
+					def idComentario = params.id
+					render (view:'responderComentarioVista', model:[comentario:idComentario, usuario:session.nickname])
+				}
+				else
+				{
+					destruirSesion()
+				}
+			else
 			{
 				def idComentario = params.id
 				render (view:'responderComentarioVista', model:[comentario:idComentario, usuario:session.nickname])
-			}
-			else
-			{
-				destruirSesion()
 			}
 		}
 		catch(Exception)
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 017"
 		   log.error (miAlerta)
-		   render(view:"error",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -1679,7 +1686,7 @@ class ComentarioController {
 			
 			if (bandera.equals("miOrquidea"))
 			{
-				if(Token.tokenVigente(session.usuario.email))
+				if(Token.tokenVigente(session.email))
 				{
 					/**
 					* Se establece la URL de la ubicacion
@@ -1812,7 +1819,7 @@ class ComentarioController {
 				if(serviceResponse == "ERROR 111")
 				{
 					def miAlerta = "ERROR 111: Token incorrecto"
-					render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+					render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 				}
 				if (serviceResponse == "ERROR 100")
 				{
@@ -1857,7 +1864,7 @@ class ComentarioController {
 		{
 			 def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 018"
 			 log.error (miAlerta)
-			 render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			 render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 		
 	} //fin metodo agregar comentario
@@ -1923,7 +1930,7 @@ class ComentarioController {
 	   {
 		  def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 019"
 		  log.error (miAlerta)
-		  render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		  render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 	   }
    }
 	
@@ -2026,7 +2033,7 @@ class ComentarioController {
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 020"
 		   log.error (miAlerta)
-		   render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -2080,7 +2087,7 @@ class ComentarioController {
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 021"
 		   log.error (miAlerta)
-		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"usuario/perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -2153,7 +2160,7 @@ class ComentarioController {
 		{
 		   def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 022"
 		   log.error (miAlerta)
-		   render(view:"usuario/perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+		   render(view:"usuario/perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -2328,6 +2335,7 @@ class ComentarioController {
 				   {
 						  comentario.mensaje = xml.comentario[i].mensaje
 						  comentario.fecha = xml.comentario[i].fecha_creacion
+						  comentario.idComentario = xml.comentario[i].id.text()
 					   	  def tipoRespuesta = buscarComentarioSpring(xml.comentario[i].id.text())
 					  
 						  if (tipoRespuesta == "0")
@@ -2435,7 +2443,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 023"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -2493,7 +2501,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 024"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	
@@ -2549,7 +2557,7 @@ class ComentarioController {
 			if (serviceResponse == "ERROR 012: Nombre Nulo")
 			{
 				def miAlerta = "ERROR 012: Nombre Nulo"
-				render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+				render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 			}
 
 		 }
@@ -2557,7 +2565,7 @@ class ComentarioController {
 		{
 			def miAlerta = "Ha ocurrido un error en el servidor " + bandera + ", intente luego. ERROR : 025"
 			log.error (miAlerta)
-			render(view:"perfil",model:[email:session.usuario.email, usuario:session.usuario.nickname, alerta:miAlerta])
+			render(view:"perfil",model:[email:session.email, usuario:session.nickname, alerta:miAlerta])
 		}
 	}
 	

@@ -156,6 +156,7 @@ function clearText(field) {
   	<g:else>
         <td height="23"><div align="center">
             <g:link id="${comentario.idComentario}" controller="comentario" action="responderComentarioUsuario">Responder</g:link> 
+            <g:link id="${comentario.idComentario}" controller="comentario" action="eliminarComentario">Eliminar</g:link> 
             </div>
         </td>
   	</g:else>

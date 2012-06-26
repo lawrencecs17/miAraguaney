@@ -18,8 +18,8 @@ import groovy.xml.MarkupBuilder
 class UsuarioController {
 	
 	private static Log log = LogFactory.getLog("Logs2."+UsuarioController.class.getName())
-	static String bandera = "miOrquidea"
-	//static String bandera = "Spring"
+	//static String bandera = "miOrquidea"
+	static String bandera = "Spring"
 	static String urlSpring =  "172.16.59.82"
 
 		def index = {								 
@@ -193,11 +193,10 @@ class UsuarioController {
 				   serviceResponse = "ERROR 001: Nickname nulo"
 				   render (view :'avisoServidor', model:[aviso:serviceResponse, miLink:redireccion])
 			   }
-			   
 			   /**
 			   * Caso de clave incorrecta
 			   */
-			  if(serviceResponse == "ERROR 003")
+			  else if(serviceResponse == "ERROR 003")
 			  {
 				  log.error (""+ bandera +" : ERROR 003: Clave incorrecta.")
 				  serviceResponse = "ERROR 003: Clave incorrecta"
@@ -207,7 +206,7 @@ class UsuarioController {
 			  /** 
 			  * Caso de Nickname no existe
 			  */
-			 if(serviceResponse == "ERROR 332: Nickname no existe")
+			 else if(serviceResponse == "ERROR 332: Nickname no existe")
 			 {
 				 log.error (""+ bandera +" : ERROR 332: Nickname no existe.")
 				 serviceResponse = "ERROR 332: Nickname no existe"
@@ -524,7 +523,7 @@ class UsuarioController {
 			}
 			else
 			{
-				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname" )
+				def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/" + session.nickname )
 				log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/borrar/usuario/session.nickname")
 				def connection = url.openConnection()
 				connection.setRequestMethod("DELETE")
