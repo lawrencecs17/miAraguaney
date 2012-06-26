@@ -20,7 +20,7 @@ class UsuarioController {
 	private static Log log = LogFactory.getLog("Logs2."+UsuarioController.class.getName())
 	static String bandera = "miOrquidea"
 	//static String bandera = "Spring"
-	static String urlSpring = "localhost"
+	static String urlSpring =  "172.16.59.82"
 
 		def index = {								 
 			
@@ -76,7 +76,7 @@ class UsuarioController {
 					/*****************************************************************/
 					def connection = url.openConnection()
 					connection.setRequestMethod("POST")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 					Writer writer = new OutputStreamWriter(connection.outputStream)
 					writer.write(gXml.toString())
@@ -169,7 +169,7 @@ class UsuarioController {
 				 /*****************************************************************/
 				 def connection = url.openConnection()
 				 connection.setRequestMethod("POST")
-				 connection.setRequestProperty("Content-Type" ,"text/xml" )
+				 connection.setRequestProperty("Content-Type" ,"application/xml" )
 				 connection.doOutput=true
 				 Writer writer = new OutputStreamWriter(connection.outputStream)
 				 writer.write(gXml.toString())
@@ -229,7 +229,7 @@ class UsuarioController {
 				//obtenerUsuario()
 				log.info (""+ bandera +" : Inicio de session con nickname = "+ params.email + " y email = " + session.email)
 				
-				redirect (action :'vistaPerfil', model:[usuario:session.nickname, miUsuario:session.usuario.nickname])
+				redirect (action :'vistaPerfil', model:[usuario:session.nickname])
 			 }
 			 
 		  }
@@ -274,11 +274,11 @@ class UsuarioController {
 		   
 		   try
 		   {
-			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname" )
-			   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/session.nickname")
+			   def url = new URL("http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/" + session.nickname )
+			   log.info ("" + bandera  + " : http://" + urlSpring + ":8084/SPRINGDESESPERADO/rest/buscarUsuario/" + session.nickname)
 			   def connection = url.openConnection()
 			   connection.setRequestMethod("GET")
-			   connection.setDoOutput(true)
+			   //connection.setDoOutput(true)
 			   connection.connect()
 			   def miXml = new XmlSlurper().parseText(connection.content.text)
 			   session.email = miXml.correo
@@ -337,7 +337,7 @@ class UsuarioController {
 					
 					def connection = url.openConnection()
 					connection.setRequestMethod("POST")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 					   
 					Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -399,10 +399,11 @@ class UsuarioController {
 		
 		def vistaPerfil = {
 			
-			if(session.usuario)
+			if (bandera.equals("miOrquidea"))
 			{
-				if (bandera.equals("miOrquidea"))
+				if(session.usuario)
 				{
+				
 						if(Token.tokenVigente(session.usuario.email))
 						{
 							redirect (controller:"comentario",  action:"consultarComentarioPorUsuario") 
@@ -414,13 +415,14 @@ class UsuarioController {
 				}
 				else
 				{
-					redirect (controller:"comentario",  action:"consultarComentarioPorUsuario")
+					render(view:"../index")
 				}
 			}
 			else
 			{
-				render(view:"../index")
+				redirect (controller:"comentario",  action:"consultarComentarioPorUsuario")
 			}
+			
 		}
 		
 		/*
@@ -445,7 +447,7 @@ class UsuarioController {
 					
 				def connection = url.openConnection()
 				connection.setRequestMethod("PUT")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				connection.doOutput=true
 					
 					Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -607,7 +609,7 @@ class UsuarioController {
 					   def parametro = new Usuario (params) as XML
 					   def connection = url.openConnection()
 					   connection.setRequestMethod("POST")
-					   connection.setRequestProperty("Content-Type" ,"text/xml" )
+					   connection.setRequestProperty("Content-Type" ,"application/xml" )
 					   connection.doOutput=true
 					   
 						   Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -673,7 +675,7 @@ class UsuarioController {
 				   
 				   def connection = url.openConnection()
 				   connection.setRequestMethod("POST")
-				   connection.setRequestProperty("Content-Type" ,"text/xml" )
+				   connection.setRequestProperty("Content-Type" ,"application/xml" )
 				   connection.doOutput=true
 				   
 					   Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -681,9 +683,10 @@ class UsuarioController {
 					   writer.flush()
 					   writer.close()
 					   connection.connect()
-					   
+					 
+					   log.info ("antes de miXml")
 				  def miXml = new XmlSlurper().parseText(connection.content.text)
-				  
+				  println("error akis11s")
 				  if (miXml.nickname != "ERROR 007")
 				  {
 					  log.info (""+ bandera +" : Usuario Registrado Exitosamente! " + params.email+ " y/o " + params.nickname)
@@ -730,7 +733,7 @@ class UsuarioController {
 			 */
 			def connection = url.openConnection()
 			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 			if(connection.responseCode == 200)
 			{
@@ -828,7 +831,7 @@ class UsuarioController {
 						*/
 					   def connection = url.openConnection()
 					   connection.setRequestMethod("GET" )
-					   connection.setRequestProperty("Content-Type" ,"text/xml" )
+					   connection.setRequestProperty("Content-Type" ,"application/xml" )
 					   
 					   if(connection.responseCode == 200)
 					   {
@@ -867,7 +870,7 @@ class UsuarioController {
 				   */
 				  def connection = url.openConnection()
 				  connection.setRequestMethod("GET" )
-				  connection.setRequestProperty("Content-Type" ,"text/xml" )
+				  connection.setRequestProperty("Content-Type" ,"application/xml" )
 
 				  def miXml = new XmlSlurper().parseText(connection.content.text)
 
@@ -940,7 +943,7 @@ class UsuarioController {
 					
 					def connection = url.openConnection()
 					connection.setRequestMethod("PUT")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 					
 						Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -1007,7 +1010,7 @@ class UsuarioController {
 				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				connection.doOutput=true
 				
 					Writer writer = new OutputStreamWriter(connection.outputStream)
@@ -1059,7 +1062,7 @@ class UsuarioController {
 			*/
 		   def connection = url.openConnection()
 		   connection.setRequestMethod("GET" )
-		   connection.setRequestProperty("Content-Type" ,"text/xml" )
+		   connection.setRequestProperty("Content-Type" ,"application/xml" )
 		   
 		   if(connection.responseCode == 200)
 		   {

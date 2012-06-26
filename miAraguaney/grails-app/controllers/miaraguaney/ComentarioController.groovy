@@ -22,7 +22,7 @@ class ComentarioController {
 	static String nombreCom1
 	static String bandera = "miOrquidea"
 	//static String bandera = "Spring" 
-	static String urlSpring = "localhost"
+	static String urlSpring = "172.16.59.82"
 	   
     def index() { 
 		redirect (action:'consultarTodosLosComentarios')
@@ -60,7 +60,7 @@ class ComentarioController {
 				   */
 				   def connection = url.openConnection()
 				   connection.setRequestMethod("GET" )
-				   connection.setRequestProperty("Content-Type" ,"text/xml" )
+				   connection.setRequestProperty("Content-Type" ,"application/xml" )
 				   
 				   if (bandera.equals("miOrquidea"))
 				   {
@@ -237,7 +237,7 @@ class ComentarioController {
 		  */
 		 def connection = url.openConnection()
 		 connection.setRequestMethod("GET" )
-		 connection.setRequestProperty("Content-Type" ,"text/xml" )
+		 connection.setRequestProperty("Content-Type" ,"application/xml" )
 		 
 		 if(connection.responseCode == 200)
 		 {
@@ -281,7 +281,7 @@ class ComentarioController {
 		  */
 		 def connection = url.openConnection()
 		 connection.setRequestMethod("GET" )
-		 connection.setRequestProperty("Content-Type" ,"text/xml" )
+		 connection.setRequestProperty("Content-Type" ,"application/xml" )
 		 
 		 if(connection.responseCode == 200)
 		 {
@@ -347,7 +347,7 @@ class ComentarioController {
 				 */
 				def connection = url.openConnection()
 				connection.setRequestMethod("GET" )
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				
 				if(connection.responseCode == 200)
 				{
@@ -371,7 +371,7 @@ class ComentarioController {
 			  */
 			 def connection = url.openConnection()
 			 connection.setRequestMethod("GET" )
-			 connection.setRequestProperty("Content-Type" ,"text/xml" )
+			 connection.setRequestProperty("Content-Type" ,"application/xml" )
 			 
 			 def miXml = new XmlSlurper().parseText(connection.content.text)
 			 cantidadLike = miXml.count.text()
@@ -410,7 +410,7 @@ class ComentarioController {
 				 */
 				 def connection = url.openConnection()
 				 connection.setRequestMethod("GET" )
-				 connection.setRequestProperty("Content-Type" ,"text/xml" )
+				 connection.setRequestProperty("Content-Type" ,"application/xml" )
 				 
 				 if(connection.responseCode == 200)
 				 {
@@ -434,7 +434,7 @@ class ComentarioController {
 			  */
 			  def connection = url.openConnection()
 			  connection.setRequestMethod("GET" )
-			  connection.setRequestProperty("Content-Type" ,"text/xml" )
+			  connection.setRequestProperty("Content-Type" ,"application/xml" )
 			  
 			  def miXml = new XmlSlurper().parseText(connection.content.text)
 			  cantidadDislike = miXml.count.text()
@@ -474,7 +474,7 @@ class ComentarioController {
 				  */
 				  def connection = url.openConnection()
 				  connection.setRequestMethod("GET" )
-				  connection.setRequestProperty("Content-Type" ,"text/xml" )
+				  connection.setRequestProperty("Content-Type" ,"application/xml" )
 				  
 				  if(connection.responseCode == 200)
 				  {
@@ -499,7 +499,7 @@ class ComentarioController {
 				*/
 				def connection = url.openConnection()
 				connection.setRequestMethod("GET" )
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				
 				def miXml = new XmlSlurper().parseText(connection.content.text)
 				cantidadComentados = miXml.count.text()
@@ -537,7 +537,7 @@ class ComentarioController {
 			   */
 			   def connection = url.openConnection()
 			   connection.setRequestMethod("GET" )
-			   connection.setRequestProperty("Content-Type" ,"text/xml" )
+			   connection.setRequestProperty("Content-Type" ,"application/xml" )
 			   
 			   if(connection.responseCode == 200)
 			   {
@@ -600,7 +600,7 @@ class ComentarioController {
 				*/
 				def connection = url.openConnection()
 				connection.setRequestMethod("GET" )
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				
 				if(connection.responseCode == 200)
 				{
@@ -705,9 +705,11 @@ class ComentarioController {
 						   }
 				    }
 					
+					println gXml.toString()
+					
 					def connection = url.openConnection()
 					connection.setRequestMethod("POST")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -775,7 +777,7 @@ class ComentarioController {
 				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				connection.doOutput=true
 					Writer writer = new OutputStreamWriter(connection.outputStream)
 					writer.write(gXml.toString())
@@ -863,7 +865,7 @@ class ComentarioController {
 				   
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				connection.doOutput=true
 					Writer writer = new OutputStreamWriter(connection.outputStream)
 					writer.write(gXml.toString())
@@ -950,7 +952,7 @@ class ComentarioController {
 			
 			def connection = url.openConnection()
 			connection.setRequestMethod("POST")
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			connection.doOutput=true
 				Writer writer = new OutputStreamWriter(connection.outputStream)
 				writer.write(gXml.toString())
@@ -1041,7 +1043,7 @@ class ComentarioController {
 				   
 					def connection = url.openConnection()
 					connection.setRequestMethod("POST")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -1128,7 +1130,7 @@ class ComentarioController {
 			
 			def connection = url.openConnection()
 			connection.setRequestMethod("POST")
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			connection.doOutput=true
 				Writer writer = new OutputStreamWriter(connection.outputStream)
 				writer.write(gXml.toString())
@@ -1218,7 +1220,7 @@ class ComentarioController {
 				   
 					def connection = url.openConnection()
 					connection.setRequestMethod("PUT")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -1319,7 +1321,7 @@ class ComentarioController {
 				   
 					def connection = url.openConnection()
 					connection.setRequestMethod("PUT")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -1441,7 +1443,7 @@ class ComentarioController {
 				   
 					def connection = url.openConnection()
 					connection.setRequestMethod("PUT")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -1704,7 +1706,7 @@ class ComentarioController {
 				    }
 					def connection = url.openConnection()
 					connection.setRequestMethod("POST")
-					connection.setRequestProperty("Content-Type" ,"text/xml" )
+					connection.setRequestProperty("Content-Type" ,"application/xml" )
 					connection.doOutput=true
 						Writer writer = new OutputStreamWriter(connection.outputStream)
 						writer.write(gXml.toString())
@@ -1796,7 +1798,7 @@ class ComentarioController {
 				
 				def connection = url.openConnection()
 				connection.setRequestMethod("POST")
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				connection.doOutput=true
 					Writer writer = new OutputStreamWriter(connection.outputStream)
 					writer.write(gXml.toString())
@@ -1893,7 +1895,7 @@ class ComentarioController {
 		   */
 		   def connection = url.openConnection()
 		   connection.setRequestMethod("GET" )
-		   connection.setRequestProperty("Content-Type" ,"text/xml" )
+		   connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 		   if (bandera.equals("miOrquidea"))
 		   {
@@ -1989,7 +1991,7 @@ class ComentarioController {
 				*/
 				def connection = url.openConnection()
 				connection.setRequestMethod("GET" )
-				connection.setRequestProperty("Content-Type" ,"text/xml" )
+				connection.setRequestProperty("Content-Type" ,"application/xml" )
 				
 				if (bandera.equals("miOrquidea"))
 				{
@@ -2051,7 +2053,7 @@ class ComentarioController {
 			*/
 			def connection = url.openConnection()
 			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 			if(connection.responseCode == 200)
 			{
@@ -2123,7 +2125,7 @@ class ComentarioController {
 			*/
 			def connection = url.openConnection()
 			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 			if(connection.responseCode == 200)
 			{
@@ -2422,7 +2424,7 @@ class ComentarioController {
 			 */
 			def connection = url.openConnection()
 			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 			def miXml = new XmlSlurper().parseText(connection.content.text)
 			lista = procesarXmlRespuestaSpring(miXml, idComentario)
@@ -2480,7 +2482,7 @@ class ComentarioController {
 			 */
 			def connection = url.openConnection()
 			connection.setRequestMethod("GET" )
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			
 			def miXml = new XmlSlurper().parseText(connection.content.text)
 			lista = miXml.reply
@@ -2533,7 +2535,7 @@ class ComentarioController {
 			
 			def connection = url.openConnection()
 			connection.setRequestMethod("POST")
-			connection.setRequestProperty("Content-Type" ,"text/xml" )
+			connection.setRequestProperty("Content-Type" ,"application/xml" )
 			connection.doOutput=true
 				Writer writer = new OutputStreamWriter(connection.outputStream)
 				writer.write(gXml.toString())

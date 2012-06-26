@@ -12,7 +12,7 @@ class EtiquetaController {
 	private static Log log = LogFactory.getLog("Logs2."+UsuarioController.class.getName())
 	static String bandera = "miOrquidea"
 	//static String bandera = "Spring"
-	static String urlSpring = "localhost"
+	static String urlSpring =  "172.16.59.82"
 	
 	    def index() { 
 			
@@ -43,7 +43,7 @@ class EtiquetaController {
 				*/
 			   def connection = url.openConnection()
 			   connection.setRequestMethod("GET" )
-			   connection.setRequestProperty("Content-Type" ,"text/xml" )
+			   connection.setRequestProperty("Content-Type" ,"application/xml" )
 			   
 			   if(connection.responseCode == 200)
 			   {
@@ -72,7 +72,7 @@ class EtiquetaController {
 			   */
 			  def connection = url.openConnection()
 			  connection.setRequestMethod("GET" )
-			  connection.setRequestProperty("Content-Type" ,"text/xml" )
+			  connection.setRequestProperty("Content-Type" ,"application/xml" )
 			  
 			  if(connection.responseCode == 200)
 			  {
